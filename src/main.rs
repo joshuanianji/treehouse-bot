@@ -49,7 +49,7 @@ impl EventHandler for Handler {
 async fn main() {
     let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
 
-    let mut client = Client::new(&token)
+    let mut client = Client::builder(&token)
         .event_handler(Handler)
         .await
         .expect("Err creating client");
