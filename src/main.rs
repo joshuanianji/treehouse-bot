@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-use std::env;
-
+use dotenv;
 use serenity::{
     async_trait,
     model::{channel::Message, gateway::Ready},
     prelude::*,
 };
+use std::env;
 
 const HELP_MESSAGE: &str = "
 Hello there, Human!
@@ -47,6 +47,7 @@ impl EventHandler for Handler {
 
 #[tokio::main]
 async fn main() {
+    dotenv::dotenv().expect("Failed to read .env file");
     let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
 
     let mut client = Client::builder(&token)
