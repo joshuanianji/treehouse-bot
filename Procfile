@@ -1,1 +1,1 @@
-web: ./target/debug/ahmad_bot
+worker: ./target/debug/ahmad_bot
