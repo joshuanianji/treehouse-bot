@@ -1,0 +1,1 @@
+web: ./target/debug/ahmad_bot
