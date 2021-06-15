@@ -1,1 +1,1 @@
-worker: ./target/debug/ahmad_bot
+worker: ./target/release/ahmad-bot
