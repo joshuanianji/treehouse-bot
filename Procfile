@@ -1,1 +1,1 @@
-worker: cargo build && ./target/debug/ahmad_bot
+worker: cargo run
