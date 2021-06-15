@@ -8,6 +8,8 @@ use serenity::model::prelude::*;
 use serenity::prelude::*;
 use types::soundstore::SoundStore;
 
+// NOT working right now
+
 #[command]
 #[only_in(guilds)]
 pub async fn sheesh(ctx: &Context, msg: &Message) -> CommandResult {
