@@ -46,9 +46,6 @@ impl EventHandler for Handler {
 
 #[tokio::main]
 async fn main() {
-    for (key, value) in env::vars() {
-        println!("{}: {}", key, value);
-    }
     let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
 
     // Create a new instance of the Client, logging in as a bot. This will
