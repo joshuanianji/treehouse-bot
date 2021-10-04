@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node build/client.js",
-    "dev": "ts-node src/client.ts"
+    "dev": "npx ts-node src/client.ts"
   },
   "repository": {
     "type": "git",

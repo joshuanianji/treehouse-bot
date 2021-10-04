@@ -1,16 +1,17 @@
 # syntax=docker/dockerfile:1
 
-FROM node:16
+FROM node:16-alpine
 
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 
-WORKDIR /app
+WORKDIR /
 
-COPY ["package.json", "package-lock.json*", "./"]
+ADD [ "package.json", "package-lock.json", "/" ]
 
-RUN npm install --production
-RUN npm run build
+RUN npm i
 
-COPY . .
+ADD . .
 
-CMD [ "npm", "run", "start" ]
+# RUN npm run build
+
+CMD ["npm", "run", "dev" ]
