@@ -1,17 +1,18 @@
 {
   "name": "web",
-  "version": "0.0.0",
-  "description": "web part of the bot",
+  "description": "The web component of the poopoo bot",
+  "private": true,
+  "version": "1.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "vue": "^3.2.25"
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^2.0.0",
-    "vite": "^2.7.2"
+    "nuxt3": "latest"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "vue-axios": "^3.4.0"
   }
 }
