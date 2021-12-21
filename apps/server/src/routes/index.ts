@@ -1,9 +1,10 @@
 import express from 'express'
 import { Request, Response } from 'express';
+import { getTrevRoutes } from './trevimg'
 // any other routes imports would go here
 
 const mainRoute = async (req: Request, res: Response) => {
-    res.send('Server works!');
+  res.send('Server works!');
 };
 
 const getRoutes = () => {
@@ -12,8 +13,9 @@ const getRoutes = () => {
 
   // any additional routes would go here
   router.get('/', mainRoute)
+  router.use('/trev', getTrevRoutes())
 
   return router
 }
 
-export {getRoutes}
+export { getRoutes }
