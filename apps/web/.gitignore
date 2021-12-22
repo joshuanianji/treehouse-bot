@@ -1,6 +1,10 @@
+.DS_Store
 node_modules
-*.log
-.nuxt
-nuxt.d.ts
-.output
+/build
+/.svelte-kit
+/package
 .env
+.env.*
+!.env.example
+.vercel
+.output

@@ -1,29 +1,5 @@
-# Nuxt 3 Minimal Starter
+# Web
 
-We recommend to look at the [documentation](https://v3.nuxtjs.org).
+The web app, created with [Svelte Kit](https://kit.svelte.dev/) and [TailwindCss](https://tailwindcss.com/).
 
-## Setup
-
-Make sure to install the dependencies
-
-```bash
-yarn install
-```
-
-## Development
-
-Start the development server on http://localhost:3000
-
-```bash
-yarn dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-yarn build
-```
-
-Checkout the [deployment documentation](https://v3.nuxtjs.org/docs/deployment).
+See also: [Svelte-TailwindCSS Setup Demo](https://github.com/CuriousCorrelation/svelte-tailwindcss-setup-demo).
