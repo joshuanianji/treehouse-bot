@@ -1,5 +1,3 @@
-<div
-  class="prose xl:prose-2xl container w-full min-h-screen justify-center align-middle"
->
-  <h1>TrevAPI</h1>
+<div class="w-full min-h-screen grid place-items-center">
+  <h1 class="text-4xl font-extrabold">TrevAPI</h1>
 </div>
