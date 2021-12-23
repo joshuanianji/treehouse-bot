@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import WindyButton from "../components/WindyButton.svelte";
 </script>
 
