@@ -1,3 +1,4 @@
 [build]
+base = "apps/web/"
 command = "yarn build"
-publish = "apps/web/build/"
+publish = "build"
