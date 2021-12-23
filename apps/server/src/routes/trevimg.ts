@@ -1,6 +1,6 @@
-import express from 'express'
+import express, { NextFunction } from 'express'
 import Jimp from 'jimp/es'
-import { Request, Response } from 'express';
+import { Request, Response, } from 'express';
 // any other routes imports would go here
 
 const getTrevRoutes = () => {
@@ -9,27 +9,48 @@ const getTrevRoutes = () => {
     return router
 };
 
+type ReqDictionary = {};
+type ReqBody = {}
+type ReqQuery = { text: string };
+type ResBody = {}
+type TrevRequest = Request<ReqDictionary, ResBody, ReqBody, ReqQuery>
 
-const root = async (req: Request, res: Response) => {
-    const assetsPath = __dirname + '/../../assets/trevor1.jpg'
-    const trev1 = await Jimp.read(assetsPath);
-    const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
 
-    trev1.print(
-        font,
-        100,
-        100,
-        {
-            text: 'Hello world!',
-            alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
-            alignmentY: Jimp.VERTICAL_ALIGN_MIDDLE
-        },
-        trev1.getWidth(),
-        trev1.getHeight()
-    );
+const root = async (req: TrevRequest, res: Response) => {
+    let text = req.query.text;
 
-    const trev1Buffer = await trev1.getBufferAsync(Jimp.MIME_JPEG);
-    res.send(trev1Buffer);
+    if (text === '') {
+        text = 'Hello World!'
+    }
+
+    const assetsPath = __dirname + '/../../assets';
+    const trev1 = await Jimp.read(assetsPath + '/trevor1.jpg');
+    const goulongFont = await Jimp.loadFont(assetsPath + '/fonts/goulong-bold.fnt');
+    const goulongFontOutline = await Jimp.loadFont(assetsPath + '/fonts/goulong-bold-outline.fnt');
+
+    for (const font of [goulongFont, goulongFontOutline]) {
+        trev1.print(
+            font,
+            0,
+            0,
+            {
+                text: text,
+                alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
+                alignmentY: Jimp.VERTICAL_ALIGN_TOP
+            },
+            trev1.getWidth(),
+            trev1.getHeight()
+        );
+    }
+
+    const base64 = await trev1.getBase64Async(Jimp.MIME_JPEG);
+    res.send({
+        type: 'base64',
+        data: base64,
+        width: trev1.getWidth(),
+        height: trev1.getHeight(),
+        ext: 'jpg'
+    });
 }
 
 export { getTrevRoutes }
