@@ -1,4 +1,4 @@
-import express, { NextFunction } from 'express'
+import express from 'express'
 import Jimp from 'jimp/es'
 import { Request, Response, } from 'express';
 // any other routes imports would go here
