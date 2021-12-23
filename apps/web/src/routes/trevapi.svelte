@@ -1,6 +1,7 @@
 <script lang="ts">
   let imgText = "";
-  let imgSrc = "";
+  // I would rather use fp-ts Option type, but Svelte does not have render functions so it's kinda hard to conditionally render it
+  let imgSrc: string | null = null;
 
   const fetchImage = async () => {
     const response = await fetch(
@@ -35,7 +36,11 @@
     </button>
   </div>
 
-  <div class="flex flex-row justify-center items-center w-full">
-    <img src={imgSrc} alt="trev result" class="w-1/2" />
-  </div>
+  {#if imgSrc}
+    <div class="flex flex-row justify-center items-center w-full">
+      <img src={imgSrc} alt="trev result" class="w-1/2" />
+    </div>
+  {:else}
+    <p class="justify-center">Waiting for image...</p>
+  {/if}
 </div>
