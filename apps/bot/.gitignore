@@ -1,0 +1,8 @@
+node_modules
+ormconfig.json
+settingProvider.ts
+config.yml
+build
+.env
+storage.yml
+settings.sqlite3

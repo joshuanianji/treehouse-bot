@@ -1,6 +1,5 @@
-import dotenv from 'dotenv';
-dotenv.config({ path: '.env.local' });
+import Client from "./client/client";
 
-import Client from './bot/client/Client';
-const client: Client = new Client();
-client.start();
+void new Client({
+    intents: ["GUILD_MESSAGES", "GUILDS", "GUILD_BANS", "GUILD_MEMBERS", "DIRECT_MESSAGES"]
+}).init().catch(console.error);
