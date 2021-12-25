@@ -11,8 +11,6 @@ export const event: Event = {
     run: async (client) => {
         console.log(`${chalk.green("[INFO]")} ${client.user?.tag} is online!\n`);
 
-        console.log(`${chalk.green("[INFO]")} process.env.NODE_ENV: ${process.env.NODE_ENV}\n`);
-
         if (!client.application?.owner) await client.application?.fetch();
 
         if (client.application === null) {

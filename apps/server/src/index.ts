@@ -17,5 +17,4 @@ app.use('/', getRoutes())
 
 app.listen(PORT, () => {
   console.log(`Application started on port ${PORT}!`);
-  console.log(`process.env.NODE_ENV: ${process.env.NODE_ENV}`);
 });
