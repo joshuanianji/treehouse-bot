@@ -1,6 +1,6 @@
 # Treehouse Bot
 
-A Discord bot with some other apps. Scafffolded from Turborepo Starter.
+A Discord bot with some other apps. Scaffolded from Turborepo Starter.
 
 - **BOT**: The main discord bot, hosted on Digital Ocean via Docker.
 - **Server** The server, hosted on Digital Ocean via Docker.
