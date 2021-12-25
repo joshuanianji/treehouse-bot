@@ -18,3 +18,7 @@ out/
 npm-debug.log
 
 .dockerignore
+
+# Svelte-kit specific stuff
+**/.netlify
+**/svelte-kit
