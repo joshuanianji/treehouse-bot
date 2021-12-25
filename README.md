@@ -1,6 +1,6 @@
-# Poopoo Bot
+# Treehouse Bot
 
-Based off of Turborepo Starter.
+A Discord bot with some other apps. Scafffolded from Turborepo Starter.
 
 ## Starter
 
