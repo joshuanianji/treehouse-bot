@@ -1,0 +1,20 @@
+# `turbo prune --scope=<scope>` stuff
+out/
+**/build
+# ignore .git/ and .github/
+.git*
+# ignore all .gitignore files
+**/.gitignore
+**/.turbo
+
+# no need for .vscode
+.vscode
+
+*.md
+!README*.md
+
+# https://nodejs.org/en/docs/guides/nodejs-docker-webapp/#dockerignore-file
+**/node_modules
+npm-debug.log
+
+.dockerignore

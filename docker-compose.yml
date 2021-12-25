@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  bot:
+    build:  
+      context: .
+      dockerfile: bot.Dockerfile
+
+  server:
+    build:
+      context: .
+      dockerfile: server.Dockerfile
+    ports:
+      - "3001:3001"

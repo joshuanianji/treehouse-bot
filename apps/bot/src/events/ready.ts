@@ -11,13 +11,15 @@ export const event: Event = {
     run: async (client) => {
         console.log(`${chalk.green("[INFO]")} ${client.user?.tag} is online!\n`);
 
+        console.log(`${chalk.green("[INFO]")} process.env.NODE_ENV: ${process.env.NODE_ENV}\n`);
+
         if (!client.application?.owner) await client.application?.fetch();
 
         if (client.application === null) {
             throw new Error("Client Did not register in time, please try again");
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const commands = client.slashCommands.map(({ run, devOnly, guildOnly, dmOnly, permissionsBot, permissionsUser, ...data }) => data );
+        const commands = client.slashCommands.map(({ run, devOnly, guildOnly, dmOnly, permissionsBot, permissionsUser, ...data }) => data);
 
         console.log(`${chalk.cyan("[LIST]")} ${commands.map((c) => c.name)}\n`);
 
@@ -31,11 +33,11 @@ export const event: Event = {
 
                 await guild.commands.set(commands);
                 console.log(`${chalk.green("[INFO]")} Set Commands for Dev Server\nCommands List:`
-                + `\n ${(await guild.commands.fetch()).map((c) => c.name).join(", ")}\n`);
+                    + `\n ${(await guild.commands.fetch()).map((c) => c.name).join(", ")}\n`);
             } else {
                 await client.application.commands.set(commands);
                 console.log(`${chalk.green("[INFO]")} Set Commands for Production\nCommands List:`
-                + `\n ${(await client.application.commands.fetch()).map((c) => c.name).join(", ")}\n`);
+                    + `\n ${(await client.application.commands.fetch()).map((c) => c.name).join(", ")}\n`);
             }
 
         } catch (error) {
@@ -62,7 +64,7 @@ export const event: Event = {
                         { body: commands }
                     );
                     console.log(`${chalk.blue("[PROCESS]")} Refreshing Commands in Production,`
-                    + "This can take a while (Possibly up to an hour or longer)");
+                        + "This can take a while (Possibly up to an hour or longer)");
 
                 }
 
