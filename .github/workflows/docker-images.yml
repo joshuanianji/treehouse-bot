@@ -40,9 +40,6 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: 🐋 Build and push Docker image
-        uses: docker/build-push-action@b1aeb1103e6b3b5648dbd6deaf0559919456ca6b
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+        run: |
+          docker-compose build 
+          docker-compose push ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest
