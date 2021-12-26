@@ -40,6 +40,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: 🐋 Build and push Docker image
-        run: |
-          docker-compose build 
-          docker-compose push ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest
+        uses: pennsignals/publish_docker-compose@6863aa71ab6883d7223990efb38035330aeea7f5
+        with:
+          docker_compose: "docker-compose.yml"
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
