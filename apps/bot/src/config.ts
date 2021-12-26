@@ -52,6 +52,8 @@ export default class Config {
         );
         const casted = load(fileContents) as Config;
 
+        console.log('Development: ', casted.devEnv.isDev)
+
         return casted;
     }
 
