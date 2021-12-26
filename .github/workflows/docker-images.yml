@@ -42,7 +42,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: 🐋 Build and push Docker image
+      - name: 🐳 Build and push Docker image
         uses: joshuanianji/publish_docker-compose@3217e7543720f4623022c967bf4075742ec86cb8
         with:
           docker_compose: "docker-compose.yml"
