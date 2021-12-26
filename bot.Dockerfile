@@ -1,11 +1,10 @@
 FROM node:16-alpine3.12 as base
 # https://turborepo.com/posts/turbo-0-4-0
-# Ensure we prine workspace so we don't unnecessarily build so much
-
-RUN apk update && apk add git
+# https://github.com/vercel/turborepo/issues/215
+# Ensure we prune workspace so we don't unnecessarily build so much
 
 ## Globally install turbo
-RUN npm i -g turbo
+RUN yarn global add turbo
 
 # Prune the workspace for the `frontend` app
 FROM base as pruner
@@ -26,7 +25,7 @@ FROM installer as builder
 WORKDIR /app
 COPY --from=installer /app/ .
 COPY --from=pruner /app/out/full/ .
-RUN turbo run build --scope=bot
+RUN yarn turbo run build --scope=bot --includeDependencies --no-deps
 
 # Start the app
 FROM builder as runner

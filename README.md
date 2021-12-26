@@ -22,3 +22,5 @@ To emulate production, run the Server and Bot in Dockerfiles.
 ```bash
 docker-compose up
 ```
+
+The current docker image sizes are extremely big (over 1GB), I'll have to figure out how to slim them down to production lol.

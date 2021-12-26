@@ -1,13 +1,24 @@
 version: "3.9"
 services:
   bot:
-    build:  
+    image: treehousebot_bot
+    build:
       context: .
       dockerfile: bot.Dockerfile
+    environment:
+      - CONFIG_PATH=/run/secrets/bot_config
+    secrets:
+      - bot_config
 
   server:
+    image: treehousebot-server
     build:
       context: .
       dockerfile: server.Dockerfile
     ports:
       - "3001:3001"
+
+# https://serverfault.com/a/936262
+secrets:
+  bot_config:
+    file: ./bot-config.yml

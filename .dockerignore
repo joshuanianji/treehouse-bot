@@ -1,8 +1,9 @@
 # `turbo prune --scope=<scope>` stuff
 out/
 **/build
-# ignore .git/ and .github/
-.git*
+# ignore .github/
+# We include .git because yarn can use it to increse the cache
+.github/
 # ignore all .gitignore files
 **/.gitignore
 **/.turbo

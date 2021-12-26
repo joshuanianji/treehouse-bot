@@ -15,7 +15,8 @@ export interface DevEnv {
  * @property {string[]} owners
  */
 export default class Config {
-    private static readonly _configLocation = "./config.yml";
+    // the bot-config.yml should exist in the same directory as docker-compose.yml
+    private static readonly _configLocation = "./../../bot-config.yml";
 
     public readonly devEnv: DevEnv;
 
@@ -33,14 +34,20 @@ export default class Config {
     }
 
     /**
-       *  Call getConfig instead of constructor
-       */
+     * Call getConfig instead of constructor
+     * 
+     * Read from environment variables.
+     */
     public static getConfig(): Config {
-        if (!fs.existsSync(Config._configLocation)) {
+        // when running in Docker, we have the CONFIG_PATH being /run/secrets/bot-config.yml
+        const configLocation = process.env.CONFIG_PATH || Config._configLocation
+
+        if (!fs.existsSync(configLocation)) {
+            console.log('Config location:', configLocation)
             throw new Error("Please create a config.yml");
         }
         const fileContents = fs.readFileSync(
-            Config._configLocation,
+            configLocation,
             "utf-8"
         );
         const casted = load(fileContents) as Config;
