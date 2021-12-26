@@ -41,10 +41,10 @@ export default class Config {
     public static getConfig(): Config {
         // when running in Docker, we have the CONFIG_PATH being /run/secrets/bot-config.yml
         const configLocation = process.env.CONFIG_PATH || Config._configLocation
+        console.log(`Reading config from ${configLocation}`);
 
         if (!fs.existsSync(configLocation)) {
-            console.log('Config location:', configLocation)
-            throw new Error("Please create a config.yml");
+            throw new Error("Please create a config.yml. Config Location: " + configLocation);
         }
         const fileContents = fs.readFileSync(
             configLocation,
