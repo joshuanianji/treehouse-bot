@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   bot:
-    image: joshuanianji/treehousebot-bot
+    image: bot
     build:
       context: .
       dockerfile: bot.Dockerfile
@@ -11,7 +11,7 @@ services:
       - bot_config
 
   server:
-    image: joshuanianji/treehousebot-server
+    image: server
     build:
       context: .
       dockerfile: server.Dockerfile
