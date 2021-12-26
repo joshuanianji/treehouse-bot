@@ -12,6 +12,7 @@ on:
     - package.json
     - .dockerignore
     - !*.md
+    - .github/workflows/docker-images.yml # this file
 
 env:
   REGISTRY: ghcr.io
