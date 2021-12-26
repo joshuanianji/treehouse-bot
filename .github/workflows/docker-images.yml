@@ -33,6 +33,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: ✏️ Write bot-config.yml
+        run: echo "{{ secrets.BOT_CONFIG_YML }}" > bot-config.yml
+
       - name: 🔖 Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@e5622373a38e60fb6d795a4421e56882f2d7a681
