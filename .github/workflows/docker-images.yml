@@ -8,11 +8,11 @@ on:
       - "apps/bot/**"
       - "apps/server/**"
       - "*.Dockerfile"
-      - docker-compose.yml
-      - package.json
-      - .dockerignore
-      - !*.md
-      - .github/workflows/docker-images.yml # this file
+      - "docker-compose.yml"
+      - "package.json"
+      - ".dockerignore"
+      - "!*.md"
+      - ".github/workflows/docker-images.yml" # this file
 
 env:
   REGISTRY: ghcr.io
