@@ -1,0 +1,47 @@
+name: Create & Upload Docker Image to GHCR
+
+on:
+  push:
+    branches: [main]
+  paths:
+    # only push to changes in apps/bot, apps/server, or the dockerfiles
+    - "apps/bot/**"
+    - "apps/server/**"
+    - "*.Dockerfile"
+    - docker-compose.yml
+    - package.json
+    - .dockerignore
+    - !*.md
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🏁 Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@42d299face0c5c43a0487c477f595ac9cf22f1a7
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🔖 Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@e5622373a38e60fb6d795a4421e56882f2d7a681
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: 🐋 Build and push Docker image
+        uses: docker/build-push-action@b1aeb1103e6b3b5648dbd6deaf0559919456ca6b
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
