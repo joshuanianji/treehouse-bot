@@ -43,7 +43,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: 🐳 Build and push Docker image
-        uses: joshuanianji/publish_docker-compose@3217e7543720f4623022c967bf4075742ec86cb8
+        uses: joshuanianji/publish_docker-compose@0535aff7b628028f2583706d5356be7862c021b3
         with:
           docker_compose: "docker-compose.yml"
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
