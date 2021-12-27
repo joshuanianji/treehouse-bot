@@ -6,12 +6,15 @@ import cors from 'cors';
 
 // dotenv
 import dotenv from 'dotenv';
+import responseTime from 'response-time';
 dotenv.config({ path: '.env.local' });
 
 const PORT = parseInt(process.env.PORT) || 3001
 
 const app = express();
 app.use(cors());
+app.use(responseTime());
+
 
 app.use('/', getRoutes())
 
