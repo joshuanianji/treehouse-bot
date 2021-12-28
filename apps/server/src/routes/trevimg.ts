@@ -1,6 +1,7 @@
 import express from 'express'
 import Jimp from 'jimp/es'
-import { Request, Response, } from 'express';
+import { Request, Response } from 'express';
+import { TrevResponse } from 'custom-types'
 // any other routes imports would go here
 
 const getRoutes = () => {
@@ -9,14 +10,13 @@ const getRoutes = () => {
     return router
 };
 
-type ReqDictionary = {};
-type ReqBody = {}
+
 type ReqQuery = { text: string };
-type ResBody = {}
-type TrevRequest = Request<ReqDictionary, ResBody, ReqBody, ReqQuery>
+type TrevRequest = Request<{}, {}, {}, ReqQuery>
+type Res = Response<TrevResponse>
 
 
-const root = async (req: TrevRequest, res: Response) => {
+const root = async (req: TrevRequest, res: Res) => {
     let text = req.query.text;
 
     if (text === '') {

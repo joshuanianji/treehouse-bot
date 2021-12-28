@@ -10,6 +10,7 @@ export const command: Command = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     run: async (client, msg, _args) => {
         // Run your code here
+        console.log('args:', _args);
         return msg.reply("owo");
     }
 };
