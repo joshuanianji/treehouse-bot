@@ -23,18 +23,23 @@ runs:
         docker-compose -f docker-compose.yml -f docker-compose.dev.yml build ${{ inputs.service }}
       shell: bash
 
+    - name: Run `docker image ls`
+      run: |
+        docker image ls
+      shell: bash
+
     - name: Push Docker Image with SHA Tag
       run: |
-        docker tag ${{ inputs.service }} ghcr.io/${TAG_SHA}
-        docker push ghcr.io/${TAG_SHA}
+        docker tag treehouse-bot_${{ inputs.service }} ghcr.io/$TAG_SHA
+        docker push ghcr.io/$TAG_SHA
       shell: bash
       env:
         TAG_SHA: ${{ github.repository }}.${{ inputs.service }}:${{ github.sha }}
 
     - name: Push Docker Image with :latest tag
       run: |
-        docker tag ${{ inputs.service }} ghcr.io/${TAG_LATEST}
-        docker push ghcr.io/${TAG_LATEST}
+        docker tag treehouse-bot_${{ inputs.service }} ghcr.io/$TAG_LATEST
+        docker push ghcr.io/$TAG_LATEST
       shell: bash
       env:
         TAG_LATEST: ${{ github.repository }}.${{ inputs.service }}:latest
