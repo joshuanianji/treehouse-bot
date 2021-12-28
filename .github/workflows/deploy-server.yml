@@ -1,13 +1,13 @@
-name: Create & Upload Discord Bot Docker Image to GHCR
+name: Create & Upload Server Image to GHCR
 
 on:
   push:
     branches: [main]
     paths:
       # only push to changes in apps/bot or other necessary images
-      - "apps/bot/**"
-      - "bot.Dockerfile"
-      - ".github/workflows/deploy-bot.yml" # this file
+      - "apps/server/**"
+      - "server.Dockerfile"
+      - ".github/workflows/deploy-server.yml" # this file
       - ".github/actions/publish-docker-image/**" # Dependencies
       - "!*.md" # ignore markdown files
 
@@ -20,11 +20,11 @@ jobs:
 
       # Is this necessary?
       - name: ✏️ Write bot-config.yml
-        run: echo "{{ secrets.BOT_CONFIG_YML }}" > bot-config.yml
+        run: echo "{{ secrets.SERVER_CONFIG_YML }}" > server-config.yml
 
       - name: Build and deploy Bot
         # Directory name only
         uses: ./.github/actions/publish-docker-image
         with:
-          service: "bot"
+          service: "server"
           repo_token: ${{ secrets.GITHUB_TOKEN }}
