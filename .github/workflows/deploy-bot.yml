@@ -31,4 +31,4 @@ jobs:
         uses: ./.github/actions/publish-docker-image
         with:
           service: "bot"
-          token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
