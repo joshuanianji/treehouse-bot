@@ -19,6 +19,7 @@ jobs:
 
       - name: Move files to /out
         run: |
+          mkdir out
           mv docker-compose.yml docker-compose.prod.yml out/
 
       - name: Deploy
