@@ -1,20 +1,12 @@
 version: "3.9"
 services:
   bot:
-    image: bot
-    build:
-      context: .
-      dockerfile: bot.Dockerfile
     environment:
       - CONFIG_PATH=/run/secrets/bot_config
     secrets:
       - bot_config
 
   server:
-    image: server
-    build:
-      context: .
-      dockerfile: server.Dockerfile
     ports:
       - "3001:3001"
     environment:

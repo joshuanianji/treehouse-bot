@@ -20,7 +20,15 @@ yarn dev
 To emulate production, run the Server and Bot in Dockerfiles.
 
 ```bash
-docker-compose up
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
 
-The current docker image sizes are extremely big (over 1GB), I'll have to figure out how to slim them down to production lol.
+The current docker image sizes are quite big (400MB), I'll have to figure out how to slim them down to production lol.
+
+## Run Production with Docker
+
+For actual production servers, use downloaded images from GHCR (Github Container Registry).
+
+```bash
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```

@@ -1,0 +1,7 @@
+version: "3.9"
+services:
+  bot:
+    image: ghcr.io/joshuanianji/treehouse-bot.bot:latest
+
+  server:
+    image: ghcr.io/joshuanianji/treehouse-bot.server:latest
