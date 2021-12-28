@@ -20,7 +20,7 @@ runs:
 
     - name: Build the Docker Image
       run: |
-        docker-compose build ${{ inputs.service }}
+        docker-compose -f docker-compose.yml -f docker-compose.dev.yml build ${{ inputs.service }}
       shell: bash
 
     - name: Push Docker Image with SHA Tag
