@@ -11,6 +11,27 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Build and Publish
-      run: ./.github/actions/publish-docker-image/run.sh ${{ inputs.service }} ${{ inputs.repo_token }}
-      shell: bash
+    - name: Login to Github Container Registry
+      uses: docker/login-action@42d299face0c5c43a0487c477f595ac9cf22f1a7
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ inputs.repo_token }}
+
+    - name: Build the Docker Image
+      run: |
+        docker-compose build ${{ inputs.service }}
+
+    - name: Push Docker Image with SHA Tag
+      run: |
+        docker tag ${{ inputs.service }} ghcr.io/$TAG_SHA
+        docker push $TAG_SHA
+      env:
+        TAG_SHA: ghcr.io/${{ github.repository }}.${{ inputs.service }}:${{ github.sha }}
+
+    - name: Push Docker Image with :latest tag
+      run: |
+        docker tag ${{ inputs.service }} ghcr.io/$TAG_SHA
+        docker push $TAG_SHA
+      env:
+        TAG_SHA: ghcr.io/${{ github.repository }}.${{ inputs.service }}:latest
