@@ -29,7 +29,7 @@ runs:
         docker push $TAG_SHA
       shell: bash
       env:
-        TAG_SHA: ghcr.io/${{ github.repository }}.${{ inputs.service }}:${{ github.sha }}
+        TAG_SHA: ${{ github.repository }}.${{ inputs.service }}:${{ github.sha }}
 
     - name: Push Docker Image with :latest tag
       run: |
@@ -37,4 +37,4 @@ runs:
         docker push $TAG_SHA
       shell: bash
       env:
-        TAG_SHA: ghcr.io/${{ github.repository }}.${{ inputs.service }}:latest
+        TAG_SHA: ${{ github.repository }}.${{ inputs.service }}:latest
