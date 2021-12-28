@@ -13,7 +13,8 @@ on:
       - "!*.md" # ignore markdown files
 
 jobs:
-  build:
+  build-and-deploy:
+    name: Build & Deploy
     runs-on: ubuntu-latest
     steps:
       - name: 🏁 Checkout repo

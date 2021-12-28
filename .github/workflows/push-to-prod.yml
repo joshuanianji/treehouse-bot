@@ -1,0 +1,29 @@
+name: Push required code to Prod Branch
+
+on:
+  push:
+    branches: [main]
+    paths:
+      # only push to changes in docker-compose
+      - "docker-compose.yml"
+      - "docker-compose.prod.yml"
+      - ".github/workflows/push-to-prod.yml" # this file
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏁 Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Move files to /out
+        run: |
+          mv docker-compose.yml docker-compose.prod.yml out/
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: prod
+          publish_dir: ./out
