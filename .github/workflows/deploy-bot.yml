@@ -8,7 +8,7 @@ on:
       - "apps/bot/**"
       - "bot.Dockerfile"
       - ".github/workflows/deploy-bot.yml" # this file
-      - ".github/workflows/publish-docker-image/**" # Dependencies
+      - ".github/actions/publish-docker-image/**" # Dependencies
       - "!*.md" # ignore markdown files
 
 env:
