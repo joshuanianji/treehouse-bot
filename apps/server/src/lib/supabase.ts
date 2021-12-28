@@ -16,7 +16,7 @@ class Config implements Config {
     private static readonly _configLocation = "./../../server-config.yml";
 
     public static getConfig = (): Config => {
-        // when running in Docker, we have the CONFIG_PATH being /run/secrets/bot-config.yml
+        // when running in Docker, we have the CONFIG_PATH being /run/secrets/server-config.yml
         const configLocation = process.env.CONFIG_PATH || Config._configLocation
         console.log(`Reading config from ${configLocation}`);
 

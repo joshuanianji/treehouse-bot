@@ -17,8 +17,14 @@ services:
       dockerfile: server.Dockerfile
     ports:
       - "3001:3001"
+    environment:
+      - CONFIG_PATH=/run/secrets/server_config
+    secrets:
+      - server_config
 
 # https://serverfault.com/a/936262
 secrets:
   bot_config:
-    file: ./bot-config.yml
+    file: ./bot-config.yml  
+  server_config:
+    file: ./server-config.yml
