@@ -21,11 +21,13 @@ runs:
     - name: Build the Docker Image
       run: |
         docker-compose build ${{ inputs.service }}
+      shell: bash
 
     - name: Push Docker Image with SHA Tag
       run: |
         docker tag ${{ inputs.service }} ghcr.io/$TAG_SHA
         docker push $TAG_SHA
+      shell: bash
       env:
         TAG_SHA: ghcr.io/${{ github.repository }}.${{ inputs.service }}:${{ github.sha }}
 
@@ -33,5 +35,6 @@ runs:
       run: |
         docker tag ${{ inputs.service }} ghcr.io/$TAG_SHA
         docker push $TAG_SHA
+      shell: bash
       env:
         TAG_SHA: ghcr.io/${{ github.repository }}.${{ inputs.service }}:latest
