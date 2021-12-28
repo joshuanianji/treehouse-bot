@@ -16,8 +16,7 @@ build
 # misc
 .DS_Store
 *.pem
-bot-config.yml
-bot-storage.yml
+*-config.yml
 
 # debug
 npm-debug.log*

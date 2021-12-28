@@ -1,6 +1,7 @@
 import express from 'express'
 import { Request, Response } from 'express';
-import { getTrevRoutes } from './trevimg'
+import * as trev from './trevimg'
+import * as testSupabase from './test-supabase'
 // any other routes imports would go here
 
 const mainRoute = async (req: Request, res: Response) => {
@@ -13,7 +14,8 @@ const getRoutes = () => {
 
   // any additional routes would go here
   router.get('/', mainRoute)
-  router.use('/trev', getTrevRoutes())
+  router.use('/trev', trev.getRoutes())
+  router.use('/supabase', testSupabase.getRoutes())
 
   return router
 }

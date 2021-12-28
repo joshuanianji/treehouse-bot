@@ -3,7 +3,7 @@ import Jimp from 'jimp/es'
 import { Request, Response, } from 'express';
 // any other routes imports would go here
 
-const getTrevRoutes = () => {
+const getRoutes = () => {
     const router = express.Router()
     router.get('/', root);
     return router
@@ -53,4 +53,4 @@ const root = async (req: TrevRequest, res: Response) => {
     });
 }
 
-export { getTrevRoutes }
+export { getRoutes }

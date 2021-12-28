@@ -1,3 +1,5 @@
+import './aliases';
+
 import express from 'express';
 import { getRoutes } from './routes'
 import cors from 'cors';
