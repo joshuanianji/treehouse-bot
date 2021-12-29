@@ -36,5 +36,4 @@ FROM installer as runner
 USER node
 WORKDIR /app
 COPY --chown=node:node --from=builder /app/apps/bot/build/ ./apps/bot/build/
-EXPOSE 3001
 CMD ["yarn", "--cwd", "apps/bot", "start"]
