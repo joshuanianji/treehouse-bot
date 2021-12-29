@@ -20,7 +20,7 @@ jobs:
 
       - name: Build and Scan Bot
         # Directory name only
-        uses: ./.github/actions/sacn-docker-image
+        uses: ./.github/actions/scan-docker-image
         with:
           service: "bot"
 
