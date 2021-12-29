@@ -29,18 +29,15 @@ FROM installer as builder
 WORKDIR /app
 COPY --from=pruner /app/out/full/ .
 RUN yarn turbo run build --scope=server --includeDependencies --no-deps
-# Clear dev dependencies (e.g. turbo, tsc)
-RUN npm prune --production
 
-
-# Start the app
-# use installer so we can filter out the unbuilt deps
-FROM installer as runner
+# Copy over `build/index.js` and assets folder
+FROM base as runner
 WORKDIR /app
-COPY --chown=node:node --from=builder /app/apps/server/build/ ./apps/server/build/
-COPY --chown=node:node --from=builder /app/apps/server/assets/ ./apps/server/assets/
+COPY --chown=node:node --from=builder /app/apps/server/build/index.js ./index.js
+COPY --chown=node:node --from=builder /app/apps/server/assets/ ./assets/
 EXPOSE 3001
 USER node
-CMD ["yarn", "--cwd", "apps/server", "start"]
+ENV NODE_ENV production
+CMD ["node", "index.js"]
 
 HEALTHCHECK CMD curl --fail http://localhost:3001 || exit 1   
