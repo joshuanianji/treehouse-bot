@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Build and Scan Bot
         # Directory name only
@@ -30,6 +32,8 @@ jobs:
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Build and Scan Server
         # Directory name only
