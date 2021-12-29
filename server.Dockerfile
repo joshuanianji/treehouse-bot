@@ -37,7 +37,8 @@ RUN npm prune --production
 # use installer so we can filter out the unbuilt deps
 FROM installer as runner
 WORKDIR /app
-COPY --from=builder /app/apps/server/build/ ./apps/server/build/
-COPY --from=builder /app/apps/server/assets/ ./apps/server/assets/
+COPY --chown=node:node --from=builder /app/apps/server/build/ ./apps/server/build/
+COPY --chown=node:node --from=builder /app/apps/server/assets/ ./apps/server/assets/
 EXPOSE 3001
+USER node
 CMD ["yarn", "--cwd", "apps/server", "start"]
