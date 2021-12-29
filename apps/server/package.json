@@ -25,12 +25,12 @@
   "dependencies": {
     "@supabase/supabase-js": "^1.29.1",
     "cors": "^2.8.5",
+    "custom-types": "*",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
     "jimp": "^0.16.1",
     "js-yaml": "^4.1.0",
     "module-alias": "^2.2.2",
-    "response-time": "^2.3.2",
-    "custom-types": "*"
+    "response-time": "^2.3.2"
   }
 }

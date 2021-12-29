@@ -2,6 +2,7 @@ import express from 'express'
 import Jimp from 'jimp/es'
 import { Request, Response } from 'express';
 import { TrevResponse } from 'custom-types'
+import { assetPath } from '@lib/assetPath';
 // any other routes imports would go here
 
 const getRoutes = () => {
@@ -23,10 +24,9 @@ const root = async (req: TrevRequest, res: Res) => {
         text = 'Hello World!'
     }
 
-    const assetsPath = __dirname + '/../../assets';
-    const trev1 = await Jimp.read(assetsPath + '/trevor1.jpg');
-    const goulongFont = await Jimp.loadFont(assetsPath + '/fonts/goulong-bold.fnt');
-    const goulongFontOutline = await Jimp.loadFont(assetsPath + '/fonts/goulong-bold-outline.fnt');
+    const trev1 = await Jimp.read(assetPath + '/trevor1.jpg');
+    const goulongFont = await Jimp.loadFont(assetPath + '/fonts/goulong-bold.fnt');
+    const goulongFontOutline = await Jimp.loadFont(assetPath + '/fonts/goulong-bold-outline.fnt');
 
     for (const font of [goulongFont, goulongFontOutline]) {
         trev1.print(

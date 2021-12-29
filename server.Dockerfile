@@ -38,5 +38,6 @@ RUN npm prune --production
 FROM installer as runner
 WORKDIR /app
 COPY --from=builder /app/apps/server/build/ ./apps/server/build/
+COPY --from=builder /app/apps/server/assets/ ./apps/server/assets/
 EXPOSE 3001
 CMD ["yarn", "--cwd", "apps/server", "start"]

@@ -32,3 +32,9 @@ For actual production servers, use downloaded images from GHCR (Github Container
 ```bash
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
+
+## View Logs of running Containers
+
+```bash
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml logs -ft
+```
