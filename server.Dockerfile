@@ -42,3 +42,5 @@ COPY --chown=node:node --from=builder /app/apps/server/assets/ ./apps/server/ass
 EXPOSE 3001
 USER node
 CMD ["yarn", "--cwd", "apps/server", "start"]
+
+HEALTHCHECK CMD curl --fail http://localhost:3001 || exit 1   
