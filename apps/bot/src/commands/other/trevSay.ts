@@ -12,6 +12,9 @@ export const command: Command = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     run: async (client, msg, args) => {
         try {
+            // make sure the user knows we are doing something
+            await msg.channel.sendTyping();
+
             const server_host = process.env.SERVER_HOST || 'http://localhost:3001';
             const text = args.join(' ');
             const res = await axios.get<TrevResponse>(`${server_host}/trev?text=${encodeURI(text)}`)
@@ -24,7 +27,6 @@ export const command: Command = {
             const buf = Buffer.from(b64image, 'base64');
 
             return msg.channel.send({
-                content: 'hi',
                 files: [buf]
             })
         } catch (e) {
