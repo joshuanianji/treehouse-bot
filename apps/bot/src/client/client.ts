@@ -99,8 +99,6 @@ class ExtendedClient extends Client {
 
         }
         return msg.reply({ content: "There was an error when executing the command", ephemeral: true });
-
-
     }
 }
 
