@@ -26,7 +26,7 @@ jobs:
   scan-bot:
     name: Bot - Scan
     runs-on: ubuntu-latest
-    depends-on: build-bot
+    needs: build-bot
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
@@ -56,7 +56,7 @@ jobs:
   scan-server:
     name: Server - Build
     runs-on: ubuntu-latest
-    depends-on: build-server
+    needs: build-server
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
