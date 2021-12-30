@@ -1,0 +1,3 @@
+general:
+  bestPracticeViolations:
+    - DKL-DI-0006 # avoid latest tag

@@ -9,7 +9,7 @@
     "outDir": "build",
     "baseUrl": ".",
     "paths": {
-      "@lib/*": ["src/lib/*"]
+      "@util/*": ["src/util/*"]
     }
   },
   "include": ["src/**/*"]

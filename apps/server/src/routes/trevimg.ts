@@ -2,7 +2,7 @@ import express from 'express'
 import Jimp from 'jimp/es'
 import { Request, Response } from 'express';
 import { TrevResponse } from 'custom-types'
-import { assetPath } from '@lib/assetPath';
+import { assetPath } from './../util/assetPath';
 // any other routes imports would go here
 
 const getRoutes = () => {
