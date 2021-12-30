@@ -31,7 +31,7 @@ COPY --from=pruner /app/out/full/ .
 RUN yarn turbo run build --scope=bot --includeDependencies --no-deps
 # Clear dev dependencies (e.g. turbo, tsc)
 RUN npm prune --production
-RUN npm cache clean
+RUN npm cache clean --force
 
 # Start the app
 # use installer so we can filter out the unbuilt deps
