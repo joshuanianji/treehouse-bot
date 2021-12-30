@@ -10,7 +10,6 @@ runs:
   steps:
     - name: Build the Docker Image
       run: |
-        export DOCKER_CONTENT_TRUST=1
         docker-compose -f docker-compose.yml -f docker-compose.dev.yml build ${{ inputs.service }}
       shell: bash
 
