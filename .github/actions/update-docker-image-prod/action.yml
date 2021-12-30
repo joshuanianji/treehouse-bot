@@ -1,0 +1,21 @@
+name: "Update Docker Image in Production"
+description: "Updates the Docker Image in my Digital Ocean Server"
+inputs:
+  service:
+    required: true
+    description: "The name of the service to update"
+
+# https://phoenixnap.com/kb/update-docker-image-container
+runs:
+  using: "composite"
+  steps:
+    - name: Download and extract the latest Docker Image on Server
+      uses: appleboy/ssh-action@1d1b21ca96111b1eb4c03c21c14ebb971d2200f6
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: joshua
+        key: ${{ secrets.SSH_KEY }}
+        port: 22
+        script: |
+          docker container ls | grep treehouse
+          docker image ls | grep treehouse

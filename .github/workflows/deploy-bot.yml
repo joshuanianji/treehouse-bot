@@ -30,3 +30,12 @@ jobs:
         with:
           service: "bot"
           repo_token: ${{ secrets.GITHUB_TOKEN }}
+
+  update-server-image:
+    name: Update Docker Image in Production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Info about Image
+        run: |
+          echo "Image name: Bot"
+          docker image inspect ghcr.io/joshuanianji/treehouse-bot.server:latest | grep Created
