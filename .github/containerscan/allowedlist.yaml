@@ -1,3 +1,5 @@
 general:
   bestPracticeViolations:
     - DKL-DI-0006 # avoid latest tag
+    - CIS-DI-0005 # avoid insecure registry
+
