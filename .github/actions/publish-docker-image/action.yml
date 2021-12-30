@@ -8,9 +8,6 @@ inputs:
     required: true
     description: "The GitHub token to use for authentication"
 
-env:
-  TAG_PREFIX: "ghcr.io/${{ github.repository }}.${{ inputs.service }}"
-
 runs:
   using: "composite"
   steps:
@@ -36,12 +33,16 @@ runs:
       with:
         image-name: treehouse-bot_${{ inputs.service }}
 
+    # Note: global environment variables don't seem possible right now...
+    # https://github.com/actions/starter-workflows/issues/68
+
     - name: Push Docker Image with SHA Tag
       run: |
         docker tag treehouse-bot_${{ inputs.service }} $TAG_SHA
         docker push $TAG_SHA
       shell: bash
       env:
+        TAG_PREFIX: "ghcr.io/${{ github.repository }}.${{ inputs.service }}"
         TAG_SHA: $TAG_PREFIX:${{ github.sha }}
 
     - name: Push Docker Image with :latest tag
@@ -50,4 +51,5 @@ runs:
         docker push $TAG_LATEST
       shell: bash
       env:
+        TAG_PREFIX: "ghcr.io/${{ github.repository }}.${{ inputs.service }}"
         TAG_LATEST: $TAG_PREFIX:latest
