@@ -20,7 +20,6 @@ jobs:
 
       - name: Build Bot
         run: |
-          export DOCKER_CONTENT_TRUST=1
           docker-compose -f docker-compose.yml -f docker-compose.dev.yml build bot
 
   scan-bot:
@@ -50,7 +49,6 @@ jobs:
 
       - name: Build Server
         run: |
-          export DOCKER_CONTENT_TRUST=1
           docker-compose -f docker-compose.yml -f docker-compose.dev.yml build server
 
   scan-server:
