@@ -22,7 +22,7 @@ jobs:
 
       # Is this necessary?
       - name: ✏️ Write bot-config.yml
-        run: echo "{{ secrets.BOT_CONFIG_YML }}" > apps/bot/config.yml
+        run: echo "{{ secrets.BOT_CONFIG_YML }}" > bot-config.yml
 
       - name: Build and deploy Bot
         # Directory name only
