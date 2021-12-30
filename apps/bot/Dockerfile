@@ -34,9 +34,9 @@ RUN npm prune --production
 
 # Start the app
 # use installer so we can filter out the unbuilt deps
-FROM installer as runner
-RUN npm cache clean --force
+FROM base as runner
 USER node
 WORKDIR /app
-COPY --chown=node:node --from=builder /app/apps/bot/build/ ./apps/bot/build/
-CMD ["yarn", "--cwd", "apps/bot", "start"]
+COPY --chown=node:node --from=installer /app/node_modules .
+COPY --chown=node:node --from=builder /app/apps/bot/build/ .
+CMD ["node", "bot.js"]
