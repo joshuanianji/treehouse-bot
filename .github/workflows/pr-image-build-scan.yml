@@ -9,8 +9,8 @@ on:
       - "apps/server/**"
 
 jobs:
-  build-and-scan-bot:
-    name: Bot - Build & Scan
+  build-bot:
+    name: Bot - Build
     runs-on: ubuntu-latest
     steps:
       - name: 🏁 Checkout repo
@@ -18,15 +18,45 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Build and Scan Bot
+      - name: Build Bot
+        run: |
+          export DOCKER_CONTENT_TRUST=1
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml build bot
+
+  scan-bot:
+    name: Bot - Scan
+    runs-on: ubuntu-latest
+    depends-on: build-bot
+    steps:
+      - name: 🏁 Checkout repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Scan Bot
         # Directory name only
         uses: ./.github/actions/scan-docker-image
         with:
           service: "bot"
 
-  build-and-scan-server:
-    name: Server - Build & Scan
+  build-server:
+    name: Server - Build
     runs-on: ubuntu-latest
+    steps:
+      - name: 🏁 Checkout repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Build Server
+        run: |
+          export DOCKER_CONTENT_TRUST=1
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml build server
+
+  scan-server:
+    name: Server - Build
+    runs-on: ubuntu-latest
+    depends-on: build-server
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
