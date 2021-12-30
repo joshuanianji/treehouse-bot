@@ -9,23 +9,9 @@ on:
       - "apps/server/**"
 
 jobs:
-  build-bot:
-    name: Bot - Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🏁 Checkout repo
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Build Bot
-        run: |
-          docker-compose -f docker-compose.yml -f docker-compose.dev.yml build bot
-
-  scan-bot:
+  build-scan-bot:
     name: Bot - Scan
     runs-on: ubuntu-latest
-    needs: build-bot
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
@@ -38,23 +24,9 @@ jobs:
         with:
           service: "bot"
 
-  build-server:
+  build-scan-server:
     name: Server - Build
     runs-on: ubuntu-latest
-    steps:
-      - name: 🏁 Checkout repo
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Build Server
-        run: |
-          docker-compose -f docker-compose.yml -f docker-compose.dev.yml build server
-
-  scan-server:
-    name: Server - Build
-    runs-on: ubuntu-latest
-    needs: build-server
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
