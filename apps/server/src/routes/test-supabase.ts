@@ -1,7 +1,6 @@
 import express from 'express'
-import Jimp from 'jimp/es'
 import { Request, Response, } from 'express';
-import { Config } from '@lib/supabase';
+import { Config } from './../util/supabase';
 
 // any other routes imports would go here
 
