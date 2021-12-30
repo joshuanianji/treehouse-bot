@@ -38,18 +38,16 @@ runs:
 
     - name: Push Docker Image with SHA Tag
       run: |
-        docker tag treehouse-bot_${{ inputs.service }} $TAG_SHA
-        docker push $TAG_SHA
+        docker tag treehouse-bot_${{ inputs.service }} $TAG_PREFIX:${{ github.sha }}
+        docker push $TAG_PREFIX:${{ github.sha }}
       shell: bash
       env:
         TAG_PREFIX: "ghcr.io/${{ github.repository }}.${{ inputs.service }}"
-        TAG_SHA: $TAG_PREFIX:${{ github.sha }}
 
     - name: Push Docker Image with :latest tag
       run: |
-        docker tag treehouse-bot_${{ inputs.service }} $TAG_LATEST
-        docker push $TAG_LATEST
+        docker tag treehouse-bot_${{ inputs.service }} $TAG_PREFIX:latest
+        docker push $TAG_PREFIX:latest
       shell: bash
       env:
         TAG_PREFIX: "ghcr.io/${{ github.repository }}.${{ inputs.service }}"
-        TAG_LATEST: $TAG_PREFIX:latest
