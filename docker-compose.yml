@@ -20,6 +20,6 @@ services:
 # https://serverfault.com/a/936262
 secrets:
   bot_config:
-    file: ./bot-config.yml  
+    file: ./apps/bot/config.yml  
   server_config:
-    file: ./server-config.yml
+    file: ./apps/server/config.yml
