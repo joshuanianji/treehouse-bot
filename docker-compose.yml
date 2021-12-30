@@ -3,8 +3,11 @@ services:
   bot:
     environment:
       - CONFIG_PATH=/run/secrets/bot_config
+      - SERVER_HOST=http://server:3001 
     secrets:
       - bot_config
+    links: 
+      - "server"
 
   server:
     ports:

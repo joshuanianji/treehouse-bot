@@ -1,0 +1,40 @@
+name: Build and Scan Image on PR
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/pr-image-build-scan.yml" # This file
+      - ".github/actions/scan-docker-image/**" # Dependencies
+      - "apps/bot/**"
+      - "apps/server/**"
+
+jobs:
+  build-scan-bot:
+    name: Bot - Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏁 Checkout repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Scan Bot
+        # Directory name only
+        uses: ./.github/actions/scan-docker-image
+        with:
+          service: "bot"
+
+  build-scan-server:
+    name: Server - Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏁 Checkout repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Build and Scan Server
+        # Directory name only
+        uses: ./.github/actions/scan-docker-image
+        with:
+          service: "server"

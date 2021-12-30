@@ -1,6 +1,8 @@
 import express from 'express'
 import Jimp from 'jimp/es'
-import { Request, Response, } from 'express';
+import { Request, Response } from 'express';
+import { TrevResponse } from 'custom-types'
+import { assetPath } from './../util/assetPath';
 // any other routes imports would go here
 
 const getRoutes = () => {
@@ -9,24 +11,22 @@ const getRoutes = () => {
     return router
 };
 
-type ReqDictionary = {};
-type ReqBody = {}
+
 type ReqQuery = { text: string };
-type ResBody = {}
-type TrevRequest = Request<ReqDictionary, ResBody, ReqBody, ReqQuery>
+type TrevRequest = Request<{}, {}, {}, ReqQuery>
+type Res = Response<TrevResponse>
 
 
-const root = async (req: TrevRequest, res: Response) => {
+const root = async (req: TrevRequest, res: Res) => {
     let text = req.query.text;
 
     if (text === '') {
         text = 'Hello World!'
     }
 
-    const assetsPath = __dirname + '/../../assets';
-    const trev1 = await Jimp.read(assetsPath + '/trevor1.jpg');
-    const goulongFont = await Jimp.loadFont(assetsPath + '/fonts/goulong-bold.fnt');
-    const goulongFontOutline = await Jimp.loadFont(assetsPath + '/fonts/goulong-bold-outline.fnt');
+    const trev1 = await Jimp.read(assetPath + '/trevor1.jpg');
+    const goulongFont = await Jimp.loadFont(assetPath + '/fonts/goulong-bold.fnt');
+    const goulongFontOutline = await Jimp.loadFont(assetPath + '/fonts/goulong-bold-outline.fnt');
 
     for (const font of [goulongFont, goulongFontOutline]) {
         trev1.print(

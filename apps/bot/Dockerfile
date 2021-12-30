@@ -1,8 +1,9 @@
+# NOTE: the context is the directory that `docker-compose.yml` is in
+
 FROM node:16-alpine3.12 as base
 # https://turborepo.com/posts/turbo-0-4-0
 # https://github.com/vercel/turborepo/issues/215
 # Ensure we prune workspace so we don't unnecessarily build so much
-LABEL name="bot"
 
 FROM base as turboed
 RUN yarn global add turbo
@@ -10,6 +11,7 @@ RUN yarn global add turbo
 # Prune the workspace for the `frontend` app
 FROM turboed as pruner
 WORKDIR /app
+# Copy everything, but in the directory of docker-compose.yml
 COPY . .
 RUN turbo prune --scope=bot --docker
 
@@ -32,8 +34,9 @@ RUN npm prune --production
 
 # Start the app
 # use installer so we can filter out the unbuilt deps
-FROM installer as runner
+FROM base as runner
+USER node
 WORKDIR /app
-COPY --from=builder /app/apps/bot/build/ ./apps/bot/build/
-EXPOSE 3001
-CMD ["yarn", "--cwd", "apps/bot", "start"]
+COPY --chown=node:node --from=installer /app/node_modules .
+COPY --chown=node:node --from=builder /app/apps/bot/build/ .
+CMD ["node", "bot.js"]

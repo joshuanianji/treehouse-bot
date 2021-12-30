@@ -17,16 +17,16 @@ jobs:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
 
-      - name: Move files to /out
+      - name: 📦️ Move files to /out
         run: |
           mkdir out
           mv docker-compose.yml docker-compose.prod.yml out/
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - name: 🚀 Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.7
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: prod
-          publish_dir: ./out
+          branch: prod # The branch the action should deploy to.
+          folder: out # The folder the action should deploy.
+          # https://github.com/actions/checkout/discussions/479#discussioncomment-625461
           git-config-name: github-actions[bot]
           git-config-email: github-actions[bot]@users.noreply.github.com

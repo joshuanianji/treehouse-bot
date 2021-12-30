@@ -8,6 +8,9 @@ inputs:
     required: true
     description: "The GitHub token to use for authentication"
 
+env:
+  TAG_PREFIX: "ghcr.io/${{ github.repository }}.${{ inputs.service }}"
+
 runs:
   using: "composite"
   steps:
@@ -28,18 +31,23 @@ runs:
         docker image ls
       shell: bash
 
+    - name: Scan Docker image
+      uses: azure/container-scan@595707a78db6069af4db7d81902d7a886ec73973
+      with:
+        image-name: treehouse-bot_${{ inputs.service }}
+
     - name: Push Docker Image with SHA Tag
       run: |
-        docker tag treehouse-bot_${{ inputs.service }} ghcr.io/$TAG_SHA
-        docker push ghcr.io/$TAG_SHA
+        docker tag treehouse-bot_${{ inputs.service }} $TAG_SHA
+        docker push $TAG_SHA
       shell: bash
       env:
-        TAG_SHA: ${{ github.repository }}.${{ inputs.service }}:${{ github.sha }}
+        TAG_SHA: $TAG_PREFIX:${{ github.sha }}
 
     - name: Push Docker Image with :latest tag
       run: |
-        docker tag treehouse-bot_${{ inputs.service }} ghcr.io/$TAG_LATEST
-        docker push ghcr.io/$TAG_LATEST
+        docker tag treehouse-bot_${{ inputs.service }} $TAG_LATEST
+        docker push $TAG_LATEST
       shell: bash
       env:
-        TAG_LATEST: ${{ github.repository }}.${{ inputs.service }}:latest
+        TAG_LATEST: $TAG_PREFIX:latest
