@@ -4,6 +4,13 @@ inputs:
   service:
     required: true
     description: "The name of the service to update"
+  # Remember that Composite actions cannot read secrets.
+  ssh_host:
+    required: true
+    description: "The host IP of the Digital Ocean server"
+  ssh_key:
+    required: true
+    description: "The SSH key to use for authentication"
 
 # https://phoenixnap.com/kb/update-docker-image-container
 runs:

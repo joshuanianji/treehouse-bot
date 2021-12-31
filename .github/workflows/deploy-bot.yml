@@ -31,7 +31,7 @@ jobs:
           service: "bot"
           repo_token: ${{ secrets.GITHUB_TOKEN }}
 
-  update-server-image:
+  update-bot-image:
     name: Update Docker Image in Production
     runs-on: ubuntu-latest
     steps:
@@ -43,4 +43,11 @@ jobs:
       - name: Info about Image
         run: |
           echo "Image name: Bot"
-          skopeo inspect docker://ghcr.io/joshuanianji/treehouse-bot.server:latest | grep Created
+          skopeo inspect docker://ghcr.io/joshuanianji/treehouse-bot.bot:latest | jq '.Name,.Created,.Digest'
+
+      - name: Update Docker Image in Prod
+        uses: ./.github/actions/update-docker-image-prod
+        with:
+          service: "bot"
+          ssh_host: "{{ secrets.SSH_HOST }}"
+          ssh_key: "{{ secrets.SSH_KEY }}"

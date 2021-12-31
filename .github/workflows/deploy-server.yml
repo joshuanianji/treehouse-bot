@@ -29,3 +29,24 @@ jobs:
         with:
           service: "server"
           repo_token: ${{ secrets.GITHUB_TOKEN }}
+
+  update-server-image:
+    name: Update Docker Image in Production
+    runs-on: ubuntu-latest
+    steps:
+      # Skopeo (https://github.com/containers/skopeo)
+      # Allows us to work with remote image registries
+      - name: Install Skopeo
+        run: sudo apt-get -y install skopeo
+
+      - name: Info about Image
+        run: |
+          echo "Image name: Bot"
+          skopeo inspect docker://ghcr.io/joshuanianji/treehouse-bot.server:latest | jq '.Name,.Created,.Digest'
+
+      - name: Update Docker Image in Prod
+        uses: ./.github/actions/update-docker-image-prod
+        with:
+          service: "server"
+          ssh_host: "{{ secrets.SSH_HOST }}"
+          ssh_key: "{{ secrets.SSH_KEY }}"
