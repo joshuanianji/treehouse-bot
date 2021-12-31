@@ -37,6 +37,7 @@ RUN npm prune --production
 FROM base as runner
 USER node
 WORKDIR /app
-COPY --chown=node:node --from=installer /app/node_modules .
+COPY --chown=node:node --from=installer /app/node_modules ./node_modules
 COPY --chown=node:node --from=builder /app/apps/bot/build/ .
+RUN ls -al
 CMD ["node", "bot.js"]
