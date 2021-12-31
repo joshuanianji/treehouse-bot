@@ -53,5 +53,5 @@ jobs:
         uses: ./.github/actions/update-docker-image-prod
         with:
           service: "bot"
-          ssh_host: "{{ secrets.SSH_HOST }}"
-          ssh_key: "{{ secrets.SSH_KEY }}"
+          ssh_host: ${{ secrets.SSH_HOST }}
+          ssh_key: ${{ secrets.SSH_KEY }}
