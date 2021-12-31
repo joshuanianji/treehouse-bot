@@ -35,7 +35,12 @@ jobs:
     name: Update Docker Image in Production
     runs-on: ubuntu-latest
     steps:
+      # Skopeo (https://github.com/containers/skopeo)
+      # Allows us to work with remote image registries
+      - name: Install Skopeo
+        run: sudo apt-get -y install skopeo
+
       - name: Info about Image
         run: |
           echo "Image name: Bot"
-          docker image inspect ghcr.io/joshuanianji/treehouse-bot.server:latest | grep Created
+          skopeo inspect docker://ghcr.io/joshuanianji/treehouse-bot.server:latest | grep Created
