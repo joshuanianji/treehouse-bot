@@ -1,6 +1,8 @@
 # NOTE: the context is the directory that `docker-compose.yml` is in 
 
 FROM node:16-alpine3.12 as base
+# https://snyk.io/blog/10-best-practices-to-containerize-nodejs-web-applications-with-docker/
+RUN apk add dumb-init
 # https://turborepo.com/posts/turbo-0-4-0
 # https://github.com/vercel/turborepo/issues/215
 # Ensure we prune workspace so we don't unnecessarily build so much
@@ -39,6 +41,6 @@ COPY --chown=node:node --from=builder /app/apps/server/assets/ ./assets/
 EXPOSE 3001
 USER node
 ENV NODE_ENV production
-CMD ["node", "index.js"]
+CMD ["dumb-init", "node", "index.js"]
 
 HEALTHCHECK CMD curl --fail http://localhost:3001 || exit 1   

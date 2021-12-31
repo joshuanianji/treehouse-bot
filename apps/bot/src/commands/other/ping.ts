@@ -13,6 +13,7 @@ export const command: Command = {
     run: async (client, msg, _args) => {
         // Run your code here
         try {
+            console.log('SERVER_HOST:', process.env.SERVER_HOST)
             const server_host = process.env.SERVER_HOST || 'http://localhost:3001';
 
             await msg.channel.sendTyping();
