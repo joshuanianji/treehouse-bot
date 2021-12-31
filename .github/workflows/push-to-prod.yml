@@ -27,5 +27,12 @@ jobs:
           echo "{{ secrets.BOT_CONFIG_YML }}" > bot-config.yml
           echo "{{ secrets.SERVER_CONFIG_YML }}" > server-config.yml
 
-      - name: 🚀 Deploy with rsync
-        run: rsync -avz ./out/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/projects/treehouse-bot/
+      - name: 🚀 Deploy with RSync
+        uses: burnett01/rsync-deployments@5.1
+        with:
+          switches: -avz
+          path: ./out/
+          remote_path: ~/projects/treehouse-bot/
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: joshua
+          remote_key: ${{ secrets.SSH_KEY }}
