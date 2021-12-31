@@ -9,8 +9,9 @@ on:
       - "bot.Dockerfile"
       - "docker-compose*.yml" # docker compose files
       - ".github/workflows/deploy-bot.yml" # this file
-      - ".github/actions/publish-docker-image/**" # Dependencies
       - "!*.md" # ignore markdown files
+      - ".github/actions/publish-docker-image/**" # Dependency
+      - ".github/actions/update-docker-image-prod/**" # Dependency
 
 jobs:
   build-and-deploy:
