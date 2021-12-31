@@ -25,6 +25,7 @@ runs:
         port: 22
         # https://stackoverflow.com/a/56687449
         script: |
+          cd ~/projects/treehouse-bot
           docker container ls | grep treehouse
           docker image ls | grep treehouse
           docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull
