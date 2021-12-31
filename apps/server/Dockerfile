@@ -2,7 +2,7 @@
 
 FROM node:16-alpine3.12 as base
 # https://snyk.io/blog/10-best-practices-to-containerize-nodejs-web-applications-with-docker/
-RUN apk add dumb-init
+RUN apk add dumb-init --no-cache
 # https://turborepo.com/posts/turbo-0-4-0
 # https://github.com/vercel/turborepo/issues/215
 # Ensure we prune workspace so we don't unnecessarily build so much
