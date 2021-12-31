@@ -35,6 +35,9 @@ jobs:
     name: Update Docker Image in Production
     runs-on: ubuntu-latest
     steps:
+      - name: 🏁 Checkout repo
+        uses: actions/checkout@v2
+
       # Skopeo (https://github.com/containers/skopeo)
       # Allows us to work with remote image registries
       - name: Install Skopeo
