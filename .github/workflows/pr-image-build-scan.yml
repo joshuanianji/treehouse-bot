@@ -7,6 +7,7 @@ on:
       - ".github/actions/scan-docker-image/**" # Dependencies
       - "apps/bot/**"
       - "apps/server/**"
+      - yarn.lock # so this can run on Dependabot PRs
 
 jobs:
   build-scan-bot:
