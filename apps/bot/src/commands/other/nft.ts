@@ -23,6 +23,7 @@ export const command: Command = {
                 const embed = new MessageEmbed()
                     .setTitle('Message Data:')
                     .addField('Message content', repliedTo.content || 'No content')
+                    .addField('Message Type', repliedTo.type)
                     .addFields(...attachments);
                 return msg.channel.send({ embeds: [embed] })
             } else {
