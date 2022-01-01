@@ -17,7 +17,7 @@ runs:
   using: "composite"
   steps:
     - name: Download and extract the latest Docker Image on Server
-      uses: appleboy/ssh-action@1d1b21ca96111b1eb4c03c21c14ebb971d2200f6
+      uses: appleboy/ssh-action@1a8b3784eaa665f677fa114edd5683bb6a6bfaa8
       with:
         host: ${{ inputs.ssh_host }}
         username: joshua
