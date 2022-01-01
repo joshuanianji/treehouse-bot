@@ -28,7 +28,7 @@ jobs:
           echo "{{ secrets.SERVER_CONFIG_YML }}" > server-config.yml
 
       - name: 🚀 Deploy with RSync
-        uses: burnett01/rsync-deployments@5.1
+        uses: burnett01/rsync-deployments@5.2
         with:
           switches: -avz
           path: ./out/
