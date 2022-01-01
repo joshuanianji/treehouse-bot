@@ -1,5 +1,10 @@
 {
   "extends": ["config:base"],
   "ignorePaths": ["**/Dockerfile"],
-  "schedule": ["after 10pm and before 5am every weekday", "every weekend"]
+  "schedule": ["after 10pm and before 5am every weekday", "every weekend"],
+  "packageRules": {
+    "matchDepTypes": ["devDependencies"],
+    "matchUpdateTypes": ["patch", "minor"],
+    "groupName": "devDependencies (non-major)"
+  }
 }
