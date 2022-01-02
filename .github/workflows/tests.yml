@@ -1,0 +1,39 @@
+name: Test workflow
+
+on:
+  push:
+    branches:
+      - main
+      - feat-*
+    paths:
+      - ".github/workflows/tests.yml" # this file
+      - "yarn.lock"
+      - "apps/server/**"
+      - "!**/*.md"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/tests.yml" # this file
+      - "yarn.lock"
+      - "apps/server/**"
+      - "!**/*.md"
+
+jobs:
+  test:
+    name: 🧪 Test Server
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["12", "14", "16"]
+    steps:
+      - name: 🏁 Checkout repo
+        uses: actions/checkout@v2
+
+      - name: 🔧 Install Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: ✅ Run Tests
+        run: yarn --cwd apps/server test
