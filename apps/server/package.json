@@ -10,7 +10,6 @@
     "build": "ncc build src/index.ts --minify --no-cache --out build"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/cors": "2.8.12",
