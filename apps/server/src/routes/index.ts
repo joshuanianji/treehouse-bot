@@ -5,7 +5,7 @@ import * as testSupabase from './test-supabase'
 // any other routes imports would go here
 
 const mainRoute = async (req: Request, res: Response) => {
-  res.send('Server works!');
+  res.status(200).send('Server works!');
 };
 
 const getRoutes = () => {

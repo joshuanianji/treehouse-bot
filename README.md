@@ -6,6 +6,14 @@ A Discord bot with some other apps. Scaffolded from Turborepo Starter.
 - **Server** The server, hosted on Digital Ocean via Docker.
 - **Web**: The web app, built with [SvelteKit](https://kit.svelte.dev/) and hosted on [Netlify](https://www.netlify.com/).
 
+## Prerequisites
+
+Make sure you have the following instsalled on your system:
+
+- [Docker](https://www.docker.com/community-edition)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Node v16.6 or higher](https://nodejs.org/en/download/), or [nvm](https://github.com/nvm-sh/nvm) (Discord.js 13 requires Node v16.6+)
+
 ## Starter
 
 This runs the server, bot and web all in one go on your computer.
