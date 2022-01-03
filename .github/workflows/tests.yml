@@ -35,5 +35,8 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
+      - name: 📌 Install Dependencies
+        run: yarn install --pure-lockfile
+
       - name: ✅ Run Tests
         run: yarn --cwd apps/server test
