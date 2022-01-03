@@ -13,6 +13,12 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
+      - name: Install Docker Machine
+        run: |
+          brew install docker-machine docker
+          brew services start docker-machine
+          docker ps
+
       - name: Install Supabase
         run: |
           brew install supabase/tap/supabase
