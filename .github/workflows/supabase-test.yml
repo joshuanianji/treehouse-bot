@@ -18,6 +18,10 @@ jobs:
           brew install supabase/tap/supabase
           supabase --version
 
+      - name: Supabase init
+        run: |
+          supabase init
+
       # https://github.com/supabase/cli/tree/main/examples/tour
       - name: Connect remote DB
         run: |
