@@ -18,14 +18,11 @@ jobs:
           brew install supabase/tap/supabase
           supabase --version
 
-      - name: Supabase init
-        run: |
-          supabase init
-
       # https://github.com/supabase/cli/tree/main/examples/tour
       - name: Connect remote DB
         run: |
           supabase db remote set 'postgresql://postgres:${{ secrets.SUPABASE_POSTGRES_PWD }}@db.${{ secrets.SUPABASE_PROJECT_REF }}.supabase.co:5432/postgres'
+          supabase db remote commit
 
       - name: Check contents
         run: |
