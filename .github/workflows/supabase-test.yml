@@ -22,6 +22,10 @@ jobs:
       - name: Connect remote DB
         run: |
           supabase db remote set 'postgresql://postgres:${{ secrets.SUPABASE_POSTGRES_PWD }}@db.${{ secrets.SUPABASE_PROJECT_REF }}.supabase.co:5432/postgres'
+
+      - name: Check contents
+        run: |
+          ls -al
           cd supabase/migrations
           ls -al
           cd ../..
