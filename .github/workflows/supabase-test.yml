@@ -18,5 +18,8 @@ jobs:
           brew install supabase/tap/supabase
           supabase --version
 
+      # https://serverfault.com/a/304890
+      - run: ls -la /dev/tty
+
       - name: Run Supabase Start
         run: supabase start
