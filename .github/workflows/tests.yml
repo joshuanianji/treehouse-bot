@@ -23,9 +23,6 @@ jobs:
   test:
     name: 🧪 Test Server
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: ["12", "14", "16"]
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
@@ -33,7 +30,10 @@ jobs:
       - name: 🔧 Install Node
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node }}
+          node-version: "16"
+
+      - name: 📌 Install Dependencies
+        run: yarn install --pure-lockfile
 
       - name: ✅ Run Tests
         run: yarn --cwd apps/server test
