@@ -20,8 +20,17 @@ const NFTType = t.union([
         imgLink: t.string, // we steal Discord's CDN to host the image (although this isn't immutable)
     })
 ])
-
 type NFTType = t.TypeOf<typeof NFTType>
+
+const nftTextType = (content: string): NFTType => ({
+    _type: 'text',
+    content,
+})
+const nftAssetType = (contentType: AllowedContentTypes, imgLink: string): NFTType => ({
+    _type: 'asset',
+    contentType,
+    imgLink,
+})
 
 
 // the actual NFT type
@@ -65,4 +74,4 @@ const createNFT = (data: NFTEssentials): NFT => ({
     createdAt: null,
 })
 
-export { NFT, NFTType, AllowedContentTypes, createNFT }
+export { NFT, NFTType, AllowedContentTypes, createNFT, nftTextType, nftAssetType }

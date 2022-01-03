@@ -1,6 +1,8 @@
 import { Command } from "../../interfaces";
-import axios from 'axios'
 import { EmbedFieldData, Message, MessageEmbed } from "discord.js";
+import { hashFile, hashText } from '../../utils/createAssetHash';
+import { NFT, NFTType } from 'custom-types';
+import { AllowedContentTypes } from 'custom-types/src/nft';
 
 export const command: Command = {
     description: "Creates an NFT of the replied message",
@@ -17,17 +19,51 @@ export const command: Command = {
                 }
 
                 const repliedTo = await msg.channel.messages.fetch(msg.reference.messageId);
-                console.log(`Replied to content: '${repliedTo.content}'`);
 
-                const attachments = getAttachments(repliedTo);
-                const embed = new MessageEmbed()
-                    .setTitle('Message Data:')
-                    .addField('Message content', repliedTo.content || 'No content')
-                    .addField('Message Type', repliedTo.type)
-                    .addFields(...attachments);
-                return msg.channel.send({ embeds: [embed] })
+                // Checking if the message works...
+                if (repliedTo.type !== 'DEFAULT' && repliedTo.type !== 'REPLY') {
+                    return msg.reply('Only default replies are supported.');
+                }
+
+                if (repliedTo.content.length === 0 && repliedTo.attachments.size === 0) {
+                    return msg.reply('You need to reply to a message with text or an attachment to create an NFT');
+                }
+
+                // By this point, the message is either a text message or contains an attachment (or both)
+                // This means it doesn't contain embeds or other unsupported content
+
+
+                // Creating the NFT
+
+                // prioritize attachments over text
+                // if a message has an attachment and text, we NFTize the attachment
+                let nftType: NFTType;
+                if (repliedTo.attachments.size > 0) {
+                    // get the first attachment always (TODO: support multiple attachments)
+                    const [attachment] = repliedTo.attachments.values();
+
+                    const contentType = attachment.contentType || 'unknown';
+                    if (AllowedContentTypes.decode(contentType)._tag === 'Left') {
+                        return repliedTo.reply(`Attachment type ${contentType} is not supported`);
+                    }
+
+                    nftType = {
+                        _type: 'asset',
+                        contentType: contentType as AllowedContentTypes, // linter isn't smart enough; i have to type cast
+                        imgLink: attachment.url,
+                    }
+                } else {
+                    // if there is no attachment, we NFTize the text
+                    nftType = {
+                        _type: 'text',
+                        content: repliedTo.content,
+                    }
+                }
+
+                console.log(NFTType.encode(nftType));
+                return msg.channel.send(JSON.stringify(NFTType.encode(nftType)));
             } else {
-                msg.reply('You need to reply to a message to create an NFT')
+                msg.reply('You need to reply to a message to create an NFT of it! (or of its media attachments)')
             }
         } catch (e) {
             console.error(e);
@@ -39,15 +75,3 @@ export const command: Command = {
     }
 };
 
-
-const getAttachments = (message: Message<boolean>): EmbedFieldData[] => {
-    if (message.attachments.size === 0) {
-        return [];
-    }
-
-    return message.attachments.map(a => ({
-        name: 'Attachment id ' + a.id,
-        value: 'ContentType: ' + a.contentType,
-        inline: true
-    }));
-}
