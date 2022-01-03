@@ -1,6 +1,7 @@
 {
   "extends": ["config:base"],
   "ignorePaths": ["**/Dockerfile"],
+  "labels": ["dependencies"],
   "schedule": ["after 10pm and before 5am every weekday", "every weekend"],
   "packageRules": {
     "matchDepTypes": ["devDependencies"],
