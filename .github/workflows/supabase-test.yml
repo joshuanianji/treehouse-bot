@@ -1,0 +1,29 @@
+name: Testing Supabase
+
+on:
+  push:
+    branches:
+      - nft-cmd
+
+jobs:
+  stuff:
+    name: Installs and runs supabase
+    runs-on: macos-latest # for easier install of supabase
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Install Supabase
+        run: |
+          brew install supabase/tap/supabase
+          supabase --version
+
+      - name: Connect remote DB
+        run: |
+          supabase db remote set 'postgresql://postgres:${{ POSTGRES_PWD }}@db.yavoganuxqdsfuovkzbe.supabase.co:5432/postgres'
+          cd supabase/migrations
+          ls -al
+          cd ../..
+
+      - name: Run Supabase Start
+        run: supabase start
