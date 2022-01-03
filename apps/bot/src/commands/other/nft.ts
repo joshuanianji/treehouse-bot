@@ -1,8 +1,8 @@
 import { Command } from "../../interfaces";
 import { EmbedFieldData, Message, MessageEmbed } from "discord.js";
-import { hashFile, hashText } from '../../utils/createAssetHash';
+import { hashNFT } from '../../utils/hashNFT';
 import { NFT, NFTType } from 'custom-types';
-import { AllowedContentTypes, nftAssetType, nftStickerType, nftTextType } from 'custom-types/src/nft';
+import { AllowedContentTypes, createNFT, nftAssetType, nftStickerType, nftTextType } from 'custom-types/src/nft';
 
 export const command: Command = {
     description: "Creates an NFT of the replied message",
@@ -47,7 +47,12 @@ export const command: Command = {
                     const contentType = attachment.contentType || 'unknown';
                     const decoded = AllowedContentTypes.decode(contentType);
                     if (decoded._tag === 'Left') {
-                        return repliedTo.reply(`Attachment type ${contentType} is not supported`);
+                        return msg.reply(`Attachment type ${contentType} is not supported`);
+                    }
+
+                    // size is in kilobytes
+                    if (attachment.size > 8 * 1024 * 1024) {
+                        return msg.reply('Attachment is too large to be NFTized. Max size is 8MB');
                     }
 
                     nftType = nftAssetType(decoded.right, attachment.url);
@@ -61,8 +66,19 @@ export const command: Command = {
                     nftType = nftTextType(repliedTo.content);
                 }
 
-                console.log(NFTType.encode(nftType));
-                return msg.channel.send(JSON.stringify(NFTType.encode(nftType)));
+                const creatingMsg = await msg.channel.send('Creating NFT...');
+                const hash = await hashNFT(nftType);
+                creatingMsg.edit(`Creating NFT... (hash: ${hash.substring(0, 10)})`);
+
+                const nft = createNFT({
+                    from: repliedTo.author.id,
+                    ownedBy: msg.author.id,
+                    msgLink: repliedTo.id,
+                    hash,
+                    type: nftType,
+                })
+                console.log(nft);
+                return creatingMsg.edit(`NFT created! (id: ${nft.id})`);
             } else {
                 msg.reply('You need to reply to a message to create an NFT of it! (or of its media attachments)')
             }
