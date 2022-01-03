@@ -15,21 +15,31 @@ const NFTType = t.union([
         content: t.string,
     }),
     t.type({
-        _type: t.literal('asset'), // could be an image, could also be a video or something else
+        _type: t.literal('asset'), // could be an image, could also be a video or sticker
         contentType: AllowedContentTypes,
-        imgLink: t.string, // we steal Discord's CDN to host the image (although this isn't immutable)
+        url: t.string, // we steal Discord's CDN to host the image (although this isn't immutable)
+    }),
+    // note that for stickers, the URL is already a unique identifier
+    // no need to hash the actual sticker
+    t.type({
+        _type: t.literal('sticker'), // could be an image, could also be a video or sticker
+        url: t.string, // we steal Discord's CDN to host the image (although this isn't immutable)
     })
 ])
 type NFTType = t.TypeOf<typeof NFTType>
 
-const nftTextType = (content: string): NFTType => ({
+export const nftTextType = (content: string): NFTType => ({
     _type: 'text',
     content,
 })
-const nftAssetType = (contentType: AllowedContentTypes, imgLink: string): NFTType => ({
+export const nftAssetType = (contentType: AllowedContentTypes, url: string): NFTType => ({
     _type: 'asset',
     contentType,
-    imgLink,
+    url,
+})
+export const nftStickerType = (url: string): NFTType => ({
+    _type: 'sticker',
+    url,
 })
 
 
@@ -61,7 +71,7 @@ interface NFTEssentials {
     type: NFTType,
     // createdAt will be generated when we push to Supabase
 }
-const createNFT = (data: NFTEssentials): NFT => ({
+export const createNFT = (data: NFTEssentials): NFT => ({
     from: data.from,
     ownedBy: data.ownedBy,
     msgLink: data.msgLink,
@@ -74,4 +84,4 @@ const createNFT = (data: NFTEssentials): NFT => ({
     createdAt: null,
 })
 
-export { NFT, NFTType, AllowedContentTypes, createNFT, nftTextType, nftAssetType }
+export { NFT, NFTType, AllowedContentTypes }

@@ -2,7 +2,7 @@ import { Command } from "../../interfaces";
 import { EmbedFieldData, Message, MessageEmbed } from "discord.js";
 import { hashFile, hashText } from '../../utils/createAssetHash';
 import { NFT, NFTType } from 'custom-types';
-import { AllowedContentTypes } from 'custom-types/src/nft';
+import { AllowedContentTypes, nftAssetType, nftStickerType, nftTextType } from 'custom-types/src/nft';
 
 export const command: Command = {
     description: "Creates an NFT of the replied message",
@@ -25,8 +25,10 @@ export const command: Command = {
                     return msg.reply('Only default replies are supported.');
                 }
 
-                if (repliedTo.content.length === 0 && repliedTo.attachments.size === 0) {
-                    return msg.reply('You need to reply to a message with text or an attachment to create an NFT');
+                if (repliedTo.content.length === 0 &&
+                    repliedTo.attachments.size === 0 &&
+                    repliedTo.stickers.size === 0) {
+                    return msg.reply('You need to reply to a message with text, attachment or sticker to create an NFT');
                 }
 
                 // By this point, the message is either a text message or contains an attachment (or both)
@@ -43,21 +45,20 @@ export const command: Command = {
                     const [attachment] = repliedTo.attachments.values();
 
                     const contentType = attachment.contentType || 'unknown';
-                    if (AllowedContentTypes.decode(contentType)._tag === 'Left') {
+                    const decoded = AllowedContentTypes.decode(contentType);
+                    if (decoded._tag === 'Left') {
                         return repliedTo.reply(`Attachment type ${contentType} is not supported`);
                     }
 
-                    nftType = {
-                        _type: 'asset',
-                        contentType: contentType as AllowedContentTypes, // linter isn't smart enough; i have to type cast
-                        imgLink: attachment.url,
-                    }
+                    nftType = nftAssetType(decoded.right, attachment.url);
+                } else if (repliedTo.stickers.size > 0) {
+                    // get the first sticker always
+                    const [sticker] = repliedTo.stickers.values();
+
+                    nftType = nftStickerType(sticker.url);
                 } else {
                     // if there is no attachment, we NFTize the text
-                    nftType = {
-                        _type: 'text',
-                        content: repliedTo.content,
-                    }
+                    nftType = nftTextType(repliedTo.content);
                 }
 
                 console.log(NFTType.encode(nftType));
