@@ -31,7 +31,7 @@ RUN yarn --pure-lockfile --no-cache
 FROM installer as builder
 WORKDIR /app
 COPY --from=pruner /app/out/full/ .
-RUN yarn turbo run build --scope=server --includeDependencies --no-deps
+RUN yarn turbo run build --scope=server --include-dependencies --no-deps
 
 # Copy over `build/index.js` and assets folder
 FROM base as runner

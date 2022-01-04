@@ -28,7 +28,7 @@ RUN yarn --pure-lockfile --no-cache
 FROM installer as builder
 WORKDIR /app
 COPY --from=pruner /app/out/full/ .
-RUN yarn turbo run build --scope=bot --includeDependencies --no-deps
+RUN yarn turbo run build --scope=bot --include-dependencies --no-deps
 # Clear dev dependencies (e.g. turbo, tsc)
 RUN npm prune --production
 
