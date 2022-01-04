@@ -1,8 +1,9 @@
 import express from 'express'
 import { Request, Response } from 'express';
-import * as trev from './trevimg'
+import * as trev from './trev'
 import * as testSupabase from './test-supabase'
-// any other routes imports would go here
+
+// trevImg route
 
 const mainRoute = async (req: Request, res: Response) => {
   res.status(200).send('Server works!');
