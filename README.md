@@ -8,7 +8,7 @@ A Discord bot with some other apps. Scaffolded from Turborepo Starter.
 
 ## Prerequisites
 
-Make sure you have the following instsalled on your system:
+Make sure you have the following installed on your system:
 
 - [Docker](https://www.docker.com/community-edition)
 - [Docker Compose](https://docs.docker.com/compose/install/)
