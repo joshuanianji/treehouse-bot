@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest",
+    "test": "ASSET_PATH=../../ jest",
     "dev": "ASSET_PATH=../../ NODE_ENV=development ts-node-dev --respawn --transpile-only ./src/index.ts",
     "start": "ASSET_PATH=. NODE_ENV=production node build/index.js",
     "build": "ncc build src/index.ts --minify --no-cache --out build"

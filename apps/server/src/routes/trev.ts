@@ -2,7 +2,7 @@ import express from 'express'
 import Jimp from 'jimp/es'
 import { Request, Response } from 'express';
 import { TrevResponse } from 'custom-types'
-import { assetPath } from './../util/assetPath';
+import { assetPath } from '../util/assetPath';
 // any other routes imports would go here
 
 const getRoutes = () => {
@@ -49,7 +49,8 @@ const root = async (req: TrevRequest, res: Res) => {
         data: base64,
         width: trev1.getWidth(),
         height: trev1.getHeight(),
-        ext: 'jpg'
+        ext: 'jpg',
+        text: text
     });
 }
 
