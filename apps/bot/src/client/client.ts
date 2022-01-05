@@ -60,19 +60,6 @@ class ExtendedClient extends Client {
             }
         });
 
-        /* Select Menus */
-        const menuPath = path.join(__dirname, "..", "interactions", "selectMenus");
-        fs.readdirSync(menuPath).forEach((dir) => {
-            const menuFiles = readdirSync(`${menuPath}/${dir}`).filter((file) => file.endsWith(".js") || file.endsWith(".ts"));
-
-            for (const file of menuFiles) {
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const { menu } = require(`${menuPath}/${dir}/${file}`);
-                this.selectMenus.set(menu.name, menu);
-
-            }
-        });
-
         /* Slash Commands */
         const slashPath = path.join(__dirname, "..", "interactions", "slashCommands");
         fs.readdirSync(slashPath).forEach(async (dir) => {
