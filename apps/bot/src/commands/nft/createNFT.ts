@@ -10,7 +10,7 @@ import axios from 'axios'
  * @param {Message} msg Discord message to check
  * @returns {Either<string, NFTType>} Either an error message or the repliedTo message
  */
-const checkMsg = async (msg: Message): Promise<Either<string, Message>> => {
+export const checkMsg = async (msg: Message): Promise<Either<string, Message>> => {
     if (!msg.reference || msg.type !== 'REPLY') {
         return left('Message is not a reply');
     }

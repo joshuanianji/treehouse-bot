@@ -32,7 +32,8 @@
     "build": "tsc",
     "start": "node build/bot.js",
     "lint": "eslint --ext .ts,.js ./src/",
-    "lint:fix": "eslint --ext .ts,.js ./src/ --fix"
+    "lint:fix": "eslint --ext .ts,.js ./src/ --fix",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
