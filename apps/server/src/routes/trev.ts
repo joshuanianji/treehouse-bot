@@ -12,15 +12,11 @@ import { parseQuery } from './../middleware/parseQuery';
 const router = express.Router()
 
 const Query = sparseType({
-    id: optional(i.string),
+    text: optional(i.string),
 })
 
 router.get('/', parseQuery(Query), async (req, res) => {
-    let text = req.query.text;
-
-    if (text === '') {
-        text = 'Hello World!'
-    }
+    const text = req.query.text || 'Hello World!';
 
     const trev1 = await Jimp.read(assetPath + '/trevor1.jpg');
     const goulongFont = await Jimp.loadFont(assetPath + '/fonts/goulong-bold.fnt');
