@@ -1,7 +1,9 @@
-import { parseQuery } from './parseQuery'
+import { ParamsDictionary, Query } from 'express-serve-static-core'
 import { NextFunction, Request, Response } from 'express';
-import * as i from 'io-ts'
-import { sparseType, optional } from 'io-ts-extra'
+import { sparseType, optional } from 'io-ts-extra';
+import { parseQuery } from './parseQuery';
+import * as i from 'io-ts';
+
 
 // Optional props:
 // https://github.com/gcanti/io-ts/issues/56#issuecomment-922388563
@@ -11,6 +13,13 @@ const testTypes = sparseType({
     nullable: optional(i.string)
 })
 type TestType = i.TypeOf<typeof testTypes>
+
+// Le type hacking has arrived B)
+interface CustomQuery<T> extends Request<
+    ParamsDictionary,
+    any,
+    any,
+    Query & T> { }
 
 // https://javascript.plainenglish.io/how-to-unit-test-express-middleware-typescript-jest-c6a7ad166e74
 describe('parseQuery middleware', () => {
@@ -68,7 +77,7 @@ describe('parseQuery middleware', () => {
             list: '30'
         };
         mockRequest = { query: badQuery }
-        parseQuery(testTypes)(mockRequest as Request, mockResponse as Response, nextFunction);
+        parseQuery(testTypes)(mockRequest as CustomQuery<TestType>, mockResponse as Response, nextFunction);
 
         expect(nextFunction).toBeCalledTimes(0); // expect error
         expect(mockResponse.status).toHaveBeenCalled();
@@ -83,7 +92,7 @@ describe('parseQuery middleware', () => {
         }
         mockRequest = { query: goodQuery }
 
-        parseQuery(testTypes)(mockRequest as Request, mockResponse as Response, nextFunction);
+        parseQuery(testTypes)(mockRequest as CustomQuery<TestType>, mockResponse as Response, nextFunction);
         expect(nextFunction).toBeCalled();
         expect(mockResponse.status).toBeCalledTimes(0);
         expect(mockResponse.send).toHaveBeenCalledTimes(0);
@@ -95,7 +104,7 @@ describe('parseQuery middleware', () => {
             name: 'John',
         }
         mockRequest = { query: badQuery }
-        parseQuery(testTypes)(mockRequest as Request, mockResponse as Response, nextFunction);
+        parseQuery(testTypes)(mockRequest as CustomQuery<TestType>, mockResponse as Response, nextFunction);
 
         expect(nextFunction).toBeCalledTimes(0); // expect error
         expect(mockResponse.status).toHaveBeenCalled();

@@ -3,16 +3,19 @@ import Jimp from 'jimp/es'
 import { Request, Response } from 'express';
 import { TrevResponse } from 'custom-types'
 import { assetPath } from './../util/assetPath';
+import { sparseType, optional } from 'io-ts-extra';
+import * as i from 'io-ts'
+import { parseQuery } from './../middleware/parseQuery';
 // any other routes imports would go here
 
 
 const router = express.Router()
 
-type ReqQuery = { text: string };
-type TrevRequest = Request<{}, {}, {}, ReqQuery>
-type Res = Response<TrevResponse>
+const Query = sparseType({
+    id: optional(i.string),
+})
 
-router.get('/', async (req: TrevRequest, res: Res) => {
+router.get('/', parseQuery(Query), async (req, res) => {
     let text = req.query.text;
 
     if (text === '') {

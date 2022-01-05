@@ -6,7 +6,7 @@ import { ParamsDictionary, Query } from 'express-serve-static-core'
 import { formatValidationErrors } from 'io-ts-reporters'
 
 
-export const parseQuery = <T>(decoder: i.Decoder<unknown, T>): RequestHandler<ParamsDictionary, any, any, Query extends T ? Query & T : Query> => (
+export const parseQuery = <T>(decoder: i.Decoder<unknown, T>): RequestHandler<ParamsDictionary, any, any, T & Query> => (
     req,
     res,
     next,
@@ -14,7 +14,7 @@ export const parseQuery = <T>(decoder: i.Decoder<unknown, T>): RequestHandler<Pa
     return pipe(
         decoder.decode(req.query),
         fold(
-            errors => res.status(400).send({ code: 'BadArgument', status: 'error', error: formatValidationErrors(errors) }),
+            errors => res.status(400).send({ code: 'Bad Query', status: 'error', error: formatValidationErrors(errors) }),
             () => next(),
         ),
     );
