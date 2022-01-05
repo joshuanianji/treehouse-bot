@@ -4,16 +4,12 @@ import { Config } from './../util/supabase';
 
 // any other routes imports would go here
 
-const getRoutes = () => {
-    const router = express.Router()
-    router.get('/', root);
-    return router
-};
 
 type ReqQuery = { id: string };
 type CustomRequest = Request<{}, {}, {}, ReqQuery>
 
-const root = async (req: CustomRequest, res: Response) => {
+const router = express.Router()
+router.get('/', async (req: CustomRequest, res: Response) => {
     try {
         const supabase = Config.getSupabaseClient();
 
@@ -36,6 +32,6 @@ const root = async (req: CustomRequest, res: Response) => {
         console.log(error)
         res.send(error)
     }
-}
+});
 
-export { getRoutes }
+export { router }

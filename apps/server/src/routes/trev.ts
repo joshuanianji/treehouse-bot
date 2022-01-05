@@ -2,22 +2,17 @@ import express from 'express'
 import Jimp from 'jimp/es'
 import { Request, Response } from 'express';
 import { TrevResponse } from 'custom-types'
-import { assetPath } from '../util/assetPath';
+import { assetPath } from './../util/assetPath';
 // any other routes imports would go here
 
-const getRoutes = () => {
-    const router = express.Router()
-    router.get('/', root);
-    return router
-};
 
+const router = express.Router()
 
 type ReqQuery = { text: string };
 type TrevRequest = Request<{}, {}, {}, ReqQuery>
 type Res = Response<TrevResponse>
 
-
-const root = async (req: TrevRequest, res: Res) => {
+router.get('/', async (req: TrevRequest, res: Res) => {
     let text = req.query.text;
 
     if (text === '') {
@@ -52,6 +47,6 @@ const root = async (req: TrevRequest, res: Res) => {
         ext: 'jpg',
         text: text
     });
-}
+})
 
-export { getRoutes }
+export { router }
