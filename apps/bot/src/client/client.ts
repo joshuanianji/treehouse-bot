@@ -23,21 +23,17 @@ class ExtendedClient extends Client {
 
         /* Commands */
         const commandPath = path.join(__dirname, "..", "commands");
-        fs.readdirSync(commandPath).forEach(async (dir) => {
-            const cmds = readdirSync(`${commandPath}/${dir}`).filter((file) => file.endsWith(".js") || file.endsWith(".ts"));
-            console.log(cmds)
+        const cmds = readdirSync(commandPath);
+        console.log(cmds);
+        cmds.forEach(async (cmd) => {
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            const { command } = await import(`${commandPath}/${cmd.split('.')[0]}`);
+            this.commands.set(command.name, command);
 
-            for (const file of cmds) {
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const { command } = await import(`${commandPath}/${dir}/${file}`);
-                this.commands.set(command.name, command);
-
-                if (command?.aliases !== undefined) {
-                    command.aliases.forEach((alias: string) => {
-                        this.aliases.set(alias, command);
-                    });
-                }
-
+            if (command?.aliases !== undefined) {
+                command.aliases.forEach((alias: string) => {
+                    this.aliases.set(alias, command);
+                });
             }
         });
 
