@@ -1,24 +1,8 @@
 import { Command } from "../../interfaces";
-import { EmbedFieldData, Message, MessageEmbed } from "discord.js";
-import { hashNFT } from '../../utils/hashNFT';
-import { NFT, NFTType } from 'custom-types';
-import { AllowedContentTypes, createNFT, nftAssetType, nftStickerType, nftTextType } from 'custom-types/src/nft';
-import axios from 'axios';
+import { MessageEmbed } from "discord.js";
+import { createNFT } from './createNFT';
 
-const uploadNFT = async (nft: NFT): Promise<void> => {
-    try {
-        const server_host = process.env.SERVER_HOST || 'http://localhost:3001';
-        const { data } = await axios.post(`${server_host}/nft`, NFT.encode(nft), {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        console.log('NFT Upload: ', data);
-    } catch (error) {
-        console.log('Error uploading NFT: ', (error as any).response.data);
-        throw new Error('Internal HTTP Error')
-    }
-}
+
 
 export const command: Command = {
     description: "Creates an NFT of the replied message",
@@ -27,80 +11,19 @@ export const command: Command = {
     name: "nft",
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     run: async (client, msg, _args) => {
+        if (_args.length === 0) {
+            return msg.channel.send('Please provide an argument (valid arguments are: create)');
+        }
         try {
-            if (msg.reference && msg.type === 'REPLY') {
-                if (!msg.reference.messageId) {
-                    msg.reply('You need to reply to a message to create an NFT')
-                    return;
-                }
-
-                const repliedTo = await msg.channel.messages.fetch(msg.reference.messageId);
-
-                // Checking if the message works...
-                if (repliedTo.type !== 'DEFAULT' && repliedTo.type !== 'REPLY') {
-                    return msg.reply('Only default replies are supported.');
-                }
-
-                if (repliedTo.content.length === 0 &&
-                    repliedTo.attachments.size === 0 &&
-                    repliedTo.stickers.size === 0) {
-                    return msg.reply('You need to reply to a message with text, attachment or sticker to create an NFT');
-                }
-
-                // By this point, the message is either a text message or contains an attachment (or both)
-                // This means it doesn't contain embeds or other unsupported content
-
-
-                // Creating the NFT
-
-                // prioritize attachments over text
-                // if a message has an attachment and text, we NFTize the attachment
-                let nftType: NFTType;
-                if (repliedTo.attachments.size > 0) {
-                    // get the first attachment always (TODO: support multiple attachments)
-                    const [attachment] = repliedTo.attachments.values();
-
-                    const contentType = attachment.contentType || 'unknown';
-                    const decoded = AllowedContentTypes.decode(contentType);
-                    if (decoded._tag === 'Left') {
-                        return msg.reply(`Attachment type ${contentType} is not supported`);
+            switch (_args[0]) {
+                case 'create':
+                    const res = await createNFT(msg);
+                    if (res._tag === 'Left') {
+                        return msg.reply(res.left);
                     }
-
-                    // size is in kilobytes
-                    if (attachment.size > 8 * 1024 * 1024) {
-                        return msg.reply('Attachment is too large to be NFTized. Max size is 8MB');
-                    }
-
-                    nftType = nftAssetType(decoded.right, attachment.url);
-                } else if (repliedTo.stickers.size > 0) {
-                    // get the first sticker always
-                    const [sticker] = repliedTo.stickers.values();
-
-                    nftType = nftStickerType(sticker.url);
-                } else {
-                    // if there is no attachment, we NFTize the text
-                    nftType = nftTextType(repliedTo.content);
-                }
-
-                const creatingMsg = await msg.channel.send('Creating NFT...');
-                const hash = await hashNFT(nftType);
-                creatingMsg.edit(`Creating NFT... (hash: ${hash.substring(0, 10)})`);
-
-                const nft = createNFT({
-                    from: repliedTo.author.id,
-                    ownedBy: msg.author.id,
-                    msgLink: repliedTo.id,
-                    hash,
-                    type: nftType,
-                })
-                console.log(nft);
-                creatingMsg.edit(`Uploading NFT... (id: ${nft.id})`);
-
-                // upload NFT to server
-                await uploadNFT(nft);
-                return creatingMsg.edit(`NFT created! (id: ${nft.id})`);
-            } else {
-                msg.reply('You need to reply to a message to create an NFT of it! (or of its media attachments)')
+                    break;
+                default:
+                    return msg.channel.send('Unknown argument (valid arguments are: create)');
             }
         } catch (e) {
             console.error(e);

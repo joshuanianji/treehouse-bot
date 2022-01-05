@@ -71,7 +71,7 @@ interface NFTEssentials {
     type: NFTType,
     // createdAt will be generated when we push to Supabase
 }
-export const createNFT = (data: NFTEssentials): NFT => ({
+export const fromEssentials = (data: NFTEssentials): NFT => ({
     from: data.from,
     ownedBy: data.ownedBy,
     msgLink: data.msgLink,
