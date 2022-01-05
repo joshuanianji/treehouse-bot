@@ -54,7 +54,7 @@ const NFT = t.type({
     fullHash: t.string, // full MD5 hash of the NFT asset 
 
     type: NFTType,
-    createdAt: t.union([t.number, t.null]), // unix timestamp 
+    createdAt: t.string, // ISO string
 })
 
 type NFT = t.TypeOf<typeof NFT>
@@ -81,7 +81,8 @@ export const createNFT = (data: NFTEssentials): NFT => ({
     fullHash: data.hash,
 
     type: data.type,
-    createdAt: null,
+    // https://github.com/supabase/supabase/discussions/2839
+    createdAt: ((new Date()).toISOString()).toLocaleString(),
 })
 
 export { NFT, NFTType, AllowedContentTypes }
