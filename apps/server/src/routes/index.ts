@@ -1,7 +1,7 @@
 import express from 'express'
 import { Request, Response } from 'express';
 import * as trev from './trev'
-import * as testSupabase from './test-supabase'
+import * as supabase from './supabase'
 import * as nft from './nft'
 
 
@@ -13,7 +13,7 @@ router.get('/', async (req: Request, res: Response) => {
   res.status(200).send('Server works!');
 });
 router.use('/trev', trev.router)
-router.use('/supabase', testSupabase.router)
+router.use('/supabase', supabase.router)
 router.use('/nft', nft.router)
 
 

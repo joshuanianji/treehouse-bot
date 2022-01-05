@@ -6,7 +6,8 @@ interface Config {
     supabase: {
         url: string
         jwt_secret: string
-        api_key: string
+        api_key: string,
+        table: string
     },
     dev: boolean
 }
@@ -35,10 +36,15 @@ class Config implements Config {
         }
     }
 
-    public static getSupabaseClient = (): SupabaseClient => {
-        const { supabase } = Config.getConfig();
+    public static getSupabaseClient = (): { supabase: SupabaseClient, tableName: string } => {
+        const { supabase: config } = Config.getConfig();
 
-        return createClient(supabase.url, supabase.api_key)
+        return { supabase: createClient(config.url, config.api_key), tableName: config.table };
+    }
+
+    public static tableName = (): string => {
+        const { supabase } = Config.getConfig();
+        return supabase.table;
     }
 }
 

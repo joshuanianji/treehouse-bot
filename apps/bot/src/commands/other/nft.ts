@@ -3,6 +3,22 @@ import { EmbedFieldData, Message, MessageEmbed } from "discord.js";
 import { hashNFT } from '../../utils/hashNFT';
 import { NFT, NFTType } from 'custom-types';
 import { AllowedContentTypes, createNFT, nftAssetType, nftStickerType, nftTextType } from 'custom-types/src/nft';
+import axios from 'axios';
+
+const uploadNFT = async (nft: NFT): Promise<void> => {
+    try {
+        const server_host = process.env.SERVER_HOST || 'http://localhost:3001';
+        const { data } = await axios.post(`${server_host}/nft`, NFT.encode(nft), {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log('NFT Upload: ', data);
+    } catch (error) {
+        console.log('Error uploading NFT: ', (error as any).response.data);
+        throw new Error('Internal HTTP Error')
+    }
+}
 
 export const command: Command = {
     description: "Creates an NFT of the replied message",
@@ -78,6 +94,10 @@ export const command: Command = {
                     type: nftType,
                 })
                 console.log(nft);
+                creatingMsg.edit(`Uploading NFT... (id: ${nft.id})`);
+
+                // upload NFT to server
+                await uploadNFT(nft);
                 return creatingMsg.edit(`NFT created! (id: ${nft.id})`);
             } else {
                 msg.reply('You need to reply to a message to create an NFT of it! (or of its media attachments)')
@@ -86,9 +106,8 @@ export const command: Command = {
             console.error(e);
             const embed = new MessageEmbed()
                 .setTitle('Something went wrong!')
-                .addField('Error', JSON.stringify(e), false)
+                .addField('Error', JSON.stringify(e).substring(0, 1023), false)
             return msg.channel.send({ embeds: [embed] });
         }
     }
 };
-
