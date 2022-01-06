@@ -4,9 +4,10 @@ import {
     Sticker
 } from 'discord.js';
 import { command } from '../../../src/commands/nft';
-import { checkMsg } from '../../../src/commands/nft/createNFT';
+import { checkMsg, getNFTType } from '../../../src/commands/nft/createNFT';
 import ExtendedClient from './../../../src/client/client';
 import { left, isLeft, isRight } from 'fp-ts/lib/Either';
+import { nftAssetType } from 'custom-types/src/nft';
 
 describe('NFT Command', () => {
     let mockClient: Partial<ExtendedClient>;
@@ -127,6 +128,44 @@ describe('NFT Command', () => {
                 })
             })
 
+        })
+    })
+
+    describe('getNFTType works correctly', () => {
+        describe('with MessageAttachment', () => {
+            let mockMessageAttachment: Partial<MessageAttachment>;
+
+            beforeEach(() => {
+                mockMessageAttachment = {
+                    contentType: 'image/png',
+                    name: 'test.png',
+                    height: 100,
+                    width: 100,
+                    size: 100,
+                    url: 'https://test.com/test.png',
+                }
+            })
+
+            it('Fails with a bad content type', () => {
+                mockMessageAttachment.contentType = 'text/plain';
+                mockRepliedTo.attachments?.set('a', mockMessageAttachment as MessageAttachment);
+                const res = getNFTType(mockRepliedTo as Message);
+                expect(isLeft(res)).toBe(true);
+                expect(res).toMatchObject({ left: 'Attachment type text/plain is not supported' });
+            })
+            it('fails when the size is too big', () => {
+                mockMessageAttachment.size = 1000000000000000;
+                mockRepliedTo.attachments?.set('a', mockMessageAttachment as MessageAttachment);
+                const res = getNFTType(mockRepliedTo as Message);
+                expect(isLeft(res)).toBe(true);
+                expect(res).toMatchObject({ left: 'Attachment is too large to be NFTized. Max size is 8MB' });
+            })
+            it('Succeeds otherwise, matching url', () => {
+                mockRepliedTo.attachments?.set('a', mockMessageAttachment as MessageAttachment);
+                const res = getNFTType(mockRepliedTo as Message);
+                expect(isRight(res)).toBe(true);
+                expect(res).toMatchObject({ right: nftAssetType('image/png', 'https://test.com/test.png') });
+            })
         })
     })
 })

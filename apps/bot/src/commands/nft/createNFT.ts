@@ -67,7 +67,7 @@ const uploadNFT = async (nft: NFT): Promise<void> => {
  * @param {Message} repliedTo the message to create an NFT from
  * @returns 
  */
-const getNFTType = (repliedTo: Message): Either<string, NFTType> => {
+export const getNFTType = (repliedTo: Message): Either<string, NFTType> => {
 
     if (repliedTo.attachments.size > 0) {
         // get the first attachment always (TODO: support multiple attachments)
