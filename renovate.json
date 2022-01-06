@@ -3,9 +3,35 @@
   "ignorePaths": ["**/Dockerfile"],
   "labels": ["dependencies"],
   "schedule": ["after 10pm and before 5am every weekday", "every weekend"],
-  "packageRules": {
-    "matchDepTypes": ["devDependencies"],
-    "matchUpdateTypes": ["patch", "minor"],
-    "groupName": "devDependencies (non-major)"
-  }
+  "packageRules": [
+    {
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": [
+        "patch",
+        "minor",
+        "pin",
+        "digest",
+        "lockFileMaintenance",
+        "rollback",
+        "bump"
+      ],
+      "groupName": "devDependencies (non-major)",
+      "semanticCommitType": "chore",
+      "automerge": true
+    },
+    {
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest",
+        "lockFileMaintenance",
+        "rollback",
+        "bump"
+      ],
+      "groupName": "dependencies (non-major)",
+      "semanticCommitType": "fix"
+    }
+  ]
 }
