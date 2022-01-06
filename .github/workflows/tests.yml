@@ -18,6 +18,7 @@ on:
       - ".github/workflows/tests.yml" # this file
       - "yarn.lock"
       - "apps/server/**"
+      - "apps/bot/**"
       - "!**/*.md"
 
 jobs:
