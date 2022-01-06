@@ -60,7 +60,7 @@ const uploadNFT = async (nft: NFT): Promise<Option<string>> => {
                 'Content-Type': 'application/json'
             }
         });
-        console.log('NFT Upload: ', data);
+        console.log('Uploaded nft to server: ', nft.id);
         return none;
     } catch (err) {
         return pipe(

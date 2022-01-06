@@ -14,7 +14,6 @@ export const getNFTs = async (userId: string): Promise<Either<string, NFT[]>> =>
     try {
         const server_host = process.env.SERVER_HOST || 'http://localhost:3001';
         const { data } = await axios.get<NFTListResponse>(`${server_host}/nft?userId=${userId}`);
-        console.log('NFT Upload: ', data);
         return right(data.nfts)
     } catch (err) {
         return pipe(

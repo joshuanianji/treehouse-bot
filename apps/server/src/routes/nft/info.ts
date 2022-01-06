@@ -3,7 +3,6 @@ import { Config } from './../../util/supabase';
 import express from 'express';
 import * as i from 'io-ts';
 import { NFT } from 'custom-types';
-import * as info from './info'
 
 // root route: '/nft/info'
 const router = express.Router()
