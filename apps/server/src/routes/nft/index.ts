@@ -24,18 +24,43 @@ router.get('/', async (req, res) => {
 router.post('/', parseBody(NFT), async (req, res) => {
     try {
         const nft = req.body;
-
         const { supabase, tableName } = Config.getSupabaseClient()
+
         const { data, error } = await supabase
             .from(tableName)
             .insert(nft)
 
         if (error) {
-            console.log('Error uploading NFT: ', error)
-            return res.status(500).json({
-                title: 'Error uploading NFT!',
-                error: JSON.stringify(error)
-            })
+            if (error.code === '23505') {
+                // duplicate key - NFT already exists
+                // Check if the NFT is owned by the user
+                const { data } = await supabase
+                    .from(tableName)
+                    .select(`fullHash, ownedBy`)
+                    .eq('fullHash', nft.fullHash)
+
+                const [remoteNFT] = data;
+
+                if (remoteNFT.ownedBy === nft.ownedBy) {
+                    return res.status(400).json({
+                        code: 'NFT_ALREADY_OWNED',
+                        title: 'NFT is already owned by the user!',
+                    })
+                } else {
+                    // if they are not, throw an error saying that the NFT is already owned by someone else
+                    return res.status(400).json({
+                        code: 'NFT_ALREADY_OWNED_BY_OTHER',
+                        title: 'NFT is already owned by someone else!',
+                    })
+                }
+            } else {
+                console.log('Error uploading NFT: ', error)
+                return res.status(500).json({
+                    code: 'UNKNOWN_ERROR',
+                    title: 'Error uploading NFT!',
+                    error: JSON.stringify(error)
+                })
+            }
         }
 
         console.log('NFT upload success! ', data)
@@ -45,8 +70,12 @@ router.post('/', parseBody(NFT), async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error)
-        res.status(500).send(error)
+        console.log('Unknown error uploading NFT!', error)
+        res.status(500).send({
+            code: 'UNKNOWN_ERROR',
+            title: 'Unknown error uploading NFT!',
+            error: JSON.stringify(error)
+        })
     }
 })
 

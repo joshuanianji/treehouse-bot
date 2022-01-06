@@ -3,7 +3,10 @@ import { Message } from 'discord.js';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import { AllowedContentTypes, fromEssentials, nftAssetType, nftStickerType, nftTextType, NFTType } from 'custom-types/src/nft';
 import { hashNFT } from '../../utils/hashNFT';
-import axios from 'axios'
+import axios from 'axios';
+import { pipe } from 'fp-ts/lib/function';
+import { Option, fold, some, none } from 'fp-ts/lib/Option';
+import { server } from 'custom-types'
 
 /**
  * Checks if the message is valid for creating an NFT
@@ -41,10 +44,11 @@ export const checkMsg = async (msg: Message): Promise<Either<string, Message>> =
 
 /**
  * Uploads an NFT to the server 
+ * Returns the error message if any came up
  * 
  * @param {NFT} nft the NFT to upload
  */
-const uploadNFT = async (nft: NFT): Promise<void> => {
+const uploadNFT = async (nft: NFT): Promise<Option<string>> => {
     try {
         const server_host = process.env.SERVER_HOST || 'http://localhost:3001';
         const { data } = await axios.post(`${server_host}/nft`, NFT.encode(nft), {
@@ -53,9 +57,26 @@ const uploadNFT = async (nft: NFT): Promise<void> => {
             }
         });
         console.log('NFT Upload: ', data);
-    } catch (error) {
-        console.log('Error uploading NFT: ', (error as any).response.data);
-        throw new Error('HTTP Error uploading NFT')
+        return none;
+    } catch (err) {
+        return pipe(
+            server.getServerError(err),
+            fold(
+                () => {
+                    console.error('Unknown error uploading NFT!', err);
+                    return some('Unknown error uploading NFT!');
+                },
+                error => {
+                    if (error.code === 'NFT_ALREADY_OWNED') {
+                        return some(`You already own this NFT!`);
+                    } else if (error.code === 'NFT_ALREADY_OWNED_BY_OTHER') {
+                        return some(`Someone else owns this NFT!`);
+                    } else {
+                        return some(`Unknown error uploading NFT!`);
+                    }
+                }
+            )
+        )
     }
 }
 
@@ -132,7 +153,11 @@ export const createNFT = async (msg: Message): Promise<Either<string, void>> => 
         creatingMsg.edit(`Uploading NFT... (id: ${nft.id})`);
 
         // upload NFT to server
-        await uploadNFT(nft);
+        const mErr = await uploadNFT(nft);
+        if (mErr._tag === 'Some') {
+            creatingMsg.edit(`Error uploading NFT: ${mErr.value}`);
+            return right(undefined) // we don't need to message the user again when there is an error here
+        }
         await creatingMsg.edit(`NFT created! (id: ${nft.id})`);
         return right(undefined);
     } catch (error) {
