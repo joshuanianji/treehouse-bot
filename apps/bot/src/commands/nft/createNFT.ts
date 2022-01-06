@@ -8,6 +8,10 @@ import { pipe } from 'fp-ts/lib/function';
 import { Option, fold, some, none } from 'fp-ts/lib/Option';
 import { server } from 'custom-types'
 
+
+// This file provides helper function for the `.nft create` command
+
+
 /**
  * Checks if the message is valid for creating an NFT
  * @param {Message} msg Discord message to check
