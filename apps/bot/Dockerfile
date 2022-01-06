@@ -4,6 +4,7 @@ FROM node:16-alpine3.12 as base
 # https://turborepo.com/posts/turbo-0-4-0
 # https://github.com/vercel/turborepo/issues/215
 # Ensure we prune workspace so we don't unnecessarily build so much
+RUN apk add dumb-init --no-cache
 
 FROM base as turboed
 RUN yarn global add turbo
@@ -33,11 +34,10 @@ RUN yarn turbo run build --scope=bot --include-dependencies --no-deps
 RUN npm prune --production
 
 # Start the app
-# use installer so we can filter out the unbuilt deps
+# Copy over `build/index.js` 
 FROM base as runner
-USER node
 WORKDIR /app
-COPY --chown=node:node --from=installer /app/node_modules ./node_modules
-COPY --chown=node:node --from=builder /app/apps/bot/build/ .
-RUN ls -al
-CMD ["node", "bot.js"]
+USER node
+COPY --chown=node:node --from=builder /app/apps/bot/build/index.js ./index.js
+ENV NODE_ENV production
+CMD ["dumb-init", "node", "index.js"]
