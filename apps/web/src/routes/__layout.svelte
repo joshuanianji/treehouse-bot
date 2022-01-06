@@ -7,15 +7,14 @@
   // links are without leading slash
   // so we can compare it to currPage
   const navItems = [
-    { title: "Home", link: "" },
-    { title: "TrevAPI", link: "trevapi" },
+    { title: "Home", link: "/" },
+    { title: "TrevAPI", link: "/trevapi" },
   ];
 
   const { page } = getStores();
-  page.subscribe(({ path }) => {
-    console.log("New page: ", path);
-    // e.g. '/blog/some-post'.split('/')[1] === 'blog'
-    currPage = path.split("/")[1];
+  page.subscribe(({ url }) => {
+    // e.g. /trevapi
+    currPage = url.pathname;
   });
 </script>
 
@@ -89,7 +88,7 @@
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
             {#each navItems as navItem}
               <a
-                href="/{navItem.link}"
+                href={navItem.link}
                 class="{currPage === navItem.link
                   ? 'bg-gray-900 text-white'
                   : 'text-gray-300 hover:bg-gray-700 hover:text-white'} 
