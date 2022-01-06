@@ -11,7 +11,7 @@ export const command: Command = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     run: async (client, msg, _args) => {
         if (_args.length === 0) {
-            return msg.channel.send('Please provide an argument (valid arguments are: create, list, penis)');
+            return msg.channel.send('Please provide an argument (valid arguments are: create, list, info, penis)');
         }
         try {
             switch (_args[0]) {
@@ -31,7 +31,7 @@ export const command: Command = {
                 case 'penis':
                     return msg.channel.send('penis');
                 default:
-                    return msg.channel.send('Unknown argument (valid arguments are: create, list, penis)');
+                    return msg.channel.send('Unknown argument (valid arguments are: create, list, info, penis)');
             }
         } catch (e) {
             console.error(e);
