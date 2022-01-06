@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 import { ColorResolvable, MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
-import { Command } from "../../interfaces";
-import { arrayPage } from "../../utils/arrayPage";
-import { capitalize } from "../../utils/capitalize";
-import { deleteButton } from "../../globals";
+import { Command } from "../interfaces";
+import { arrayPage } from "../utils/arrayPage";
+import { capitalize } from "../utils/capitalize";
+import { deleteButton } from "../globals";
 
 type HelpType = "page" | "cmd";
 

@@ -1,23 +1,21 @@
 import express from 'express'
-import { Request, Response, } from 'express';
-import { Config } from './../util/supabase';
+import { Config } from '../util/supabase';
+import { sparseType, optional } from 'io-ts-extra';
+import * as i from 'io-ts';
+import { parseQuery } from '../middleware/parseQuery';
 
 // any other routes imports would go here
 
-const getRoutes = () => {
-    const router = express.Router()
-    router.get('/', root);
-    return router
-};
 
-type ReqQuery = { id: string };
-type CustomRequest = Request<{}, {}, {}, ReqQuery>
+const Query = sparseType({
+    id: optional(i.string),
+})
 
-const root = async (req: CustomRequest, res: Response) => {
+const router = express.Router()
+router.get('/', parseQuery(Query), async (req, res) => {
     try {
-        const supabase = Config.getSupabaseClient();
+        const { supabase, tableName } = Config.getSupabaseClient();
 
-        console.log('req.query.id', req.query.id);
         const id = req.query.id || '1';
 
         let { data, error, status } = await supabase
@@ -36,6 +34,6 @@ const root = async (req: CustomRequest, res: Response) => {
         console.log(error)
         res.send(error)
     }
-}
+});
 
-export { getRoutes }
+export { router }

@@ -5,7 +5,8 @@ type TrevResponse = {
     data: string,
     width: number
     height: number
-    ext: 'jpg'
+    ext: 'jpg',
+    text: string // a copy of what the text was
 }
 
 export { TrevResponse }

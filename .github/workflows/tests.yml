@@ -9,6 +9,7 @@ on:
       - ".github/workflows/tests.yml" # this file
       - "yarn.lock"
       - "apps/server/**"
+      - "apps/bot/**"
       - "!**/*.md"
   pull_request:
     branches:
@@ -20,7 +21,7 @@ on:
       - "!**/*.md"
 
 jobs:
-  test:
+  test-server:
     name: 🧪 Test Server
     runs-on: ubuntu-latest
     steps:
@@ -37,3 +38,21 @@ jobs:
 
       - name: ✅ Run Tests
         run: yarn --cwd apps/server test
+
+  test-bot:
+    name: 🤖 Test Bot
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏁 Checkout repo
+        uses: actions/checkout@v2
+
+      - name: 🔧 Install Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+
+      - name: 📌 Install Dependencies
+        run: yarn install --pure-lockfile
+
+      - name: ✅ Run Tests
+        run: yarn --cwd apps/bot test
