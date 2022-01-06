@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feat-*
     paths:
       - ".github/workflows/tests.yml" # this file
       - "yarn.lock"
