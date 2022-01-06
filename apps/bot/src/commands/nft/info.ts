@@ -57,7 +57,7 @@ export const nftToEmbed = async (client: ExtendedClient, nft: NFT): Promise<Mess
         .setDescription(`Created at: ${new Date(nft.createdAt).toLocaleString()}`)
         .addField('Full Hash:', nft.fullHash, false)
         .setFooter({
-            text: 'Created by Joshua Ji and Curtis Kan. DM us for any questions!',
+            text: 'https://github.com/joshuanianji/treehouse-bot',
             iconURL: client.user?.avatarURL() || undefined
         });
 
