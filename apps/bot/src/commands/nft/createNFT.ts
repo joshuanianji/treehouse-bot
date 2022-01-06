@@ -72,9 +72,9 @@ const uploadNFT = async (nft: NFT): Promise<Option<string>> => {
                 },
                 error => {
                     if (error.code === 'NFT_ALREADY_OWNED') {
-                        return some(`You already own this NFT!`);
+                        return some(`You already own this NFT! ID: ${nft.id}`);
                     } else if (error.code === 'NFT_ALREADY_OWNED_BY_OTHER') {
-                        return some(`Someone else owns this NFT!`);
+                        return some(`Someone else owns this NFT! ID: ${nft.id}`);
                     } else {
                         return some(`Unknown error uploading NFT!`);
                     }

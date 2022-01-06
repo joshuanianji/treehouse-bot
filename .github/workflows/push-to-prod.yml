@@ -1,4 +1,4 @@
-name: Push required code to Prod Branch
+name: Push code to Prod
 
 on:
   push:
