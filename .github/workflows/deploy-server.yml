@@ -34,7 +34,7 @@ jobs:
   update-server-image:
     name: Update Docker Image in Production
     runs-on: ubuntu-latest
-    depends-on: build
+    needs: build
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
