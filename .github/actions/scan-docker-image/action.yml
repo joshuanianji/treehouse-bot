@@ -10,7 +10,7 @@ runs:
   steps:
     - name: Build the Docker Image
       run: |
-        docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build ${{ inputs.service }}
+        docker-compose -f docker-compose.yml -f docker-compose.dev.yml build ${{ inputs.service }}
       shell: bash
 
     - name: Run `docker image ls`
