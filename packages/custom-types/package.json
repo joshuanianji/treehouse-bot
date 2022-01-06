@@ -4,6 +4,7 @@
     "types": "./src/index.ts",
     "version": "0.0.1",
     "dependencies": {
+        "axios": "^0.24.0",
         "discord.js": "^13.5.0",
         "fp-ts": "^2.11.6",
         "io-ts": "^2.2.16",
