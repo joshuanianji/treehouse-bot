@@ -1,5 +1,5 @@
-import { SlashCommands } from "../../../interfaces/slashCommands";
-import { slashCommandTypes } from "../../../globals";
+import { SlashCommands } from './../../interfaces/slashCommands';
+import { slashCommandTypes } from './../../globals';
 
 export const slashCommand: SlashCommands = {
     // Note aliases are optional
@@ -18,6 +18,6 @@ export const slashCommand: SlashCommands = {
 
         const args = intr.options.getString("saystring");
 
-        return intr.reply({ content: args } );
+        return intr.reply({ content: args });
     }
 };

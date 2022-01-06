@@ -35,6 +35,7 @@ jobs:
   update-bot-image:
     name: Update Docker Image in Production
     runs-on: ubuntu-latest
+    depends-on: build-and-deploy
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2

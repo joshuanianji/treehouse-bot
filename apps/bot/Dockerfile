@@ -1,15 +1,15 @@
 # NOTE: the context is the directory that `docker-compose.yml` is in
 
-FROM node:16-alpine3.12 as base
+FROM node:16-alpine3.12 AS base
 # https://turborepo.com/posts/turbo-0-4-0
 # https://github.com/vercel/turborepo/issues/215
 # Ensure we prune workspace so we don't unnecessarily build so much
 
-FROM base as turboed
+FROM base AS turboed
 RUN yarn global add turbo
 
 # Prune the workspace for the `frontend` app
-FROM turboed as pruner
+FROM turboed AS pruner
 WORKDIR /app
 # Copy everything, but in the directory of docker-compose.yml
 COPY . .
@@ -25,7 +25,7 @@ COPY --from=pruner /app/out/yarn.lock ./yarn.lock
 RUN yarn --pure-lockfile --no-cache
 
 # Copy source code of pruned subworkspace and build
-FROM installer as builder
+FROM installer AS builder
 WORKDIR /app
 COPY --from=pruner /app/out/full/ .
 RUN yarn turbo run build --scope=bot --include-dependencies --no-deps
@@ -33,11 +33,11 @@ RUN yarn turbo run build --scope=bot --include-dependencies --no-deps
 RUN npm prune --production
 
 # Start the app
-# use installer so we can filter out the unbuilt deps
-FROM base as runner
-USER node
+# Copy over `build/index.js` 
+FROM base AS runner
+RUN apk add --no-cache dumb-init
 WORKDIR /app
-COPY --chown=node:node --from=installer /app/node_modules ./node_modules
-COPY --chown=node:node --from=builder /app/apps/bot/build/ .
-RUN ls -al
-CMD ["node", "bot.js"]
+USER node
+COPY --chown=node:node --from=builder /app/apps/bot/build/index.js ./index.js
+ENV NODE_ENV production
+CMD ["dumb-init", "node", "index.js"]

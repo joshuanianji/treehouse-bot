@@ -1,5 +1,6 @@
 import { GuildMember, Role } from "discord.js";
-import { add, remove } from "./roles/index";
+import { add } from './add';
+import { remove } from './remove';
 import { SlashCommands } from "../../../interfaces/slashCommands";
 import { slashCommandTypes } from "../../../globals";
 

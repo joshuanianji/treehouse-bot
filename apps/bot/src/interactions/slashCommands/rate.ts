@@ -1,5 +1,5 @@
-import { MessageActionRow, MessageSelectMenu } from "discord.js";
-import { SlashCommands } from "../../../interfaces/slashCommands";
+import { MessageActionRow, MessageSelectMenu } from 'discord.js';
+import { SlashCommands } from '../../interfaces/slashCommands'
 
 export const slashCommand: SlashCommands = {
     // Note aliases are optional
@@ -39,6 +39,6 @@ export const slashCommand: SlashCommands = {
                     ])
             );
 
-        return intr.reply({ components: [row], content: "Rate me!" } );
+        return intr.reply({ components: [row], content: "Rate me!" });
     }
 };
