@@ -57,11 +57,12 @@ jobs:
 
       - name: ✅ Run Tests
         run: yarn --cwd apps/bot test
-  
+
   run-docker-imgs:
     name: 🐳 Docker Images
     environment: dev
     runs-on: ubuntu-latest
+    steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
 
@@ -69,7 +70,7 @@ jobs:
         run: |
           echo "{{ secrets.BOT_CONFIG }}" > bot-config.yml
           echo "{{ secrets.SERVER_CONFIG }}" > server-config.yml
-      
+
       - name: Build the Docker Image
         run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 
