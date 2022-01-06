@@ -19,7 +19,7 @@ import { server } from 'custom-types'
  */
 export const checkMsg = async (msg: Message): Promise<Either<string, Message>> => {
     if (!msg.reference || msg.type !== 'REPLY') {
-        return left('Message is not a reply');
+        return left('You need to reply to a message to create an NFT of that message');
     }
 
     if (!msg.reference.messageId) {

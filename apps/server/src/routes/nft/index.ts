@@ -1,6 +1,7 @@
 import express from 'express'
 import { Request, Response, } from 'express';
 import { parseBody } from './../../middleware/parseBody';
+import { parseQuery } from './../../middleware/parseQuery';
 import { Config } from './../../util/supabase';
 import * as i from 'io-ts'
 import { NFT } from 'custom-types';
@@ -10,10 +11,43 @@ import { NFT } from 'custom-types';
 
 const router = express.Router()
 
-
-router.get('/', async (req, res) => {
+// get all NFTs from one person
+const UserIDQuery = i.partial({
+    userId: i.string
+})
+router.get('/', parseQuery(UserIDQuery), async (req, res) => {
     try {
-        res.send('NFT root')
+        if (!req.query.userId) {
+            // send the default response if no userId is provided
+            return res.send('NFT root')
+        }
+
+        // get the userId from the query
+        const userId = req.query.userId
+        const { supabase, tableName } = Config.getSupabaseClient()
+        // retrieve the NFTs from the database
+
+        const { data, error } = await supabase
+            .from(tableName)
+            .select('id, createdAt, fullHash, ownedBy, type')
+            .eq('ownedBy', userId)
+            .order('createdAt', { ascending: false })
+            .limit(5);
+
+        if (error) {
+            return res.status(500).send({
+                code: 'UNKNOWN_ERROR',
+                title: 'Error retrieving NFTs',
+                detail: JSON.stringify(error)
+            })
+        }
+
+        // send the NFTs to the client
+        return res.status(200).json({
+            count: data.length,
+            nfts: data
+        })
+
     } catch (error) {
         console.log(error)
         res.send(error)
