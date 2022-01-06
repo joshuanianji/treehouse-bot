@@ -2,6 +2,7 @@ import { Command } from "../../interfaces";
 import { MessageEmbed } from "discord.js";
 import { createNFT } from './createNFT';
 import { listNFTs } from './listNFT'
+import { getInfo } from './info';
 
 export const command: Command = {
     description: "Creates an NFT of the replied message",
@@ -11,7 +12,7 @@ export const command: Command = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     run: async (client, msg, _args) => {
         if (_args.length === 0) {
-            return msg.channel.send('Please provide an argument (valid arguments are: create, list, penis)');
+            return msg.channel.send('Please provide an argument (valid arguments are: create, list, info, penis)');
         }
         try {
             switch (_args[0]) {
@@ -28,10 +29,17 @@ export const command: Command = {
                         return msg.reply(resNfts.left);
                     }
                     break;
+                case 'info':
+                    await msg.channel.sendTyping();
+                    const info = await getInfo(client, msg, _args[1]);
+                    if (info._tag === 'Left') {
+                        return msg.reply(info.left);
+                    }
+                    break;
                 case 'penis':
                     return msg.channel.send('penis');
                 default:
-                    return msg.channel.send('Unknown argument (valid arguments are: create, list, penis)');
+                    return msg.channel.send('Unknown argument (valid arguments are: create, list, info, penis)');
             }
         } catch (e) {
             console.error(e);

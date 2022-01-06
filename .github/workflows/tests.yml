@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feat-*
     paths:
       - ".github/workflows/tests.yml" # this file
       - "yarn.lock"
@@ -72,7 +71,9 @@ jobs:
           echo "{{ secrets.SERVER_CONFIG }}" > server-config.yml
 
       - name: Build the Docker Image
-        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d
+          sleep 20
 
       - name: Run `docker image ls`
         run: docker image ls

@@ -1,15 +1,15 @@
 import express from 'express'
-import { Request, Response, } from 'express';
 import { parseBody } from './../../middleware/parseBody';
 import { parseQuery } from './../../middleware/parseQuery';
 import { Config } from './../../util/supabase';
 import * as i from 'io-ts'
 import { NFT } from 'custom-types';
+import * as info from './info'
 
 // any other routes imports would go here
 
-
 const router = express.Router()
+router.use('/info', info.router);
 
 // get all NFTs from one person
 const UserIDQuery = i.partial({
@@ -113,4 +113,5 @@ router.post('/', parseBody(NFT), async (req, res) => {
     }
 })
 
-export { router }
+export { router };
+
