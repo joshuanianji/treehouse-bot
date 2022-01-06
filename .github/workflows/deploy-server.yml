@@ -1,4 +1,4 @@
-name: Create & Upload Server Image to GHCR
+name: Deploy Server
 
 on:
   push:
@@ -14,13 +14,14 @@ on:
       - ".github/actions/update-docker-image-prod/**" # Dependency
 
 jobs:
-  build:
+  build-and-deploy:
+    name: Build & Upload to GHCR
     runs-on: ubuntu-latest
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
 
-      - name: Build and deploy Server
+      - name: Build and Upload Server Image to GHCR
         # Directory name only
         uses: ./.github/actions/publish-docker-image
         with:
@@ -28,9 +29,9 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
 
   update-server-image:
-    name: Update Docker Image in Production
+    name: Update Docker Image in Prod
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-and-deploy
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2

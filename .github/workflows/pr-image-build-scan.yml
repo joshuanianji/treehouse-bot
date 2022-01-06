@@ -1,4 +1,4 @@
-name: Build and Scan Image on PR
+name: Scan Image PR
 
 on:
   pull_request:
@@ -26,7 +26,7 @@ jobs:
           service: "bot"
 
   build-scan-server:
-    name: Server - Build
+    name: Server - Scan
     runs-on: ubuntu-latest
     steps:
       - name: 🏁 Checkout repo
@@ -34,7 +34,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Build and Scan Server
+      - name: Scan Server
         # Directory name only
         uses: ./.github/actions/scan-docker-image
         with:
