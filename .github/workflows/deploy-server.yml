@@ -20,11 +20,7 @@ jobs:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
 
-      # Is this necessary?
-      - name: ✏️ Write bot-config.yml
-        run: echo "{{ secrets.SERVER_CONFIG_YML }}" > server-config.yml
-
-      - name: Build and deploy Bot
+      - name: Build and deploy Server
         # Directory name only
         uses: ./.github/actions/publish-docker-image
         with:
@@ -46,7 +42,7 @@ jobs:
 
       - name: Info about Image
         run: |
-          echo "Image name: Bot"
+          echo "Image name: Server"
           skopeo inspect docker://ghcr.io/joshuanianji/treehouse-bot.server:latest | jq '.Name,.Created,.Digest'
 
       - name: Update Docker Image in Prod

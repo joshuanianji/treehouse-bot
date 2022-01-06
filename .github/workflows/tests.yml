@@ -1,4 +1,4 @@
-name: Test workflow
+name: Tests
 
 on:
   push:
@@ -22,7 +22,7 @@ on:
 
 jobs:
   test-server:
-    name: 🧪 Test Server
+    name: 🧪 Server
     runs-on: ubuntu-latest
     steps:
       - name: 🏁 Checkout repo
@@ -40,7 +40,7 @@ jobs:
         run: yarn --cwd apps/server test
 
   test-bot:
-    name: 🤖 Test Bot
+    name: 🤖 Bot
     runs-on: ubuntu-latest
     steps:
       - name: 🏁 Checkout repo
@@ -56,3 +56,21 @@ jobs:
 
       - name: ✅ Run Tests
         run: yarn --cwd apps/bot test
+  
+  run-docker-imgs:
+    name: 🐳 Docker Images
+    environment: dev
+    runs-on: ubuntu-latest
+      - name: 🏁 Checkout repo
+        uses: actions/checkout@v2
+
+      - name: ✏️ Write config files
+        run: |
+          echo "{{ secrets.BOT_CONFIG }}" > bot-config.yml
+          echo "{{ secrets.SERVER_CONFIG }}" > server-config.yml
+      
+      - name: Build the Docker Image
+        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+
+      - name: Run `docker image ls`
+        run: docker image ls

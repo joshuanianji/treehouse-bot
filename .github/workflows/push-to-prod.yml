@@ -13,6 +13,7 @@ jobs:
   build-and-deploy:
     name: Build & Deploy
     runs-on: ubuntu-latest
+    environment: prod
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
@@ -24,8 +25,8 @@ jobs:
 
       - name: 🔧 Add Config files to /out
         run: |
-          echo "{{ secrets.BOT_CONFIG_YML }}" > bot-config.yml
-          echo "{{ secrets.SERVER_CONFIG_YML }}" > server-config.yml
+          echo "{{ secrets.BOT_CONFIG }}" > bot-config.yml
+          echo "{{ secrets.SERVER_CONFIG }}" > server-config.yml
 
       - name: 🚀 Deploy with RSync
         uses: burnett01/rsync-deployments@5.2
