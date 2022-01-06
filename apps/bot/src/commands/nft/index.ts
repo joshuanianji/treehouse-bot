@@ -2,6 +2,7 @@ import { Command } from "../../interfaces";
 import { MessageEmbed } from "discord.js";
 import { createNFT } from './createNFT';
 import { listNFTs } from './listNFT'
+import { getInfo } from './info';
 
 export const command: Command = {
     description: "Creates an NFT of the replied message",
@@ -26,6 +27,13 @@ export const command: Command = {
                     const resNfts = await listNFTs(msg, msg.author.id);
                     if (resNfts._tag === 'Left') {
                         return msg.reply(resNfts.left);
+                    }
+                    break;
+                case 'info':
+                    await msg.channel.sendTyping();
+                    const info = await getInfo(client, msg, _args[1]);
+                    if (info._tag === 'Left') {
+                        return msg.reply(info.left);
                     }
                     break;
                 case 'penis':
