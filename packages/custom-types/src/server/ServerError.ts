@@ -3,7 +3,6 @@ import * as i from 'io-ts';
 import { sparseType, optional } from 'io-ts-extra';
 import { Option, none, fromEither } from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/function';
-import { left } from 'fp-ts/lib/Separated';
 
 const ServerError = sparseType({
     code: i.string,

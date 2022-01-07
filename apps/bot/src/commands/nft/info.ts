@@ -12,7 +12,6 @@ export const getNFT = async (id: string): Promise<Either<string, NFT>> => {
     try {
         const server_host = process.env.SERVER_HOST || 'http://localhost:3001';
         const { data } = await axios.get(`${server_host}/nft/info?id=${id}`);
-        console.log('NFT Upload: ', data);
 
         return pipe(
             NFT.decode(data.data),
@@ -58,7 +57,7 @@ export const nftToEmbed = async (client: ExtendedClient, nft: NFT): Promise<Mess
         .setDescription(`Created at: ${new Date(nft.createdAt).toLocaleString()}`)
         .addField('Full Hash:', nft.fullHash, false)
         .setFooter({
-            text: 'Created by Joshua Ji and Curtis Kan. DM us for any questions!',
+            text: 'https://github.com/joshuanianji/treehouse-bot',
             iconURL: client.user?.avatarURL() || undefined
         });
 
@@ -72,9 +71,9 @@ export const nftToEmbed = async (client: ExtendedClient, nft: NFT): Promise<Mess
     } else {
         const { truncated, str } = truncate(nft.type.content, 900); // max is technically 1024 chars for a field value, but we're being safe
         if (truncated) {
-            embed.addFields([{ name: 'Type: `Text`', value: '**NOTE: String exceeds 1000 char length, displaying truncated string.**\n\n' + str + '\n' }]);
+            embed.addFields([{ name: 'Type: `Text`', value: `**NOTE: String exceeds 1000 char length, displaying truncated string.**\n\n"${str}"\n'` }]);
         } else {
-            embed.addFields([{ name: 'Type: `Text`', value: str }]);
+            embed.addFields([{ name: 'Type: `Text`', value: `"${str}"` }]);
         }
     }
 
