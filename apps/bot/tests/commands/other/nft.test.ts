@@ -151,7 +151,7 @@ describe('NFT Command', () => {
                 mockRepliedTo.attachments?.set('a', mockMessageAttachment as MessageAttachment);
                 const res = getNFTType(mockRepliedTo as Message);
                 expect(isLeft(res)).toBe(true);
-                expect(res).toMatchObject({ left: 'Attachment type text/plain is not supported' });
+                expect(res).toMatchObject({ left: 'Attachment type `text/plain` is not supported' });
             })
             it('fails when the size is too big', () => {
                 mockMessageAttachment.size = 1000000000000000;
