@@ -57,7 +57,7 @@ export const listNFTs = async (msg: Message, userId: string): Promise<Either<str
 
         // possibly add "truncated" field
         if (count > limit) {
-            embed.addField(`${count} Total NFTs`, `Truncated to the latest ${limit}`)
+            embed.addField(`${count} Total NFTs`, `Truncated to the show latest ${limit} NFTs.`)
         } else {
             embed.addField(`${count} Total NFTs`, 'We are currently making a web UI to view your NFTs. Stay tuned!')
         }
