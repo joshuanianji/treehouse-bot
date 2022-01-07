@@ -72,7 +72,7 @@ router.get('/', parseQuery(UserIDQuery), async (req, res) => {
             limit: sizeLimit,
             nfts: nftData
         }
-        console.log('Returning NFTs: ', returnVal)
+        console.log('Returning NFTs: ', { count: returnVal.count, limit: returnVal.limit, nftsLength: returnVal.nfts.length })
         return res.status(200).json(returnVal)
 
     } catch (error) {
