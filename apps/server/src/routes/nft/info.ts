@@ -3,20 +3,21 @@ import { Config } from './../../util/supabase';
 import express from 'express';
 import * as i from 'io-ts';
 import { NFT } from 'custom-types';
+import { formatValidationErrors } from 'io-ts-reporters'
 
 // root route: '/nft/info'
 const router = express.Router()
 
 // returns the NFT info, given the NFT id or hash
 const NftIDQuery = i.type({
-    id: i.string
+    id: i.string,
 })
 router.get('/', parseQuery(NftIDQuery), async (req, res) => {
     const { id } = req.query;
-    // id is the ten-element NFT id
-    const { supabase, tableName } = Config.getSupabaseClient()
-    // retrieve the NFTs from the database
 
+    const { supabase, tableName } = Config.getSupabaseClient()
+
+    // retrieve the NFTs from the database
     const { data, error } = await supabase
         .from(tableName)
         .select('*')
@@ -43,7 +44,7 @@ router.get('/', parseQuery(NftIDQuery), async (req, res) => {
     const parsed = NFT.decode(unparsedNFT);
     if (parsed._tag === 'Left') {
         const err = parsed.left;
-        console.log('Error parsing NFT', { err })
+        console.log('Error parsing NFT', formatValidationErrors(err));
         return res.status(500).send({
             code: 'PARSING_ERROR',
             title: 'Error parsing NFT',
@@ -51,7 +52,6 @@ router.get('/', parseQuery(NftIDQuery), async (req, res) => {
         })
     } else {
         const nft: NFT = parsed.right;
-        // send the NFTs to the client
         return res.status(200).json({
             data: nft
         })

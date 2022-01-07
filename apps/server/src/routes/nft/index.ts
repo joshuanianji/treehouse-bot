@@ -5,6 +5,7 @@ import { Config } from './../../util/supabase';
 import * as i from 'io-ts'
 import { NFT } from 'custom-types';
 import * as info from './info'
+import { UserNFTInfo } from 'custom-types/src/server/info';
 
 // any other routes imports would go here
 
@@ -13,7 +14,8 @@ router.use('/info', info.router);
 
 // get all NFTs from one person
 const UserIDQuery = i.partial({
-    userId: i.string
+    userId: i.string,
+    limit: i.number,
 })
 router.get('/', parseQuery(UserIDQuery), async (req, res) => {
     try {
@@ -22,31 +24,56 @@ router.get('/', parseQuery(UserIDQuery), async (req, res) => {
             return res.send('NFT root')
         }
 
-        // get the userId from the query
-        const userId = req.query.userId
+        const { userId, limit } = req.query
+        const sizeLimit = limit || 5 // default to 5 if no limit is provided
+
         const { supabase, tableName } = Config.getSupabaseClient()
         // retrieve the NFTs from the database
 
-        const { data, error } = await supabase
+        const nfts = supabase
             .from(tableName)
-            .select('id, createdAt, fullHash, ownedBy, type')
+            .select('id, createdAt, fullHash, ownedBy, type, msgLink, msgLinkValid, from')
             .eq('ownedBy', userId)
             .order('createdAt', { ascending: false })
-            .limit(5);
+            .limit(sizeLimit);
 
-        if (error) {
+        // retrieve the NFTs owned by the user
+        const countNFTs = supabase
+            .from(tableName)
+            .select('id', { count: 'exact' })
+            .eq('ownedBy', userId);
+
+        const [
+            { data: nftData, error: nftError },
+            { data: countData, error: countError }
+        ] = await Promise.all([nfts, countNFTs]);
+
+        if (nftError) {
+            console.log('Error retrieving NFTs: ', nftError);
             return res.status(500).send({
                 code: 'UNKNOWN_ERROR',
                 title: 'Error retrieving NFTs',
-                detail: JSON.stringify(error)
+                detail: JSON.stringify(nftError)
+            })
+        }
+
+        if (countError) {
+            console.log('Error Counting NFTs: ', countError)
+            return res.status(500).send({
+                code: 'UNKNOWN_ERROR',
+                title: 'Error Counting NFTs',
+                detail: JSON.stringify(countError)
             })
         }
 
         // send the NFTs to the client
-        return res.status(200).json({
-            count: data.length,
-            nfts: data
-        })
+        const returnVal: UserNFTInfo = {
+            count: countData.length,
+            limit: sizeLimit,
+            nfts: nftData
+        }
+        console.log('Returning NFTs: ', returnVal)
+        return res.status(200).json(returnVal)
 
     } catch (error) {
         console.log(error)
@@ -114,4 +141,3 @@ router.post('/', parseBody(NFT), async (req, res) => {
 })
 
 export { router };
-

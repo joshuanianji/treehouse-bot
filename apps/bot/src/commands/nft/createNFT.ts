@@ -41,7 +41,6 @@ export const checkMsg = async (msg: Message): Promise<Either<string, Message>> =
 
     // By this point, the message is either a text message or contains an attachment (or both)
     // This means it doesn't contain embeds or other unsupported content
-
     return right(repliedTo);
 }
 
@@ -56,9 +55,7 @@ const uploadNFT = async (nft: NFT): Promise<Option<string>> => {
     try {
         const server_host = process.env.SERVER_HOST || 'http://localhost:3001';
         const { data } = await axios.post(`${server_host}/nft`, NFT.encode(nft), {
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: { 'Content-Type': 'application/json' }
         });
         console.log('Uploaded nft to server: ', nft.id);
         return none;
