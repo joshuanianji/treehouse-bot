@@ -1,4 +1,5 @@
 [build]
 base = "apps/web/"
 command = "yarn build"
+environment = {VITE_API_ENDPOINT = "http://147.182.230.102:3001"}
 publish = "build"

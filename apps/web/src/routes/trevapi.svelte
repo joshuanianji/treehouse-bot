@@ -1,11 +1,13 @@
 <script lang="ts">
+  import { variables } from "$lib/variables";
+
   let imgText = "";
   // I would rather use fp-ts Option type, but Svelte does not have render functions so it's kinda hard to conditionally render it
   let imgSrc: string | null = null;
 
   const fetchImage = async () => {
     const response = await fetch(
-      `http://localhost:3001/trev?text=${encodeURI(imgText)}`
+      `${variables.apiEndpoint}/trev?text=${encodeURI(imgText)}`
     );
     const { data } = await response.json();
     imgSrc = data;
