@@ -4,6 +4,7 @@ import express from 'express';
 import * as i from 'io-ts';
 import { NFT } from 'custom-types';
 import { formatValidationErrors } from 'io-ts-reporters'
+import chalk from 'chalk';
 
 // root route: '/nft/info'
 const router = express.Router()
@@ -13,6 +14,7 @@ const NftIDQuery = i.type({
     id: i.string,
 })
 router.get('/', parseQuery(NftIDQuery), async (req, res) => {
+    console.log(`${chalk.green('[NFT]')} ${chalk.cyan('GET')} ${chalk.yellow('/info')}`)
     const { id } = req.query;
 
     const { supabase, tableName } = Config.getSupabaseClient()

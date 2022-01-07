@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^1.29.1",
+    "chalk": "4.1.2",
     "cors": "^2.8.5",
     "custom-types": "*",
     "dotenv": "^10.0.0",
