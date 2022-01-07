@@ -33,6 +33,10 @@ jobs:
         with:
           node-version: "16"
 
+      - name: ✏️ Write Server Config File
+        run: |
+          echo "{{ secrets.SERVER_CONFIG }}" > server-config.yml
+
       - name: 📌 Install Dependencies
         run: yarn install --pure-lockfile
 
@@ -50,10 +54,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "16"
-
-      - name: ✏️ Write Server Config File
-        run: |
-          echo "{{ secrets.SERVER_CONFIG }}" > server-config.yml
 
       - name: 📌 Install Dependencies
         run: yarn install --pure-lockfile
