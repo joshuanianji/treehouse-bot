@@ -12,6 +12,7 @@ interface Config {
     dev: boolean
 }
 
+
 class Config implements Config {
     // the bot-config.yml should exist in the same directory as docker-compose.yml
     private static readonly _configLocation = "./../../server-config.yml";
@@ -37,7 +38,7 @@ class Config implements Config {
     }
 
     public static getSupabaseClient = (): { supabase: SupabaseClient, tableName: string } => {
-        const { supabase: config } = Config.getConfig();
+        const { supabase: config } = Cache;
 
         return { supabase: createClient(config.url, config.api_key), tableName: config.table };
     }
@@ -47,5 +48,8 @@ class Config implements Config {
         return supabase.table;
     }
 }
+
+
+const Cache: Config = Config.getConfig();
 
 export { Config }
