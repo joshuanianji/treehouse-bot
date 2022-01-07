@@ -54,7 +54,7 @@ export const checkMsg = async (msg: Message): Promise<Either<string, Message>> =
  * 
  * @param {NFT} nft the NFT to upload
  */
-const uploadNFT = async (msg: Message, nft: NFT): Promise<Either<ErrorWithContext<Message>, void>> => {
+const uploadNFT = async (nft: NFT): Promise<Either<ErrorWithContext<Message>, void>> => {
     try {
         const server_host = process.env.SERVER_HOST || 'http://localhost:3001';
         await axios.post(`${server_host}/nft`, NFT.encode(nft), {
@@ -69,20 +69,25 @@ const uploadNFT = async (msg: Message, nft: NFT): Promise<Either<ErrorWithContex
             fromOption(() => 'Unknown error'), // left means the error is not from the server
             fold(
                 () => {
-                    console.error('Unknown error uploading NFT!', err);
-                    return left(() => Promise.resolve('Unknown error uploading NFT!'));
+                    console.error('Error is not a server error, treating it as unknown.', err);
+                    return left(() => Promise.resolve('Unknown (non-server) error uploading NFT!'));
                 },
                 error => {
                     if (error.code === 'NFT_ALREADY_OWNED') {
                         return left(() => Promise.resolve(`You already own this NFT! \`ID: ${nft.id}\``));
                     } else if (error.code === 'NFT_ALREADY_OWNED_BY_OTHER') {
                         const getError = async (msg: Message) => {
-                            const ownedBy = await msg.client.users.fetch(error.details.ownedBy);
-                            return `${ownedBy.username} already owns this NFT! \`ID: ${nft.id}\``
+                            if (error.details?.ownedBy) {
+                                const ownedBy = await msg.client.users.fetch(error.details?.ownedBy);
+                                return `${ownedBy.username} already owns this NFT! \`ID: ${nft.id}\``
+                            } else {
+                                console.error('Error.details does not exist (weird!)', error)
+                                return `This NFT is already owned by someone else, but I am unable to fetch the user at the moment. \`ID: ${nft.id}\``
+                            }
                         }
                         return left(getError);
                     } else {
-                        return left(() => Promise.resolve(`Unknown error uploading NFT!`));
+                        return left(() => Promise.resolve(`Unknown Server error uploading NFT!\n${error.code}`));
                     }
                 }
             )
@@ -163,7 +168,7 @@ export const createNFT = async (msg: Message): Promise<Either<string, void>> => 
         creatingMsg.edit(`Uploading NFT... (id: ${nft.id})`);
 
         // upload NFT to server
-        const mErr = await uploadNFT(msg, nft);
+        const mErr = await uploadNFT(nft);
         if (mErr._tag === 'Left') {
             const err = await mErr.left(msg);
             creatingMsg.edit(`Error uploading NFT: ${err}`);

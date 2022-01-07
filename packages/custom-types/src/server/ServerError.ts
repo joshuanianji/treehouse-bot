@@ -8,7 +8,7 @@ const ServerError = sparseType({
     code: i.string,
     title: i.string,
     message: optional(i.string),
-    details: i.record(i.string, i.string)
+    details: optional(i.record(i.string, i.string))
 })
 
 type ServerError = i.TypeOf<typeof ServerError>
