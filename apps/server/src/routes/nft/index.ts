@@ -112,6 +112,9 @@ router.post('/', parseBody(NFT), async (req, res) => {
                     return res.status(400).json({
                         code: 'NFT_ALREADY_OWNED_BY_OTHER',
                         title: 'NFT is already owned by someone else!',
+                        details: {
+                            ownedBy: remoteNFT.ownedBy
+                        }
                     })
                 }
             } else {
@@ -124,7 +127,7 @@ router.post('/', parseBody(NFT), async (req, res) => {
             }
         }
 
-        console.log('NFT upload success! ', data)
+        console.log('NFT upload success!')
         res.status(200).json({
             title: 'NFT upload success!',
             data: data
