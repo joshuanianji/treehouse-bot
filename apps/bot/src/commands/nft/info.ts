@@ -71,7 +71,7 @@ export const nftToEmbed = async (client: ExtendedClient, nft: NFT): Promise<Mess
     } else {
         const { truncated, str } = truncate(nft.type.content, 900); // max is technically 1024 chars for a field value, but we're being safe
         if (truncated) {
-            embed.addFields([{ name: 'Type: `Text`', value: `**NOTE: String exceeds 1000 char length, displaying truncated string.**\n\n"${str}"\n'` }]);
+            embed.addFields([{ name: 'Type: `Text`', value: `**NOTE: String exceeds 1000 char length, displaying truncated string.**\n\n"${str}"\n` }]);
         } else {
             embed.addFields([{ name: 'Type: `Text`', value: `"${str}"` }]);
         }
