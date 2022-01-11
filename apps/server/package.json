@@ -22,7 +22,7 @@
     "@vercel/ncc": "0.33.1",
     "custom-types": "*",
     "jest": "27.4.7",
-    "supertest": "6.2.0",
+    "supertest": "6.2.1",
     "ts-jest": "27.1.2",
     "typescript": "4.5.4"
   },
