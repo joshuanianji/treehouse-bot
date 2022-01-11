@@ -9,6 +9,7 @@
   const navItems = [
     { title: "Home", link: "/" },
     { title: "TrevAPI", link: "/trevapi" },
+    { title: "NFTs", link: "/nfts" },
   ];
 
   const { page } = getStores();
@@ -81,7 +82,7 @@
         class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start"
       >
         <div class="flex-shrink-0 flex items-center">
-          <img class="block h-8 w-auto" src="squat.png" alt="Workflow" />
+          <img class="block h-8 w-auto" src="/squat.png" alt="Workflow" />
         </div>
         <div class="hidden sm:block sm:ml-6">
           <div class="flex space-x-4">
