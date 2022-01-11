@@ -6,7 +6,6 @@ import { assetPath } from './../util/assetPath';
 import { sparseType, optional } from 'io-ts-extra';
 import * as i from 'io-ts'
 import { parseQuery } from './../middleware/parseQuery';
-import chalk from 'chalk';
 // any other routes imports would go here
 
 
@@ -17,7 +16,6 @@ const Query = sparseType({
 })
 
 router.get('/', parseQuery(Query), async (req, res) => {
-    console.log(`${chalk.green('[TREV]')} ${chalk.cyan('GET')} ${chalk.yellow('/')}`)
     const text = req.query.text || 'Hello World!';
 
     const trev1 = await Jimp.read(assetPath + '/trevor1.jpg');

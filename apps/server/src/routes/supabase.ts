@@ -3,8 +3,6 @@ import { Config } from '../util/supabase';
 import { sparseType, optional } from 'io-ts-extra';
 import * as i from 'io-ts';
 import { parseQuery } from '../middleware/parseQuery';
-import chalk from 'chalk';
-
 
 // any other routes imports would go here
 
@@ -15,7 +13,6 @@ const Query = sparseType({
 
 const router = express.Router()
 router.get('/', parseQuery(Query), async (req, res) => {
-    console.log(`${chalk.green('[SUPABASE]')} ${chalk.cyan('GET')} ${chalk.yellow('/')}`)
     try {
         const { supabase, tableName } = Config.getSupabaseClient();
 

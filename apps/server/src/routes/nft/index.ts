@@ -6,7 +6,6 @@ import * as i from 'io-ts'
 import { NFT } from 'custom-types';
 import * as info from './info'
 import { UserNFTInfo } from 'custom-types/src/server/info';
-import chalk from 'chalk';
 
 // any other routes imports would go here
 
@@ -14,22 +13,19 @@ const router = express.Router()
 router.use('/info', info.router);
 
 // get all NFTs from one person
-// a size limit of 0 means no limit
-// should I move it to a /user route?
 const UserIDQuery = i.partial({
     userId: i.string,
     limit: i.number,
 })
 router.get('/', parseQuery(UserIDQuery), async (req, res) => {
-    console.log(`${chalk.green('[NFT]')} ${chalk.cyan('GET')}`)
     try {
         if (!req.query.userId) {
             // send the default response if no userId is provided
             return res.send('NFT root')
         }
 
-        const { userId } = req.query
-        const sizeLimit = (req.query.limit || 5) // default to 5 if no limit is provided
+        const { userId, limit } = req.query
+        const sizeLimit = limit || 5 // default to 5 if no limit is provided
 
         const { supabase, tableName } = Config.getSupabaseClient()
         // retrieve the NFTs from the database
@@ -39,10 +35,7 @@ router.get('/', parseQuery(UserIDQuery), async (req, res) => {
             .select('id, createdAt, fullHash, ownedBy, type, msgLink, msgLinkValid, from')
             .eq('ownedBy', userId)
             .order('createdAt', { ascending: false })
-
-        if (sizeLimit > 0) {
-            nfts.limit(sizeLimit);
-        }
+            .limit(sizeLimit);
 
         // retrieve the NFTs owned by the user
         const countNFTs = supabase
@@ -90,7 +83,6 @@ router.get('/', parseQuery(UserIDQuery), async (req, res) => {
 
 // uploads an NFT
 router.post('/', parseBody(NFT), async (req, res) => {
-    console.log(`${chalk.green('[NFT]')} ${chalk.cyan('POST')}`)
     try {
         const nft = req.body;
         const { supabase, tableName } = Config.getSupabaseClient()
