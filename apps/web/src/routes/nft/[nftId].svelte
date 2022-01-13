@@ -5,7 +5,7 @@
   import { sequenceT } from "fp-ts/lib/Apply";
   import { pipe } from "fp-ts/lib/function";
   import { bimap } from "fp-ts/lib/Tuple";
-  import * as E from "fp-ts/Either";
+  import * as E from "fp-ts/lib/Either";
 
   const load: Load = async ({ params, fetch, session, stuff }) => {
     console.log("load", params, "session", session);
