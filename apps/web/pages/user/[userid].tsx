@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { formatValidationErrors } from 'io-ts-reporters';
 import * as TE from 'fp-ts/TaskEither';
 import { string } from 'fp-ts';
-import { DiscordUser, NFT, server } from 'custom-types';
+import { DiscordUser, NFT, ServerError, fromDecodeError } from 'custom-types';
 import { defaultAxiosErrorMap, fetchAndDecode, MapAxiosError } from 'utils';
 import { GetServerSideProps } from 'next';
 import { Range, RangeParser } from '@/lib/RangeParser';
@@ -17,7 +17,7 @@ import { UserNFTInfo } from 'custom-types/src/server';
 
 // Props and Types
 
-type Props = E.Either<server.ServerError, {
+type Props = E.Either<ServerError, {
     range: Range;
     nfts: NFT[];
     user: DiscordUser;
@@ -52,7 +52,7 @@ export const getServerSideProps: GetServerSideProps<Props, Query> = async (conte
     const result: Props = await pipe(
         RangeParser.decode(range),
         TE.fromEither,
-        TE.mapLeft(server.fromDecodeError('range')),
+        TE.mapLeft(fromDecodeError('range')),
         TE.bindTo('range'),
         TE.bind('nftRes', ({ range }) =>
             fetchAndDecode(

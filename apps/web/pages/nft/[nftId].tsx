@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { DiscordUser, NFT, server } from 'custom-types';
+import { DiscordUser, NFT, ServerError } from 'custom-types';
 import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/TaskEither';
@@ -8,7 +8,7 @@ import NftCard from '@/components/NftCard';
 import { fetchAndDecode, MapAxiosError, defaultAxiosErrorMap } from 'utils';
 import ViewError from '@/components/ViewError';
 
-type Props = E.Either<server.ServerError, {
+type Props = E.Either<ServerError, {
     nft: NFT;
     user: DiscordUser;
 }>
