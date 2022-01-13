@@ -6,7 +6,7 @@ import { pipe } from "fp-ts/lib/function";
 import { bimap } from "fp-ts/lib/Tuple";
 import * as E from "fp-ts/lib/Either";
 import * as TE from 'fp-ts/TaskEither';
-import NftCard from './../components/NftCard';
+import NftCard from '@/components/NftCard';
 import { AxiosError } from "axios";
 import { fetchAndDecode, MapAxiosError, defaultAxiosErrorMap } from 'utils';
 

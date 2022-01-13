@@ -35,7 +35,7 @@ export type MapAxiosError = (reason: AxiosError) => server.ServerError;
  * 
  * @param url the URL to fetch (absolute)
  * @param decoder the io-ts decode to decode the response
- * @param checkResponse a function that can injext custom checks on the AxiosResponse
+ * @param axiosErrorMap An optional function to convert AxiosErrors to serverErrors
  * @returns TaskEither<Error, T>
  */
 export const fetchAndDecode = <T>(url: string, decoder: i.Decoder<unknown, T>, axiosErrorMap?: MapAxiosError): TE.TaskEither<server.ServerError, T> => {
