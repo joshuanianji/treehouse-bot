@@ -3,10 +3,3 @@ export { NFT, NFTType, AllowedContentTypes, getMsgLink } from './nft';
 export type { ErrorWithContext } from './Error';
 export type { TrevResponse } from './Trev';
 export { DiscordUser } from './Discord/user';
-
-interface Test {
-    a: string;
-}
-
-
-export type { Test };

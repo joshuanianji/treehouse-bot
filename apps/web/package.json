@@ -11,8 +11,10 @@
     "io-ts": "^2.2.16",
     "io-ts-reporters": "^2.0.0",
     "next": "latest",
+    "next-transpile-modules": "^9.0.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "utils": "*"
   },
   "devDependencies": {
     "@types/node": "17.0.4",

@@ -42,7 +42,7 @@ router.get('/', parseQuery(UserIDQuery), async (req, res) => {
                 },
                 (user) => {
                     console.log('Successfully parsed DiscordUser', user.id);
-                    return res.status(200).send(user);
+                    return res.status(200).send({ data: user });
                 }
             )
         )
