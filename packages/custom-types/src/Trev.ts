@@ -9,4 +9,4 @@ type TrevResponse = {
     text: string // a copy of what the text was
 }
 
-export { TrevResponse }
+export type { TrevResponse }
