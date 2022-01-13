@@ -8,7 +8,7 @@ import * as E from "fp-ts/lib/Either";
 import * as TE from 'fp-ts/TaskEither';
 import NftCard from './../components/NftCard';
 import { AxiosError } from "axios";
-import { fetchAndDecode } from 'utils';
+import { fetchAndDecode, MapAxiosError, defaultAxiosErrorMap } from 'utils';
 
 type Props = {
     nft: NFT;
