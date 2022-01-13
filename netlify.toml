@@ -1,4 +1,7 @@
 [build]
-base = "apps/web/"
-command = "yarn build"
+# https://answers.netlify.com/t/monorepo-support-not-working/41360/33
+# Monorepo support a bit flaky
+base = "/"
+command = "cd apps/web && yarn build"
 environment = {VITE_API_ENDPOINT = "https://nft-server.joshuaji.com"}
+publish = "apps/web/.next/"
