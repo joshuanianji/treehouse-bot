@@ -24,8 +24,8 @@ const NFTs: React.FC = () => {
                         onChange={(e) => setNftId(e.target.value)}
                     />
                     <a
-                        className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold px-6 py-4 rounded-md inline flex-none
-      {linkValid ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}"
+                        className={'bg-indigo-500 hover:bg-indigo-700 text-white font-bold px-6 py-4 rounded-md inline flex-none'
+                            + (linkValid() ? '' : ' cursor-not-allowed opacity-50')}
                         href={linkValid() ? `/nft/${nftID}` : ''}
                     >
                         Go to NFT

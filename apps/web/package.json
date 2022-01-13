@@ -2,7 +2,7 @@
   "name": "web",
   "version": "1.0.0",
   "scripts": {
-    "dev": "next dev -p 3002",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start"
   },
