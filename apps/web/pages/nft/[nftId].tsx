@@ -14,7 +14,7 @@ type Props = E.Either<server.ServerError, {
 }>
 
 type Query = {
-    nftId: string
+    nftid: string
 }
 
 const mapAxiosError: (item: string) => MapAxiosError = (item) => (err) => {
@@ -31,14 +31,25 @@ const mapAxiosError: (item: string) => MapAxiosError = (item) => (err) => {
 
 export const getServerSideProps: GetServerSideProps<Props, Query> = async (context) => {
     const endpoint = process.env.NEXT_PUBLIC_API_ENDPOINT
-    const { nftId } = context.query;
+    const { nftid } = context.query;
 
-    console.log(`Fetching NFT with id ${nftId}`);
+    console.log(`Fetching NFT with id ${nftid}`);
 
     const result = await pipe(
-        TE.bindTo('nft')(fetchAndDecode(`${endpoint}/nft?id=${nftId}`, NFT, mapAxiosError(`NFT ${nftId}`))),
+        TE.bindTo('nft')(
+            fetchAndDecode(
+                `${endpoint}/nft?id=${nftid}`,
+                NFT,
+                mapAxiosError(`NFT ${nftid}`)
+            )
+        ),
         TE.bind('user', ({ nft }) =>
-            fetchAndDecode(`${endpoint}/user?id=${nft.ownedBy}`, DiscordUser, mapAxiosError(`Discord User ${nft.ownedBy}`))),
+            fetchAndDecode(
+                `${endpoint}/user?id=${nft.ownedBy}`,
+                DiscordUser,
+                mapAxiosError(`Discord User ${nft.ownedBy}`)
+            )
+        ),
         // any post processing of the result
         // right now I do nothing lol
         TE.map(({ nft, user }) => ({
@@ -55,7 +66,7 @@ export const getServerSideProps: GetServerSideProps<Props, Query> = async (conte
 
 const ViewNFT: React.FC<Props> = (props) => {
     const router = useRouter();
-    const { nftId } = router.query;
+    const { nftid } = router.query;
 
     return pipe(
         props,
@@ -63,7 +74,7 @@ const ViewNFT: React.FC<Props> = (props) => {
             (err) => <ViewError error={err} />,
             ({ nft, user }) => <>
                 <div className='w-full min-h-[25vh] grid place-items-center'>
-                    <h1 className='text-4xl font-extrabold'>NFT {nftId}</h1>
+                    <h1 className='text-4xl font-extrabold'>NFT {nftid}</h1>
                 </div>
                 <div className='w-full grid place-items-center pb-8'>
                     {/* wrapper around NFT Card */}

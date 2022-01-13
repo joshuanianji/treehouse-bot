@@ -16,7 +16,7 @@ const router = express.Router();
 // /nft/user?id=<userId>?limit=<limit>
 // if limit is not specified, it defaults to 10
 // if limit is 0, it returns all NFTs
-// if start and end are specified, it returns all NFTs in the range (sorted by createdAt)
+// if start and end are specified, it returns all NFTs in the range (sorted by createdAt) - NOT IMPLEMENTED YET
 
 const UserIDQuery = i.partial({
     id: i.string,
@@ -84,7 +84,7 @@ router.get('/', parseQuery(UserIDQuery), async (req, res) => {
             nfts: nftData
         }
         console.log('Returning NFTs: ', { count: returnVal.count, limit: returnVal.limit, nftsLength: returnVal.nfts.length })
-        return res.status(200).json(returnVal)
+        return res.status(200).json({ data: returnVal })
 
     } catch (error) {
         console.log(error)

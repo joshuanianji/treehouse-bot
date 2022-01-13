@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as i from 'io-ts';
+import * as D from 'io-ts/Decoder';
 import { sparseType, optional } from 'io-ts-extra';
 import { Option, none, fromEither } from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/function';
@@ -30,4 +31,12 @@ export const getServerError = (error: unknown): Option<ServerError> => {
         ServerError.decode(data),
         fromEither
     )
+}
+
+export const fromDecodeError = (decoderName: string) => (err: D.DecodeError): ServerError => {
+    return {
+        code: 'DECODE_ERROR',
+        title: `Error decoding item ${decoderName}`,
+        message: D.draw(err),
+    }
 }

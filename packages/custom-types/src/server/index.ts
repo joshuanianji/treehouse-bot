@@ -1,2 +1,2 @@
-export { getServerError, ServerError } from './ServerError';
+export * from './ServerError';
 export { UserNFTInfo } from './info';

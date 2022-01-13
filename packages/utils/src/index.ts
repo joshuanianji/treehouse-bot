@@ -49,7 +49,7 @@ export const fetchAndDecode = <T>(url: string, decoder: i.Decoder<unknown, T>, a
                 // without the explicit types below, i'll get an error for some reason...
                 TE.mapLeft<i.ValidationError[], server.ServerError>((e) => ({
                     code: 'PARSE_ERROR',
-                    title: `Error parsing ${decoder.name}`,
+                    title: `Error parsing ${decoder.name} in fetchAndDecode`,
                     message: formatValidationErrors(e).join('\n'),
                 }))
             )
