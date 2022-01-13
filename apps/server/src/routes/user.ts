@@ -50,7 +50,7 @@ router.get('/', parseQuery(UserIDQuery), async (req, res) => {
         console.log(`Error retrieving user with ID ${id}!`, e)
         return res.status(500).send({
             code: 'UNKNOWN_ERROR',
-            title: 'Unknown Error',
+            title: `Unknown Error retrieving user with ID ${id}!`,
             message: e.message,
             details: e
         })
