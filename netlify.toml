@@ -1,5 +1,5 @@
 [build]
 base = "apps/web/"
 command = "yarn build"
-environment = {VITE_API_ENDPOINT = "https://nft-server.joshuaji.com"}
+environment = {NEXT_PUBLIC_API_ENDPOINT = "https://nft-server.joshuaji.com"}
 publish = "build"
