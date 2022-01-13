@@ -1,0 +1,21 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "description": "Utility functions for the my project.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "custom-types": "*",
+    "fp-ts": "^2.11.7",
+    "io-ts": "^2.2.16",
+    "io-ts-extra": "^0.11.6",
+    "io-ts-reporters": "^2.0.0"
+  }
+}

@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import { pipe } from 'fp-ts/lib/function';
 import { fold } from 'fp-ts/lib/Either';
-import * as i from 'io-ts'
+import * as i from 'io-ts';
 import { ParamsDictionary } from 'express-serve-static-core'
 import { formatValidationErrors } from 'io-ts-reporters'
 

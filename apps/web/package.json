@@ -1,38 +1,27 @@
 {
   "name": "web",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
-    "dev": "svelte-kit dev",
-    "build": "svelte-kit build",
-    "package": "svelte-kit package",
-    "preview": "svelte-kit preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
-  "devDependencies": {
-    "@sveltejs/adapter-netlify": "next",
-    "@sveltejs/kit": "next",
-    "@tailwindcss/typography": "0.5.0",
-    "@types/cookie": "0.4.1",
-    "autoprefixer": "10.4.2",
-    "postcss": "8.4.5",
-    "svelte": "3.45.0",
-    "svelte-check": "2.2.12",
-    "svelte-preprocess": "4.10.1",
-    "tailwindcss": "3.0.12",
-    "tslib": "2.3.1",
-    "typescript": "4.5.4"
-  },
-  "type": "module",
   "dependencies": {
-    "@fontsource/fira-mono": "4.5.0",
-    "@lukeed/uuid": "2.0.0",
-    "concurrently": "^7.0.0",
-    "cookie": "0.4.1",
-    "custom-types": "*",
-    "date-fns": "^2.28.0",
     "fp-ts": "^2.11.7",
     "io-ts": "^2.2.16",
-    "io-ts-reporters": "^2.0.0"
+    "io-ts-reporters": "^2.0.0",
+    "next": "latest",
+    "next-transpile-modules": "^9.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "utils": "*"
+  },
+  "devDependencies": {
+    "@types/node": "17.0.4",
+    "@types/react": "17.0.38",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.5",
+    "tailwindcss": "^3.0.7",
+    "typescript": "4.5.4"
   }
 }

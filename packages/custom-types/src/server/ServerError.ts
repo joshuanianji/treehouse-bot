@@ -4,14 +4,14 @@ import { sparseType, optional } from 'io-ts-extra';
 import { Option, none, fromEither } from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/function';
 
-const ServerError = sparseType({
+export const ServerError = sparseType({
     code: i.string,
     title: i.string,
     message: optional(i.string),
     details: optional(i.record(i.string, i.string))
 })
 
-type ServerError = i.TypeOf<typeof ServerError>
+export type ServerError = i.TypeOf<typeof ServerError>
 
 
 // checks if the error is an instance of the server error
