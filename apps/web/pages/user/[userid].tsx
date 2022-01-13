@@ -47,10 +47,12 @@ export const getServerSideProps: GetServerSideProps<Props, Query> = async (conte
     const endpoint = process.env.NEXT_PUBLIC_API_ENDPOINT
     const { userid, range } = context.query;
 
+    let actualRange = range || '1-25'; // default to 1-25
+
     console.log(`Fetching User data with id ${userid}`);
 
     const result: Props = await pipe(
-        RangeParser.decode(range),
+        RangeParser.decode(actualRange),
         TE.fromEither,
         TE.mapLeft(fromDecodeError('range')),
         TE.bindTo('range'),
