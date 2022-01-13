@@ -1,88 +1,73 @@
 import express from 'express'
 import { parseBody } from './../../middleware/parseBody';
 import { parseQuery } from './../../middleware/parseQuery';
-import { Config } from './../../util/supabase';
+import { Config } from '../../util/config';
 import * as i from 'io-ts'
 import { NFT } from 'custom-types';
-import * as info from './info'
-import { UserNFTInfo } from 'custom-types/src/server/info';
+import * as user from './user'
+import chalk from 'chalk';
+import { formatValidationErrors } from 'io-ts-reporters';
 
 // any other routes imports would go here
 
 const router = express.Router()
-router.use('/info', info.router);
+router.use('/user', user.router);
 
-// get all NFTs from one person
-const UserIDQuery = i.partial({
-    userId: i.string,
-    limit: i.number,
+// /nft?id=<nftId>
+// returns the NFT, given the NFT id
+const NftIDQuery = i.type({
+    id: i.string,
 })
-router.get('/', parseQuery(UserIDQuery), async (req, res) => {
-    try {
-        if (!req.query.userId) {
-            // send the default response if no userId is provided
-            return res.send('NFT root')
-        }
+router.get('/', parseQuery(NftIDQuery), async (req, res) => {
+    console.log(`${chalk.green('[NFT]')} ${chalk.cyan('GET')} ${chalk.yellow('/')}`)
+    const { id } = req.query;
 
-        const { userId, limit } = req.query
-        const sizeLimit = limit || 5 // default to 5 if no limit is provided
+    const { supabase, tableName } = Config.getSupabaseClient()
 
-        const { supabase, tableName } = Config.getSupabaseClient()
-        // retrieve the NFTs from the database
+    // retrieve the NFTs from the database
+    const { data, error } = await supabase
+        .from(tableName)
+        .select('*')
+        .eq('id', id)
+        .order('createdAt', { ascending: false })
 
-        const nfts = supabase
-            .from(tableName)
-            .select('id, createdAt, fullHash, ownedBy, type, msgLink, msgLinkValid, from')
-            .eq('ownedBy', userId)
-            .order('createdAt', { ascending: false })
-            .limit(sizeLimit);
-
-        // retrieve the NFTs owned by the user
-        const countNFTs = supabase
-            .from(tableName)
-            .select('id', { count: 'exact' })
-            .eq('ownedBy', userId);
-
-        const [
-            { data: nftData, error: nftError },
-            { data: countData, error: countError }
-        ] = await Promise.all([nfts, countNFTs]);
-
-        if (nftError) {
-            console.log('Error retrieving NFTs: ', nftError);
-            return res.status(500).send({
-                code: 'UNKNOWN_ERROR',
-                title: 'Error retrieving NFTs',
-                detail: JSON.stringify(nftError)
-            })
-        }
-
-        if (countError) {
-            console.log('Error Counting NFTs: ', countError)
-            return res.status(500).send({
-                code: 'UNKNOWN_ERROR',
-                title: 'Error Counting NFTs',
-                detail: JSON.stringify(countError)
-            })
-        }
-
-        // send the NFTs to the client
-        const returnVal: UserNFTInfo = {
-            count: countData.length,
-            limit: sizeLimit,
-            nfts: nftData
-        }
-        console.log('Returning NFTs: ', { count: returnVal.count, limit: returnVal.limit, nftsLength: returnVal.nfts.length })
-        return res.status(200).json(returnVal)
-
-    } catch (error) {
-        console.log(error)
-        res.send(error)
+    if (error) {
+        return res.status(500).send({
+            code: 'SUPABASE_ERROR',
+            title: 'Error retrieving NFTs',
+            message: JSON.stringify(error)
+        })
     }
-});
+
+    if (data.length === 0) {
+        return res.status(404).send({
+            code: 'NFT_NOT_FOUND',
+            title: 'NFT not found',
+            message: `NFT with id ${id} not found`
+        })
+    }
+
+    const [unparsedNFT] = data;
+    const parsed = NFT.decode(unparsedNFT);
+    if (parsed._tag === 'Left') {
+        const err = parsed.left;
+        console.log('Error parsing NFT', formatValidationErrors(err));
+        return res.status(500).send({
+            code: 'PARSING_ERROR',
+            title: 'Error parsing NFT',
+            message: JSON.stringify(err)
+        })
+    } else {
+        const nft: NFT = parsed.right;
+        return res.status(200).json({
+            data: nft
+        })
+    }
+})
 
 // uploads an NFT
 router.post('/', parseBody(NFT), async (req, res) => {
+    console.log(`${chalk.green('[NFT]')} ${chalk.cyan('POST')} ${chalk.yellow('/')}`)
     try {
         const nft = req.body;
         const { supabase, tableName } = Config.getSupabaseClient()

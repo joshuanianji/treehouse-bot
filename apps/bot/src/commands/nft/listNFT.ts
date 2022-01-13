@@ -12,7 +12,7 @@ import { formatValidationErrors } from 'io-ts-reporters'
 export const getUserNFTInfo = async (userId: string): Promise<Either<string, server.UserNFTInfo>> => {
     try {
         const server_host = process.env.SERVER_HOST || 'http://localhost:3001';
-        const { data } = await axios.get(`${server_host}/nft?userId=${userId}`);
+        const { data } = await axios.get(`${server_host}/nft/user?id=${userId}`);
         return pipe(
             server.UserNFTInfo.decode(data),
             foldEither(

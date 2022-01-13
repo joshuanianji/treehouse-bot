@@ -9,13 +9,14 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
+    "dev:web": "turbo run dev --parallel --scope=\"web\" --scope=\"server\" --scope=\"custom-types\"",
     "start": "turbo run start",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "prettier": "2.5.1",
-    "turbo": "1.0.24"
+    "turbo": "1.0.25"
   },
   "turbo": {
     "pipeline": {

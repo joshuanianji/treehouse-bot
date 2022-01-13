@@ -1,4 +1,6 @@
-import * as t from 'io-ts'
+import * as t from 'io-ts';
+import { sparseType, optional } from 'io-ts-extra';
+import * as O from 'fp-ts/lib/Option';
 
 const AllowedContentTypes = t.union([
     t.literal('image/png'),
@@ -44,7 +46,7 @@ export const nftStickerType = (url: string): NFTType => ({
 
 
 // the actual NFT type
-const NFT = t.type({
+const NFT = sparseType({
     from: t.string, // original poster of the message (User ID)
     ownedBy: t.string, // who owns it (User ID)
     msgLink: t.string, // ID of the original message (which might not exist)
@@ -55,10 +57,23 @@ const NFT = t.type({
 
     type: NFTType,
     createdAt: t.string, // ISO string
+
+    // metadata that helps us create links
+    // unfortunately, I overlooked these when i initially wrote the bot, 
+    // so some are null
+    guildId: optional(t.string),
+    channelId: optional(t.string),
 })
 
 type NFT = t.TypeOf<typeof NFT>
 
+const getMsgLink = (nft: NFT): O.Option<string> => {
+    if (nft.guildId && nft.channelId) {
+        return O.some(`https://discordapp.com/channels/${nft.guildId}/${nft.channelId}/${nft.id}`)
+    } else {
+        return O.none
+    }
+}
 
 // essential information to create an NFT
 interface NFTEssentials {
@@ -70,6 +85,9 @@ interface NFTEssentials {
 
     type: NFTType,
     // createdAt will be generated when we push to Supabase
+
+    guildId?: string,
+    channelId?: string,
 }
 export const fromEssentials = (data: NFTEssentials): NFT => ({
     from: data.from,
@@ -83,6 +101,9 @@ export const fromEssentials = (data: NFTEssentials): NFT => ({
     type: data.type,
     // https://github.com/supabase/supabase/discussions/2839
     createdAt: ((new Date()).toISOString()).toLocaleString(),
+
+    guildId: data.guildId,
+    channelId: data.channelId,
 })
 
-export { NFT, NFTType, AllowedContentTypes }
+export { NFT, NFTType, AllowedContentTypes, getMsgLink }
