@@ -56,8 +56,14 @@ const NFTMainContent: React.FC<{ nftType: NFTType }> = ({ nftType }) => {
         case 'asset':
             return (
                 <div className={imgWrapperClasses}>
-                    <img className={nftImageClasses} src={nftType.url} alt="NFT asset" />
-                </div>)
+                    <p>{nftType.contentType}</p>
+                    {(nftType.contentType === 'video/mp4')
+                        ? <video className={nftImageClasses} src={nftType.url} />
+                        : <img className={nftImageClasses} src={nftType.url} alt='NFT Asset' />
+                    }
+                </div>
+            )
+
         case 'sticker':
             return (
                 <div className={imgWrapperClasses}>

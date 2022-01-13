@@ -1,13 +1,10 @@
-import { InferGetServerSidePropsType, GetServerSideProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { DiscordUser, NFT, server } from 'custom-types';
-import { sequenceT } from 'fp-ts/lib/Apply';
 import { pipe } from 'fp-ts/lib/function';
-import { bimap } from 'fp-ts/lib/Tuple';
 import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/TaskEither';
 import NftCard from '@/components/NftCard';
-import { AxiosError } from 'axios';
 import { fetchAndDecode, MapAxiosError, defaultAxiosErrorMap } from 'utils';
 import ViewError from '@/components/ViewError';
 
