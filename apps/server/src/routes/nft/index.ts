@@ -1,11 +1,10 @@
 import express from 'express'
 import { parseBody } from './../../middleware/parseBody';
 import { parseQuery } from './../../middleware/parseQuery';
-import { Config } from './../../util/supabase';
+import { Config } from '../../util/config';
 import * as i from 'io-ts'
 import { NFT } from 'custom-types';
 import * as user from './user'
-import { UserNFTInfo } from 'custom-types/src/server/info';
 import chalk from 'chalk';
 import { formatValidationErrors } from 'io-ts-reporters';
 

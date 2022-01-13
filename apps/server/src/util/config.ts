@@ -9,6 +9,9 @@ interface Config {
         api_key: string,
         table: string
     },
+    discord: {
+        token: string
+    }
     dev: boolean
 }
 
@@ -46,6 +49,11 @@ class Config implements Config {
     public static tableName = (): string => {
         const { supabase } = Config.getConfig();
         return supabase.table;
+    }
+
+    public static getDiscordToken = (): string => {
+        const { discord } = Cache;
+        return discord.token;
     }
 }
 

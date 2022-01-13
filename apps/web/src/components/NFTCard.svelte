@@ -1,8 +1,12 @@
 <!-- src/components/NFTCard.svelte -->
 <script lang="ts">
-  import type { NFT } from "custom-types";
+  import { DiscordUser, NFT, getMsgLink } from "custom-types";
+  import { format } from "date-fns";
 
   export let nft: NFT;
+  export let user: DiscordUser;
+
+  let msgLink = getMsgLink(nft);
 </script>
 
 <!-- The top is the sticker or text -->
@@ -13,8 +17,8 @@
       <img class="nft-image" src={nft.type.url} alt="NFT asset" />
     </div>
   {:else if nft.type._type === "text"}
-    <div class="nft-img px-6 py-4">
-      <p class="text-gray-700 text-base">
+    <div class="nft-text-wrapper">
+      <p class="nft-text">
         {nft.type.content}
       </p>
     </div>
@@ -25,25 +29,53 @@
   {/if}
   <!-- body -->
   <div class="px-6 py-4">
-    <div class="font-bold text-xl mb-2">NFT ID {nft.id}</div>
-    <p class="text-gray-200 text-base">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus
-      quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium
-      nihil.
+    <div class="font-bold text-xl mb-2">
+      NFT #{nft.id} owned by {user.username}
+    </div>
+    <p class="text-gray-800 text-base">
+      Created: {format(new Date(nft.createdAt), "MMM d, yyyy 'at' h:mm a")}
     </p>
+    <p class="text-gray-800 text-base">
+      Type: {nft.type._type}
+    </p>
+    {#if msgLink._tag === "Some"}
+      <a
+        href={msgLink.value}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="link"
+      >
+        Message link
+      </a>
+    {/if}
   </div>
 </div>
-<!-- </div> -->
 
 <!-- using lang="postcss" for VSCODE not to give out linting warnings. -->
 <style lang="postcss">
   .img-wrapper {
     @apply w-full;
-    @apply aspect-square;
-    @apply overflow-hidden;
+    @apply aspect-[4/3];
+    @apply overflow-hidden bg-center;
+  }
+  .nft-text-wrapper {
+    @apply px-6 py-4;
+    @apply text-gray-500 text-lg;
+  }
+  .nft-text {
+    @apply text-gray-500 text-lg;
+    @apply px-2;
+    @apply border-l-4 border-gray-300;
+    @apply rounded-sm;
   }
   .nft-image {
     @apply object-cover;
     @apply w-full;
+  }
+  .link {
+    @apply text-blue-500;
+  }
+  .link:hover {
+    @apply text-blue-900;
   }
 </style>

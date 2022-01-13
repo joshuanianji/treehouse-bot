@@ -163,8 +163,10 @@ export const createNFT = async (msg: Message): Promise<Either<string, void>> => 
             msgLink: repliedTo.id,
             hash,
             type: nftType,
+            guildId: msg.guild?.id,
+            channelId: msg.channel.id,
         })
-        console.log('Created NFT: ', nft.id);
+        console.log('Created NFT: ', nft);
         creatingMsg.edit(`Uploading NFT... (id: ${nft.id})`);
 
         // upload NFT to server

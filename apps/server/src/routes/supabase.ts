@@ -1,5 +1,5 @@
 import express from 'express'
-import { Config } from '../util/supabase';
+import { Config } from '../util/config';
 import { sparseType, optional } from 'io-ts-extra';
 import * as i from 'io-ts';
 import { parseQuery } from '../middleware/parseQuery';
