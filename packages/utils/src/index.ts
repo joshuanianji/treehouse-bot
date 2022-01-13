@@ -3,29 +3,31 @@ import * as i from 'io-ts';
 import { pipe } from 'fp-ts/lib/function';
 import { server } from 'custom-types';
 import { formatValidationErrors } from 'io-ts-reporters';
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 
 
-const getResponse = (url: string): TE.TaskEither<server.ServerError, AxiosResponse> => {
+const getResponse = (url: string): TE.TaskEither<AxiosError, AxiosResponse> => {
     console.log('getResponse', url);
-    return TE.tryCatchK(axios.get, (reason) => ({
-        code: 'SERVER_ERROR',
-        title: 'Unknown Error fetching response',
-        message: JSON.stringify(reason)
-    }))(url)
+    return TE.tryCatchK(axios.get, (reason) => {
+        console.log('Error:', reason)
+        return reason as AxiosError
+    })(url)
 }
 
-const checkResponse = (res: AxiosResponse): TE.TaskEither<server.ServerError, AxiosResponse> => {
-    console.log('checkResponse');
-    if (res.status >= 200 && res.status < 300) {
-        return TE.right(res);
+
+export const defaultAxiosErrorMap = (error: AxiosError): server.ServerError => {
+    console.log('defaultAxiosErrorMap');
+    return {
+        code: `${error.code}_AXIOS_ERROR`,
+        title: error.message,
+        details: error.response?.data
     }
-    return TE.left({
-        code: 'SERVER_ERROR',
-        title: 'Unknown Error fetching response',
-        message: `${res.status} ${res.statusText}`,
-    });
 }
+
+
+// the type of a function that checks Axios Responses
+export type MapAxiosError = (reason: AxiosError) => server.ServerError;
+
 
 /**
  * Fetches the response, and decodes it
@@ -33,11 +35,13 @@ const checkResponse = (res: AxiosResponse): TE.TaskEither<server.ServerError, Ax
  * 
  * @param url the URL to fetch (absolute)
  * @param decoder the io-ts decode to decode the response
+ * @param checkResponse a function that can injext custom checks on the AxiosResponse
  * @returns TaskEither<Error, T>
  */
-export const fetchAndDecode = <T>(url: string, decoder: i.Decoder<unknown, T>): TE.TaskEither<server.ServerError, T> => {
+export const fetchAndDecode = <T>(url: string, decoder: i.Decoder<unknown, T>, axiosErrorMap?: MapAxiosError): TE.TaskEither<server.ServerError, T> => {
     return pipe(
         TE.bindTo('res')(getResponse(url)),
+        TE.mapLeft(axiosErrorMap || defaultAxiosErrorMap),
         TE.bind('decoded', ({ res }) => {
             return pipe(
                 decoder.decode(res.data.data),
