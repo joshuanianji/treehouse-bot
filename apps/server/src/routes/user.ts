@@ -51,7 +51,8 @@ router.get('/', parseQuery(UserIDQuery), async (req, res) => {
         return res.status(500).send({
             code: 'UNKNOWN_ERROR',
             title: 'Unknown Error',
-            message: e.message
+            message: e.message,
+            details: e
         })
     }
 })
