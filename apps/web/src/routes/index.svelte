@@ -1,5 +1,5 @@
 <script lang="ts">
-  import WindyButton from "../components/WindyButton.svelte";
+  import WindyButton from "$components/WindyButton.svelte";
 </script>
 
 <div

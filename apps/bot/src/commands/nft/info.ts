@@ -11,7 +11,7 @@ import { truncate } from '../../utils';
 export const getNFT = async (id: string): Promise<Either<string, NFT>> => {
     try {
         const server_host = process.env.SERVER_HOST || 'http://localhost:3001';
-        const { data } = await axios.get(`${server_host}/nft/info?id=${id}`);
+        const { data } = await axios.get(`${server_host}/nft?id=${id}`);
 
         return pipe(
             NFT.decode(data.data),
@@ -28,8 +28,8 @@ export const getNFT = async (id: string): Promise<Either<string, NFT>> => {
             fromOption(() => 'Unknown error'),
             fold(
                 _ => {
-                    console.error('Unknown error uploading NFT!', err);
-                    return left('Unknown error uploading NFT! Please contact the bot owner.');
+                    console.error('Unknown error retrieving NFT!', err);
+                    return left('Unknown error retrieving NFT! Please contact the bot owner.');
                 },
                 error => {
                     if (error.code === 'SUPABASE_ERROR') {
@@ -39,7 +39,7 @@ export const getNFT = async (id: string): Promise<Either<string, NFT>> => {
                     } else if (error.code === 'PARSING_ERROR') {
                         return left(`\'PARSING_ERROR\`: Server parsing error! ${error.message}`);
                     } else {
-                        return left(`Unknown error uploading NFT!`);
+                        return left(`Unknown error retrieving NFT!`);
                     }
                 }
             )

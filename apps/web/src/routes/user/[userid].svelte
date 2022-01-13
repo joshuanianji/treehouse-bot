@@ -4,7 +4,7 @@
 
   const load: Load = async ({ params, fetch, session, stuff }) => {
     console.log("load", params, "session", session);
-    const url = `${variables.apiEndpoint}/nft?userId=${params.userid}`;
+    const url = `${variables.apiEndpoint}/nft/user?id=${params.userId}`;
     const res = await fetch(url);
 
     if (res.ok) {
@@ -19,7 +19,7 @@
     return {
       status: res.status,
       error: new Error(
-        `Could not access: ${variables.apiEndpoint}/nft?userId=${params.userid}`
+        `Could not access: ${variables.apiEndpoint}/nft/user?id=${params.userId}`
       ),
     };
   };
@@ -31,11 +31,11 @@
 
   // so the load() function can pass data to the `data` variable
   export let data: any;
-  const userid = $page.params.userid;
+  const userId = $page.params.userId;
 </script>
 
 <div class="w-full min-h-[50vh] grid place-items-center">
-  <h1 class="text-4xl font-extrabold">NFts for User {userid}</h1>
+  <h1 class="text-4xl font-extrabold">NFts for User {userId}</h1>
 </div>
 
 <div class="w-full gris place-items-center">
