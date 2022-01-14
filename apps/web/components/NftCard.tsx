@@ -63,8 +63,8 @@ const NFTMainContent: React.FC<{ nftType: NFTType, linkable: boolean }> = ({ nft
 
     const imgWrapperClasses = `w-full ${expanded ? '' : 'aspect-square'} overflow-hidden bg-center`;
     const nftImageClasses = `w-full object-cover ${linkable ? '' : 'cursor-pointer'}`;
-    const nftTextClasses = `text-gray-500 text-lg px-2 border-l-4 border-gray-300 rounded-sm ${linkable ? 'text-ellipsis overflow-hidden cursor-pointer' : ''}`;
-    const nftTextWrapperClasses = `px-6 py-4 place-content-center`;
+    const nftTextClasses = `text-gray-500 text-lg px-2 border-l-4 border-gray-300 rounded-sm ${linkable ? 'text-ellipsis overflow-hidden' : 'cursor-pointer'}`;
+    const nftTextWrapperClasses = `grid px-6 py-4 min-h-[16em] content-center`;
     switch (nftType._type) {
         case 'asset':
             return (
