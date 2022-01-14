@@ -8,14 +8,14 @@
   },
   "dependencies": {
     "@fontsource/fira-mono": "4.5.0",
-    "date-fns": "^2.28.0",
-    "fp-ts": "^2.11.7",
-    "io-ts": "^2.2.16",
-    "io-ts-reporters": "^2.0.0",
+    "date-fns": "2.28.0",
+    "fp-ts": "2.11.7",
+    "io-ts": "2.2.16",
+    "io-ts-reporters": "2.0.0",
     "next": "latest",
-    "next-transpile-modules": "^9.0.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "next-transpile-modules": "9.0.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
     "utils": "*"
   },
   "devDependencies": {
