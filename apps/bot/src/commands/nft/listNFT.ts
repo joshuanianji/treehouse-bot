@@ -5,7 +5,7 @@ import { fold as foldOption } from 'fp-ts/lib/Option'
 import { pipe } from 'fp-ts/lib/function';
 import { UserNFTInfo, getServerError } from 'custom-types'
 import { Message, MessageEmbed, EmbedFieldData } from 'discord.js';
-import { truncate } from '../../utils';
+import { truncate } from 'utils';
 import { formatValidationErrors } from 'io-ts-reporters'
 
 

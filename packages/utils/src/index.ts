@@ -57,3 +57,9 @@ export const fetchAndDecode = <T>(url: string, decoder: i.Decoder<unknown, T>, a
         TE.map(({ decoded }) => decoded)
     )
 }
+
+// truncates the string to the given length, and adds an ellipsis if it's too long
+export const truncate = (str: string, n: number): { truncated: boolean, str: string } => ({
+    truncated: str.length > n,
+    str: str.length > n ? str.substring(0, n - 1) + '...' : str
+})

@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/lib/function'
 import { formatValidationErrors } from 'io-ts-reporters'
 import { MessageEmbed, Message } from 'discord.js';
 import ExtendedClient from '../../client/client';
-import { truncate } from '../../utils';
+import { truncate } from 'utils';
 
 // gets an NFT given the ID 
 export const getNFT = async (id: string): Promise<Either<string, NFT>> => {
