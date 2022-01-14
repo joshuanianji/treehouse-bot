@@ -1,5 +1,6 @@
 import { DiscordUser, getMsgLink, NFT, NFTType } from 'custom-types';
 import { format } from 'date-fns';
+
 import { useState } from 'react';
 import { truncate } from 'utils';
 
@@ -32,7 +33,7 @@ const NftCard: React.FC<Props> = ({ nft, user, linkable }) => {
                 </p>
                 <ViewMsgLink nft={nft} />
             </div>
-        </div >
+        </div>
     )
 }
 
@@ -77,7 +78,6 @@ const NFTMainContent: React.FC<{ nftType: NFTType, linkable: boolean }> = ({ nft
                     }
                 </div>
             )
-
         case 'sticker':
             return (
                 <div className={imgWrapperClasses}>
