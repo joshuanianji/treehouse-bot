@@ -1,16 +1,12 @@
 import React, { useEffect } from 'react';
 import * as D from 'io-ts/Decoder';
 import { pipe } from 'fp-ts/function';
-import * as i from 'io-ts';
 import * as E from 'fp-ts/Either';
-import { useRouter } from 'next/router';
-import { formatValidationErrors } from 'io-ts-reporters';
 import * as TE from 'fp-ts/TaskEither';
 import { string } from 'fp-ts';
 import { DiscordUser, NFT, ServerError, fromDecodeError } from 'custom-types';
 import { defaultAxiosErrorMap, fetchAndDecode, MapAxiosError } from 'utils';
 import { GetServerSideProps } from 'next';
-import { Range, RangeParser } from '@/lib/RangeParser';
 import ViewError from '@/components/ViewError';
 import NftCard from '@/components/NftCard';
 import { UserNFTInfo } from 'custom-types/src/server';
@@ -18,17 +14,17 @@ import { UserNFTInfo } from 'custom-types/src/server';
 // Props and Types
 
 type Props = E.Either<ServerError, {
-    range: Range;
-    nfts: NFT[];
+    offset: number;
+    nftInfo: UserNFTInfo;
     user: DiscordUser;
 }>
 
 type Query = {
-    nftid: string,
+    userid: string,
     // unparsed range
     // Note that range corresponds to the NFT numbers
     // e.g if range is 1-3, we'll retrieve NFTs 1, 2, and 3 (1-indexed? idk)
-    range: string
+    offset: string
 }
 
 const mapAxiosError: (item: string) => MapAxiosError = (item) => (err) => {
@@ -45,20 +41,21 @@ const mapAxiosError: (item: string) => MapAxiosError = (item) => (err) => {
 
 export const getServerSideProps: GetServerSideProps<Props, Query> = async (context) => {
     const endpoint = process.env.NEXT_PUBLIC_API_ENDPOINT
-    const { userid, range } = context.query;
+    const { userid, offset } = context.query;
 
-    let actualRange = range || '1-25'; // default to 1-25
+    let actualOffset = offset || '0'; // default to 0 offset (most recent NFTs)
 
     console.log(`Fetching User data with id ${userid}`);
 
     const result: Props = await pipe(
-        RangeParser.decode(actualRange),
+        D.string.decode(actualOffset),
+        E.chain(offset => D.number.decode(parseInt(offset, 10))), // so CHAIN is bind (>>=)
         TE.fromEither,
-        TE.mapLeft(fromDecodeError('range')),
-        TE.bindTo('range'),
-        TE.bind('nftRes', ({ range }) =>
+        TE.mapLeft(fromDecodeError('offset')),
+        TE.bindTo('offset'),
+        TE.bind('nftRes', ({ offset }) =>
             fetchAndDecode(
-                `${endpoint}/nft/user?id=${userid}?start=${range.start}?end=${range.end}`,
+                `${endpoint}/nft/user?id=${userid}&offset=${offset}&pageSize=25`, // hardcoding page sizes rn
                 UserNFTInfo,
                 mapAxiosError(`NFTS for user ${userid}`)
             )
@@ -70,7 +67,7 @@ export const getServerSideProps: GetServerSideProps<Props, Query> = async (conte
                 mapAxiosError(`user data for user id ${userid}`)
             )
         ),
-        TE.map(({ nftRes, user, range }) => ({ nfts: nftRes.nfts, user, range }))
+        TE.map(({ nftRes, user, offset }) => ({ nftInfo: nftRes, user, offset }))
     )();
 
     return {
@@ -85,13 +82,14 @@ const ViewUserNFTs: React.FC<Props> = (props) => {
         props,
         E.fold(
             (err) => <ViewError error={err} />,
-            ({ nfts, user, range }) => <>
+            ({ nftInfo, user, offset }) => <>
                 <div className='w-full min-h-[25vh] grid place-items-center'>
                     <h1 className='text-4xl font-extrabold'>{user.username}'s NFTs</h1>
-                    <p className='text-xl'>From #{range.start} to #{range.end}</p>
+                    <h2 className='text-2xl font-extrabold'>{nftInfo.count} total NFTs</h2>
+                    <p className='text-xl'>From #{offset} to #{offset + 25}</p>
                 </div>
                 <div className='w-full grid place-items-center pb-8'>
-                    {nfts.map((nft) => <NftCard key={nft.id} nft={nft} user={user} />)}
+                    {nftInfo.nfts.map((nft) => <NftCard key={nft.id} nft={nft} user={user} />)}
                 </div>
             </>
         )

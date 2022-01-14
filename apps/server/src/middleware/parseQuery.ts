@@ -6,6 +6,7 @@ import { ParamsDictionary, Query } from 'express-serve-static-core'
 import { formatValidationErrors } from 'io-ts-reporters'
 
 
+// * NOTE: Query parsers can NOT be used to parse numbers, that needs lib/parsers.ts's ParseInt
 export const parseQuery = <T>(decoder: i.Decoder<unknown, T>): RequestHandler<ParamsDictionary, any, any, T & Query> => (
     req,
     res,

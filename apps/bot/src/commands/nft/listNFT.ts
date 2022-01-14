@@ -14,7 +14,7 @@ export const getUserNFTInfo = async (userId: string): Promise<Either<string, Use
         const server_host = process.env.SERVER_HOST || 'http://localhost:3001';
         const { data } = await axios.get(`${server_host}/nft/user?id=${userId}`);
         return pipe(
-            UserNFTInfo.decode(data),
+            UserNFTInfo.decode(data.data),
             foldEither(
                 (error) => {
                     console.error('Error decoding NFT info: ', formatValidationErrors(error));
@@ -46,7 +46,7 @@ export const listNFTs = async (msg: Message, userId: string): Promise<Either<str
         return left(nftInfo.left);
     } else {
         const user = await msg.client.users.fetch(userId);
-        const { count, limit, nfts } = nftInfo.right;
+        const { count, numReturned, nfts } = nftInfo.right;
         const embedFields: EmbedFieldData[] = nfts.map(nft => ({
             name: 'NFT ID: ' + nft.id,
             value: 'Type: `' + nft.type._type + '`\n' + viewNftType(nft.type)
@@ -56,8 +56,8 @@ export const listNFTs = async (msg: Message, userId: string): Promise<Either<str
             .setTitle('NFTs Owned by ' + user.username)
 
         // possibly add "truncated" field
-        if (count > limit) {
-            embed.addField(`${count} Total NFTs`, `Truncated to the show latest ${limit} NFTs.`)
+        if (count > numReturned) {
+            embed.addField(`${count} Total NFTs`, `Truncated to the show latest ${numReturned} NFTs.`)
         } else {
             embed.addField(`${count} Total NFTs`, 'We are currently making a web UI to view your NFTs. Stay tuned!')
         }

@@ -1,4 +1,4 @@
-import { NFT, server } from 'custom-types';
+import { getServerError, NFT } from 'custom-types';
 import { Either, right, left, fold, mapLeft, fromOption, isLeft } from 'fp-ts/lib/Either';
 import axios from 'axios';
 import { pipe } from 'fp-ts/lib/function'
@@ -24,7 +24,7 @@ export const getNFT = async (id: string): Promise<Either<string, NFT>> => {
         )
     } catch (err) {
         return pipe(
-            server.getServerError(err),
+            getServerError(err),
             fromOption(() => 'Unknown error'),
             fold(
                 _ => {

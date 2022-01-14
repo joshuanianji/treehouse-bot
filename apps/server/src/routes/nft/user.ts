@@ -5,6 +5,7 @@ import { Config } from '../../util/config';
 import * as i from 'io-ts'
 import { UserNFTInfo } from 'custom-types/src/server/info';
 import chalk from 'chalk';
+import { IntFromString } from '../../lib/Parsers';
 
 // user requests
 // each user is uniquely identified by their Discord ID
@@ -13,16 +14,14 @@ import chalk from 'chalk';
 const router = express.Router();
 
 
-// /nft/user?id=<userId>?limit=<limit>
-// if limit is not specified, it defaults to 10
-// if limit is 0, it returns all NFTs
-// if start and end are specified, it returns all NFTs in the range (sorted by createdAt) - NOT IMPLEMENTED YET
+// /nft/user?id=<discordId>&offset=<offset>&limit=<limit>
+// if start and end are specified, it returns all NFTs in the range (sorted by createdAt)
+// else, default to 10 most recent NFTs
 
 const UserIDQuery = i.partial({
     id: i.string,
-    limit: i.number,
-    start: i.number,
-    end: i.number,
+    offset: IntFromString,
+    pageSize: IntFromString,
 })
 router.get('/', parseQuery(UserIDQuery), async (req, res) => {
     console.log(`${chalk.green('[NFT]')} ${chalk.cyan('GET')} ${chalk.yellow('/user')}`)
@@ -33,7 +32,6 @@ router.get('/', parseQuery(UserIDQuery), async (req, res) => {
         }
 
         const { id } = req.query
-        const sizeLimit = (req.query.limit || 5) // default to 5 if no limit is provided
 
         const { supabase, tableName } = Config.getSupabaseClient()
         // retrieve the NFTs from the database
@@ -44,8 +42,11 @@ router.get('/', parseQuery(UserIDQuery), async (req, res) => {
             .eq('ownedBy', id)
             .order('createdAt', { ascending: false })
 
-        if (sizeLimit > 0) {
-            nfts.limit(sizeLimit);
+        if (req.query.offset) {
+            const pageSize = req.query.pageSize || 5 // default to 5 max NFTs
+            nfts.range(req.query.offset, req.query.offset + pageSize)
+        } else {
+            nfts.range(0, 5);
         }
 
         // retrieve the NFTs owned by the user
@@ -79,11 +80,11 @@ router.get('/', parseQuery(UserIDQuery), async (req, res) => {
 
         // send the NFTs to the client
         const returnVal: UserNFTInfo = {
-            count: countData.length,
-            limit: sizeLimit,
+            count: countData.length, // total number of NFTs owned by the user
+            numReturned: nftData.length,
             nfts: nftData
         }
-        console.log('Returning NFTs: ', { count: returnVal.count, limit: returnVal.limit, nftsLength: returnVal.nfts.length })
+        console.log(`Returning NFTs: for user ${id}`, { count: returnVal.count, numReturned: returnVal.numReturned, nftsLength: returnVal.nfts.length })
         return res.status(200).json({ data: returnVal })
 
     } catch (error) {
