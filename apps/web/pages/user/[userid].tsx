@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as D from 'io-ts/Decoder';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { string } from 'fp-ts';
 import { DiscordUser, NFT, ServerError, fromDecodeError } from 'custom-types';
 import { defaultAxiosErrorMap, fetchAndDecode, MapAxiosError } from 'utils';
 import { GetServerSideProps } from 'next';
 import ViewError from '@/components/ViewError';
 import NftCard from '@/components/NftCard';
 import { UserNFTInfo } from 'custom-types/src/server';
+import Pagination from '@/components/Pagination';
 
 // Props and Types
 
@@ -101,6 +101,7 @@ const ViewContent: React.FC<{ nftInfo: UserNFTInfo, user: DiscordUser, offset: n
             <div className='w-full xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid place-items-center gap-8 p-8'>
                 {nftInfo.nfts.map((nft) => <NftCard key={nft.id} nft={nft} user={user} linkable={true} />)}
             </div>
+            <Pagination />
         </>
     )
 }
