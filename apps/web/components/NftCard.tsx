@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 interface Props {
     nft: NFT;
     user: DiscordUser;
+    linkable: boolean; // if the card should link to the card
 }
 
 const NftCard: React.FC<Props> = ({ nft, user }) => {
@@ -48,7 +49,7 @@ const ViewMsgLink: React.FC<{ nft: NFT }> = ({ nft }) => {
 }
 
 const NFTMainContent: React.FC<{ nftType: NFTType }> = ({ nftType }) => {
-    const imgWrapperClasses = `w-full aspect=[4/3] overflow-hidden bg-center`;
+    const imgWrapperClasses = `w-full aspect-square overflow-hidden bg-center`;
     const nftImageClasses = `w-full object-cover`;
     const nftTextClasses = `text-gray-500 text-lg px-2 border-l-4 border-gray-300 rounded-sm`;
     const nftTextWrapperClasses = `px-6 py-4`;

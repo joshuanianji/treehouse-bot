@@ -44,9 +44,9 @@ router.get('/', parseQuery(UserIDQuery), async (req, res) => {
 
         if (req.query.offset) {
             const pageSize = req.query.pageSize || 5 // default to 5 max NFTs
-            nfts.range(req.query.offset, req.query.offset + pageSize)
+            nfts.range(req.query.offset, req.query.offset + pageSize - 1)
         } else {
-            nfts.range(0, 5);
+            nfts.range(0, 4);
         }
 
         // retrieve the NFTs owned by the user
