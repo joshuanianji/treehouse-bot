@@ -1,9 +1,8 @@
 import { AllowedContentTypes, fromEssentials, nftAssetType, nftStickerType, nftTextType, NFTType } from 'custom-types/src/nft';
-import { formatValidationErrors } from 'io-ts-reporters';
 import { Either, left, right, fold, fromOption } from 'fp-ts/lib/Either';
 import { hashNFT } from '../../utils/hashNFT';
 import { pipe } from 'fp-ts/lib/function';
-import { ErrorWithContext, server } from 'custom-types'
+import { ErrorWithContext, getServerError } from 'custom-types'
 import { Message } from 'discord.js';
 import { NFT } from 'custom-types';
 import axios from 'axios';
@@ -65,7 +64,7 @@ const uploadNFT = async (nft: NFT): Promise<Either<ErrorWithContext<Message>, vo
         return right(undefined);
     } catch (err) {
         return pipe(
-            server.getServerError(err),
+            getServerError(err),
             fromOption(() => 'Unknown error'), // left means the error is not from the server
             fold(
                 () => {
