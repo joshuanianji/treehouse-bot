@@ -10,7 +10,7 @@
     "custom-types": "*",
     "discord-api-types": "^0.26.1",
     "discord.js": "^13.5.0",
-    "dotenv": "^10.0.0",
+    "dotenv": "^13.0.0",
     "fp-ts": "^2.11.6",
     "io-ts": "^2.2.16",
     "io-ts-reporters": "^2.0.0",
