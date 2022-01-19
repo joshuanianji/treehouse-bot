@@ -82,7 +82,7 @@ const ViewNFT: React.FC<Props> = (props) => {
             ({ nft, user }) => <>
                 <Head>
                     <title>@{user.username}'s NFT #{nft.id}</title>
-                    <meta property="og:title" content={`@{user.username}'s NFT #{nft.id}`} key="title" />
+                    <meta property="og:title" content={`@${user.username}'s NFT #{nft.id}`} key="title" />
                     <MetaProps nft={nft} user={user} />
                 </Head>
                 <div className='w-full min-h-[25vh] grid place-items-center'>
