@@ -14,7 +14,7 @@ interface Props {
 const NftCard: React.FC<Props> = ({ nft, user, linkable }) => {
     const useLinkableFunctionality = linkable || false;
     return (
-        <div className="rounded overflow-hidden shadow-xl">
+        <div className="rounded overflow-hidden shadow-xl hover:shadow-2xl">
             <NFTMainContent nftType={nft.type} linkable={useLinkableFunctionality} />
             <div className="px-6 py-4">
                 {useLinkableFunctionality ?
