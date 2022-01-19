@@ -17,11 +17,13 @@ export const parseQuery = <T>(decoder: i.Decoder<unknown, T>): RequestHandler<Pa
     return pipe(
         decoder.decode(req.query),
         fold(
-            errors => res.status(400).send({ code: 'Bad Query', status: 'error', error: formatValidationErrors(errors) }),
+            errors => {
+                console.log(formatValidationErrors(errors))
+                res.status(400).send({ code: 'Bad Query', status: 'error', error: formatValidationErrors(errors) });
+            },
             parsedQuery => {
-                res.locals.query = parsedQuery; // how does this work???? 
+                res.locals.query = parsedQuery;
                 next();
-                return res
             }
         ),
     );
