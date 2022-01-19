@@ -7,6 +7,10 @@
   "semanticCommitScope": "deps",
   "packageRules": [
     {
+      "updateTypes": ["major", "minor", "patch"],
+      "semanticCommitType": ":arrow_up: update"
+    },
+    {
       "updateTypes": ["pin"],
       "semanticCommitType": ":pushpin: pin"
     },
