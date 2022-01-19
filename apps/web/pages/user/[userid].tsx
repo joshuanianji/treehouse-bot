@@ -89,7 +89,7 @@ const ViewUserNFTs: React.FC<Props> = (props) => {
 
 const ViewContent: React.FC<{ nftInfo: UserNFTInfo, user: DiscordUser, offset: number }> = ({ nftInfo, user, offset }) => {
     const start = offset + 1;
-    const end = Math.min(offset + 25, offset + nftInfo.numReturned);
+    const end = Math.min(offset + 10, offset + nftInfo.numReturned);
 
     return (
         <>
@@ -98,10 +98,10 @@ const ViewContent: React.FC<{ nftInfo: UserNFTInfo, user: DiscordUser, offset: n
                 <h2 className='text-2xl font-extrabold'>{nftInfo.count} total NFTs</h2>
                 <p className='text-xl'>Displaying NFTs #{start} through #{end}</p>
             </div>
-            <div className='w-full xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid place-items-center gap-8 p-8'>
+            <div className='w-full xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid place-items-center gap-16 p-8'>
                 {nftInfo.nfts.map((nft) => <NftCard key={nft.id} nft={nft} user={user} linkable={true} />)}
             </div>
-            <Pagination />
+            <Pagination start={start} end={end} total={nftInfo.count} pageSize={10} />
         </>
     )
 }
