@@ -57,7 +57,7 @@ export const listNFTs = async (msg: Message, userId: string): Promise<Either<str
             .setTitle('NFTs Owned by ' + user.username)
 
         // possibly add "truncated" field
-        const websiteLink = `See all NFTs at ${CONFIG.devEnv.isDev ? `http://localhost:3000/user/${userId}` : `https://nft-bot.herokuapp.com/user/${userId}`}`;
+        const websiteLink = `See all NFTs at ${CONFIG.devEnv.isDev ? `http://localhost:3000/user/${userId}` : `https://treehouse-bot.netlify.app/user/${userId}`}`;
         if (count > numReturned) {
             embed.addField(`${count} Total NFTs`, `Truncated to the show latest ${numReturned} NFTs.\n${websiteLink} `)
         } else {
