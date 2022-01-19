@@ -3,20 +3,20 @@
   "ignorePaths": ["**/Dockerfile"],
   "labels": ["dependencies"],
   "schedule": ["after 10pm and before 5am every weekday", "every weekend"],
-  "semanticCommitType": ":arrow_up:",
+  "semanticCommitType": ":arrow_up: update",
   "semanticCommitScope": null,
   "packageRules": [
     {
       "updateTypes": ["pin"],
-      "semanticCommitType": ":pushpin:"
+      "semanticCommitType": ":pushpin: pin"
     },
     {
       "updateTypes": ["rollback"],
-      "semanticCommitType": ":arrow_down:"
+      "semanticCommitType": ":arrow_down: rollback"
     },
     {
       "updateTypes": ["digest", "bump"],
-      "semanticCommitType": ":bookmark:"
+      "semanticCommitType": ":arrow_up: bump"
     },
     {
       "matchDepTypes": ["devDependencies"],
@@ -30,7 +30,6 @@
         "bump"
       ],
       "groupName": "devDependencies (non-major)",
-      "semanticCommitType": "chore",
       "automerge": true
     },
     {
@@ -44,8 +43,7 @@
         "rollback",
         "bump"
       ],
-      "groupName": "dependencies (non-major)",
-      "semanticCommitType": "fix"
+      "groupName": "dependencies (non-major)"
     }
   ]
 }
