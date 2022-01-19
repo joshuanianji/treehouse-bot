@@ -6,6 +6,7 @@ import { formatValidationErrors } from 'io-ts-reporters'
 import { MessageEmbed, Message } from 'discord.js';
 import ExtendedClient from '../../client/client';
 import { truncate } from 'utils';
+import { CONFIG } from '../../globals';
 
 // gets an NFT given the ID 
 export const getNFT = async (id: string): Promise<Either<string, NFT>> => {
@@ -51,11 +52,13 @@ export const getNFT = async (id: string): Promise<Either<string, NFT>> => {
 export const nftToEmbed = async (client: ExtendedClient, nft: NFT): Promise<MessageEmbed> => {
     const user = await client.users.fetch(nft.ownedBy);
 
+    const websiteLink = CONFIG.devEnv.isDev ? `http://localhost:3000/nft/${nft.id}` : `https://treehouse-bot.netlify.app/nft/${nft.id}`;
+
     const embed = new MessageEmbed()
         .setTitle(`NFT \`${nft.id}\` owned by ${user.username}`)
         .setAuthor({ name: user.username, iconURL: user.avatarURL() || undefined })
         .setDescription(`Created at: ${new Date(nft.createdAt).toLocaleString()}`)
-        .addField('Metadata:', `Full Hash: ${nft.fullHash}\nLink: https://treehouse-bot.netlify.app/nft/${nft.id}`, false)
+        .addField('Metadata:', `Full Hash: ${nft.fullHash}\nMore Info: websiteLink`, false)
         .setFooter({
             text: 'https://github.com/joshuanianji/treehouse-bot',
             iconURL: client.user?.avatarURL() || undefined

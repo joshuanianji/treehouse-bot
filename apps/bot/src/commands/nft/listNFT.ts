@@ -7,6 +7,7 @@ import { UserNFTInfo, getServerError } from 'custom-types'
 import { Message, MessageEmbed, EmbedFieldData } from 'discord.js';
 import { truncate } from 'utils';
 import { formatValidationErrors } from 'io-ts-reporters'
+import { CONFIG } from '../../globals';
 
 
 export const getUserNFTInfo = async (userId: string): Promise<Either<string, UserNFTInfo>> => {
@@ -56,10 +57,11 @@ export const listNFTs = async (msg: Message, userId: string): Promise<Either<str
             .setTitle('NFTs Owned by ' + user.username)
 
         // possibly add "truncated" field
+        const websiteLink = `See all NFTs at ${CONFIG.devEnv.isDev ? `http://localhost:3000/user/${userId}` : `https://nft-bot.herokuapp.com/user/${userId}`}`;
         if (count > numReturned) {
-            embed.addField(`${count} Total NFTs`, `Truncated to the show latest ${numReturned} NFTs.`)
+            embed.addField(`${count} Total NFTs`, `Truncated to the show latest ${numReturned} NFTs.\n${websiteLink} `)
         } else {
-            embed.addField(`${count} Total NFTs`, 'We are currently making a web UI to view your NFTs. Stay tuned!')
+            embed.addField(`${count} Total NFTs`, websiteLink)
         }
         embed.addFields(embedFields)
 
