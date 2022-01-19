@@ -8,7 +8,7 @@
   "packageRules": [
     {
       "updateTypes": ["major", "minor", "patch"],
-      "semanticCommitType": ":arrow_up: update"
+      "semanticCommitType": ":arrow_up: chore"
     },
     {
       "updateTypes": ["pin"],
