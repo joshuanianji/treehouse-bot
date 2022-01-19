@@ -3,18 +3,19 @@ import { NFT, NFTType } from 'custom-types';
 import { Either, right, left, fold as foldEither } from 'fp-ts/lib/Either';
 import { fold as foldOption } from 'fp-ts/lib/Option'
 import { pipe } from 'fp-ts/lib/function';
-import { server } from 'custom-types'
+import { UserNFTInfo, getServerError } from 'custom-types'
 import { Message, MessageEmbed, EmbedFieldData } from 'discord.js';
-import { truncate } from '../../utils';
+import { truncate } from 'utils';
 import { formatValidationErrors } from 'io-ts-reporters'
+import { CONFIG } from '../../globals';
 
 
-export const getUserNFTInfo = async (userId: string): Promise<Either<string, server.UserNFTInfo>> => {
+export const getUserNFTInfo = async (userId: string): Promise<Either<string, UserNFTInfo>> => {
     try {
         const server_host = process.env.SERVER_HOST || 'http://localhost:3001';
         const { data } = await axios.get(`${server_host}/nft/user?id=${userId}`);
         return pipe(
-            server.UserNFTInfo.decode(data),
+            UserNFTInfo.decode(data.data),
             foldEither(
                 (error) => {
                     console.error('Error decoding NFT info: ', formatValidationErrors(error));
@@ -25,7 +26,7 @@ export const getUserNFTInfo = async (userId: string): Promise<Either<string, ser
         )
     } catch (err) {
         return pipe(
-            server.getServerError(err),
+            getServerError(err),
             foldOption(
                 () => {
                     console.error('Unknown error uploading NFT!', err);
@@ -46,7 +47,7 @@ export const listNFTs = async (msg: Message, userId: string): Promise<Either<str
         return left(nftInfo.left);
     } else {
         const user = await msg.client.users.fetch(userId);
-        const { count, limit, nfts } = nftInfo.right;
+        const { count, numReturned, nfts } = nftInfo.right;
         const embedFields: EmbedFieldData[] = nfts.map(nft => ({
             name: 'NFT ID: ' + nft.id,
             value: 'Type: `' + nft.type._type + '`\n' + viewNftType(nft.type)
@@ -56,10 +57,11 @@ export const listNFTs = async (msg: Message, userId: string): Promise<Either<str
             .setTitle('NFTs Owned by ' + user.username)
 
         // possibly add "truncated" field
-        if (count > limit) {
-            embed.addField(`${count} Total NFTs`, `Truncated to the show latest ${limit} NFTs.`)
+        const websiteLink = `See all NFTs at ${CONFIG.devEnv.isDev ? `http://localhost:3000/user/${userId}` : `https://nft-bot.herokuapp.com/user/${userId}`}`;
+        if (count > numReturned) {
+            embed.addField(`${count} Total NFTs`, `Truncated to the show latest ${numReturned} NFTs.\n${websiteLink} `)
         } else {
-            embed.addField(`${count} Total NFTs`, 'We are currently making a web UI to view your NFTs. Stay tuned!')
+            embed.addField(`${count} Total NFTs`, websiteLink)
         }
         embed.addFields(embedFields)
 

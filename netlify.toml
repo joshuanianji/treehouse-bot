@@ -3,5 +3,5 @@
 # Monorepo support a bit flaky
 base = "/"
 command = "cd apps/web && yarn build"
-environment = {VITE_API_ENDPOINT = "https://nft-server.joshuaji.com"}
+environment = {NEXT_PUBLIC_API_ENDPOINT = "https://nft-server.joshuaji.com"}
 publish = "apps/web/.next/"

@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as i from 'io-ts';
 import { pipe } from 'fp-ts/lib/function';
-import { server } from 'custom-types';
+import { ServerError } from 'custom-types';
 import { formatValidationErrors } from 'io-ts-reporters';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
@@ -15,7 +15,7 @@ const getResponse = (url: string): TE.TaskEither<AxiosError, AxiosResponse> => {
 }
 
 
-export const defaultAxiosErrorMap = (error: AxiosError): server.ServerError => {
+export const defaultAxiosErrorMap = (error: AxiosError): ServerError => {
     console.log('defaultAxiosErrorMap');
     return {
         code: `${error.code}_AXIOS_ERROR`,
@@ -26,7 +26,7 @@ export const defaultAxiosErrorMap = (error: AxiosError): server.ServerError => {
 
 
 // the type of a function that checks Axios Responses
-export type MapAxiosError = (reason: AxiosError) => server.ServerError;
+export type MapAxiosError = (reason: AxiosError) => ServerError;
 
 
 /**
@@ -38,7 +38,7 @@ export type MapAxiosError = (reason: AxiosError) => server.ServerError;
  * @param axiosErrorMap An optional function to convert AxiosErrors to serverErrors
  * @returns TaskEither<Error, T>
  */
-export const fetchAndDecode = <T>(url: string, decoder: i.Decoder<unknown, T>, axiosErrorMap?: MapAxiosError): TE.TaskEither<server.ServerError, T> => {
+export const fetchAndDecode = <T>(url: string, decoder: i.Decoder<unknown, T>, axiosErrorMap?: MapAxiosError): TE.TaskEither<ServerError, T> => {
     return pipe(
         TE.bindTo('res')(getResponse(url)),
         TE.mapLeft(axiosErrorMap || defaultAxiosErrorMap),
@@ -47,9 +47,9 @@ export const fetchAndDecode = <T>(url: string, decoder: i.Decoder<unknown, T>, a
                 decoder.decode(res.data.data),
                 TE.fromEither,
                 // without the explicit types below, i'll get an error for some reason...
-                TE.mapLeft<i.ValidationError[], server.ServerError>((e) => ({
+                TE.mapLeft<i.ValidationError[], ServerError>((e) => ({
                     code: 'PARSE_ERROR',
-                    title: `Error parsing ${decoder.name}`,
+                    title: `Error parsing ${decoder.name} in fetchAndDecode`,
                     message: formatValidationErrors(e).join('\n'),
                 }))
             )
@@ -57,3 +57,9 @@ export const fetchAndDecode = <T>(url: string, decoder: i.Decoder<unknown, T>, a
         TE.map(({ decoded }) => decoded)
     )
 }
+
+// truncates the string to the given length, and adds an ellipsis if it's too long
+export const truncate = (str: string, n: number): { truncated: boolean, str: string } => ({
+    truncated: str.length > n,
+    str: str.length > n ? str.substring(0, n - 1) + '...' : str
+})
