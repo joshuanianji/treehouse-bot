@@ -33,14 +33,20 @@ COPY --from=pruner /app/out/full/ .
 RUN yarn turbo run build --scope=server --include-dependencies --no-deps
 
 # Copy over `build/index.js` and assets folder
-FROM base AS runner
+FROM base AS runnerprep
 RUN apk add --no-cache dumb-init
 WORKDIR /app
-COPY --chown=node:node --from=builder /app/apps/server/build/index.js ./index.js
-COPY --chown=node:node --from=builder /app/apps/server/assets/ ./assets/
+COPY --from=builder /app/apps/server/build/index.js ./index.js
+COPY --from=builder /app/apps/server/assets/ ./assets/
 EXPOSE 3001
-USER node
+# Don't need node in the final image
+# https://github.com/npm/cli/issues/3785#issuecomment-1006592811
+RUN npm uninstall npm -g 
 ENV NODE_ENV production
+
+FROM runnerprep AS runner
+USER node
+WORKDIR /app
 CMD ["dumb-init", "node", "index.js"]
 
 HEALTHCHECK CMD curl --fail http://localhost:3001 || exit 1   
