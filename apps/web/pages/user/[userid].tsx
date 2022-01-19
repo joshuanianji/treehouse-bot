@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as D from 'io-ts/Decoder';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
@@ -10,6 +10,10 @@ import ViewError from '@/components/ViewError';
 import NftCard from '@/components/NftCard';
 import { UserNFTInfo } from 'custom-types/src/server';
 import Pagination from '@/components/Pagination';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+
+const PAGESIZE = 12; // so the grid works nicely
 
 // Props and Types
 
@@ -55,7 +59,7 @@ export const getServerSideProps: GetServerSideProps<Props, Query> = async (conte
         TE.bindTo('offset'),
         TE.bind('nftRes', ({ offset }) =>
             fetchAndDecode(
-                `${endpoint}/nft/user?id=${userid}&offset=${offset}&pageSize=10`, // hardcoding page sizes rn
+                `${endpoint}/nft/user?id=${userid}&offset=${offset}&pageSize=${PAGESIZE}`, // hardcoding page sizes rn
                 UserNFTInfo,
                 mapAxiosError(`NFTS for user ${userid}`)
             )
@@ -81,7 +85,14 @@ const ViewUserNFTs: React.FC<Props> = (props) => {
     return pipe(
         props,
         E.fold(
-            (err) => <ViewError error={err} />,
+            (err) => <>
+                <Head>
+                    <title>Error Viewing NFT!</title>
+                    <meta property="og:title" content="Error viewing user NFT!" key="title" />
+                    <meta property="og:type" content="website" key="type" />
+                </Head>
+                <ViewError error={err} />,
+            </>,
             ({ nftInfo, user, offset }) => <ViewContent nftInfo={nftInfo} user={user} offset={offset} />
         )
     )
@@ -89,10 +100,22 @@ const ViewUserNFTs: React.FC<Props> = (props) => {
 
 const ViewContent: React.FC<{ nftInfo: UserNFTInfo, user: DiscordUser, offset: number }> = ({ nftInfo, user, offset }) => {
     const start = offset + 1;
-    const end = Math.min(offset + 10, offset + nftInfo.numReturned);
+    const end = Math.min(offset + PAGESIZE, offset + nftInfo.numReturned);
+    const router = useRouter();
+
+    useEffect(() => {
+        console.log('Router:', router.basePath);
+    }, [])
 
     return (
         <>
+            <Head>
+                <title>@{user.username}'s NFTs (#{start} - #{end})</title>
+                <meta property="og:title" content={`@${user.username}'s NFTs (#${start} - #${end})`} key="title" />
+                <meta property="og:type" content="website" key="type" />
+                <meta property="og:image" content={user.avatar} key="image" />
+                <meta property="og:url" content={router.basePath} key="url" />
+            </Head>
             <div className='w-full min-h-[25vh] grid place-items-center'>
                 <h1 className='text-4xl font-extrabold'>{user.username}'s NFTs</h1>
                 <h2 className='text-2xl font-extrabold'>{nftInfo.count} total NFTs</h2>
@@ -101,7 +124,7 @@ const ViewContent: React.FC<{ nftInfo: UserNFTInfo, user: DiscordUser, offset: n
             <div className='w-full xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid place-items-center gap-16 p-8'>
                 {nftInfo.nfts.map((nft) => <NftCard key={nft.id} nft={nft} user={user} linkable={true} />)}
             </div>
-            <Pagination start={start} end={end} total={nftInfo.count} pageSize={10} />
+            <Pagination start={start} end={end} total={nftInfo.count} pageSize={PAGESIZE} />
         </>
     )
 }
