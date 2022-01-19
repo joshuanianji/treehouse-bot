@@ -3,11 +3,9 @@
   "ignorePaths": ["**/Dockerfile"],
   "labels": ["dependencies"],
   "schedule": ["after 10pm and before 5am every weekday", "every weekend"],
+  "semanticCommitType": ":arrow_up:",
+  "semanticCommitScope": null,
   "packageRules": [
-    {
-      "semanticCommitType": ":arrow_up:",
-      "semanticCommitScope": null
-    },
     {
       "updateTypes": ["pin"],
       "semanticCommitType": ":pushpin:"
