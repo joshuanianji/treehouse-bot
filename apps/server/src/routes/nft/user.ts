@@ -23,15 +23,18 @@ const UserIDQuery = i.partial({
     offset: IntFromString,
     pageSize: IntFromString,
 })
+
 router.get('/', parseQuery(UserIDQuery), async (req, res) => {
     console.log(`${chalk.green('[NFT]')} ${chalk.cyan('GET')} ${chalk.yellow('/user')}`)
     try {
-        if (!req.query.id) {
+        const query = res.locals.query;
+
+        if (!query.id) {
             // send the default response if no userId is provided
             return res.send('NFT root')
         }
 
-        const { id } = req.query
+        console.log('Query: ', query)
 
         const { supabase, tableName } = Config.getSupabaseClient()
         // retrieve the NFTs from the database
@@ -39,21 +42,26 @@ router.get('/', parseQuery(UserIDQuery), async (req, res) => {
         const nfts = supabase
             .from(tableName)
             .select('id, createdAt, fullHash, ownedBy, type, msgLink, msgLinkValid, from')
-            .eq('ownedBy', id)
+            .eq('ownedBy', query.id)
             .order('createdAt', { ascending: false })
 
-        if (req.query.offset) {
-            const pageSize = req.query.pageSize || 5 // default to 5 max NFTs
-            nfts.range(req.query.offset, req.query.offset + pageSize - 1)
+
+        const pageSize = query.pageSize || 5 // default to 5 max NFTs
+        if (query.offset) {
+            const start = query.offset;
+            const end = start + pageSize - 1;
+            console.log(`Retrieving NFTs ${start} to ${end}, page size ${pageSize}`)
+            nfts.range(start, end)
         } else {
-            nfts.range(0, 4);
+            console.log(`Retrieving NFTs 0 to ${pageSize - 1}, page size ${pageSize}`)
+            nfts.range(0, pageSize - 1);
         }
 
         // retrieve the NFTs owned by the user
         const countNFTs = supabase
             .from(tableName)
             .select('id', { count: 'exact' })
-            .eq('ownedBy', id);
+            .eq('ownedBy', query.id);
 
         const [
             { data: nftData, error: nftError },
@@ -84,7 +92,7 @@ router.get('/', parseQuery(UserIDQuery), async (req, res) => {
             numReturned: nftData.length,
             nfts: nftData
         }
-        console.log(`Returning NFTs: for user ${id}`, { count: returnVal.count, numReturned: returnVal.numReturned, nftsLength: returnVal.nfts.length })
+        console.log(`Returning NFTs: for user ${query.id}`, { count: returnVal.count, numReturned: returnVal.numReturned, nftsLength: returnVal.nfts.length })
         return res.status(200).json({ data: returnVal })
 
     } catch (error) {
