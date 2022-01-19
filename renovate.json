@@ -10,11 +10,15 @@
     },
     {
       "updateTypes": ["pin"],
-      "semanticCommitType": ":pin:"
+      "semanticCommitType": ":pushpin:"
     },
     {
       "updateTypes": ["rollback"],
       "semanticCommitType": ":arrow_down:"
+    },
+    {
+      "updateTypes": ["digest", "bump"],
+      "semanticCommitType": ":bookmark:"
     },
     {
       "matchDepTypes": ["devDependencies"],
