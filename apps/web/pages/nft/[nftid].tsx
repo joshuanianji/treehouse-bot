@@ -5,8 +5,9 @@ import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/TaskEither';
 import NftCard from '@/components/NftCard';
-import { fetchAndDecode, MapAxiosError, defaultAxiosErrorMap } from 'utils';
+import { fetchAndDecode, MapAxiosError, defaultAxiosErrorMap, truncate } from 'utils';
 import ViewError from '@/components/ViewError';
+import Head from 'next/head';
 
 type Props = E.Either<ServerError, {
     nft: NFT;
@@ -71,8 +72,19 @@ const ViewNFT: React.FC<Props> = (props) => {
     return pipe(
         props,
         E.fold(
-            (err) => <ViewError error={err} />,
+            (err) => <>
+                <Head>
+                    <title>Error Viewing NFT!</title>
+                    <meta property="og:title" content="Error viewing NFT!" key="title" />
+                </Head>
+                <ViewError error={err} />,
+            </>,
             ({ nft, user }) => <>
+                <Head>
+                    <title>@{user.username}'s NFT #{nft.id}</title>
+                    <meta property="og:title" content={`@${user.username}'s NFT #{nft.id}`} key="title" />
+                    <MetaProps nft={nft} user={user} />
+                </Head>
                 <div className='w-full min-h-[25vh] grid place-items-center'>
                     <h1 className='text-4xl font-extrabold'>NFT {nftid}</h1>
                 </div>
@@ -87,5 +99,29 @@ const ViewNFT: React.FC<Props> = (props) => {
     )
 }
 
+const MetaProps: React.FC<{ nft: NFT, user: DiscordUser }> = ({ nft, user }) => {
+    // https://ogp.me/#types
+    switch (nft.type._type) {
+        case 'asset':
+            return <>
+                <meta property="og:type" content="article" key="type" />
+                <meta property="og.image" content={nft.type.url} key="image" />
+                <meta property="og:url" content={nft.type.url} />
+            </>
+        case 'sticker':
+            return <>
+                <meta property="og:type" content="article" key="type" />
+                <meta property="og.image" content={nft.type.url} key="image" />
+                <meta property="og:url" content={nft.type.url} />
+            </>
+        case 'text': {
+            const { str } = truncate(nft.type.content, 50);
+            return <>
+                <meta property="og:type" content="article" key="type" />
+                <meta property="og:description" content={str} key="description" />
+            </>
+        }
+    }
+}
 
 export default ViewNFT;
