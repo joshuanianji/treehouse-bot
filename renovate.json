@@ -4,7 +4,7 @@
   "labels": ["dependencies"],
   "schedule": ["after 10pm and before 5am every weekday", "every weekend"],
   "semanticCommitType": ":arrow_up: update",
-  "semanticCommitScope": null,
+  "semanticCommitScope": "deps",
   "packageRules": [
     {
       "updateTypes": ["pin"],
