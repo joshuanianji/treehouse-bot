@@ -58,7 +58,7 @@ export const nftToEmbed = async (client: ExtendedClient, nft: NFT): Promise<Mess
         .setTitle(`NFT \`${nft.id}\` owned by ${user.username}`)
         .setAuthor({ name: user.username, iconURL: user.avatarURL() || undefined })
         .setDescription(`Created at: ${new Date(nft.createdAt).toLocaleString()}`)
-        .addField('Metadata:', `Full Hash: ${nft.fullHash}\nMore Info: websiteLink`, false)
+        .addField('Metadata:', `Full Hash: ${nft.fullHash}\nMore Info: ${websiteLink}`, false)
         .setFooter({
             text: 'https://github.com/joshuanianji/treehouse-bot',
             iconURL: client.user?.avatarURL() || undefined
