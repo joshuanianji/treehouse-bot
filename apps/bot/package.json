@@ -4,7 +4,7 @@
   "description": "A template for Discord.js v13 written in Typescript",
   "main": "./build/bot.ts",
   "dependencies": {
-    "@discordjs/rest": "^0.2.0-canary.0",
+    "@discordjs/rest": "^0.3.0",
     "axios": "^0.25.0",
     "chalk": "^4.1.2",
     "custom-types": "*",
