@@ -2,9 +2,9 @@
 
 A Discord bot with some other apps. Scaffolded from Turborepo Starter.
 
-- **BOT**: The main discord bot, hosted on Digital Ocean via Docker.
-- **Server** The server, hosted on Digital Ocean via Docker.
-- **Web**: The web app, built with [SvelteKit](https://kit.svelte.dev/) and hosted on [Netlify](https://www.netlify.com/).
+- **BOT**: The main discord bot, written with Discord.js. Hosted on Digital Ocean via Docker.
+- **Server** The server, written with Express. Hosted on Digital Ocean via Docker.
+- **Web**: The web app, built with Next.JS and hosted on [Netlify](https://www.netlify.com/).
 
 ## Prerequisites
 
