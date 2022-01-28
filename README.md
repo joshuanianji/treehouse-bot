@@ -2,9 +2,10 @@
 
 A Discord bot with some other apps. Scaffolded from Turborepo Starter.
 
-- **BOT**: The main discord bot, written with Discord.js. Hosted on Digital Ocean via Docker.
-- **Server** The server, written with Express. Hosted on Digital Ocean via Docker.
-- **Web**: The web app, built with Next.JS and hosted on [Netlify](https://www.netlify.com/).
+- **apps/bot**: The main discord bot, written with Discord.js. Hosted on Digital Ocean via Docker.
+- **apps/server** The server, written with Express. Hosted on Digital Ocean via Docker.
+- **apps/web**: The web app, built with Next.JS and hosted on [Netlify](https://www.netlify.com/).
+- **packages/\***: Place to store shared code between my apps.
 
 ## Prerequisites
 
