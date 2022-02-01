@@ -1,6 +1,11 @@
 import Client from "./client/client";
+import passiveMessageListener from './custom/passiveMessageListener';
 
 
-void new Client({
+const client = new Client({
     intents: ["GUILD_MESSAGES", "GUILDS", "GUILD_BANS", "GUILD_MEMBERS", "DIRECT_MESSAGES"]
-}).init().catch(console.error);
+})
+
+client.init().catch(console.error);
+
+client.on('message', passiveMessageListener);
