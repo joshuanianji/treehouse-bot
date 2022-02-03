@@ -1,4 +1,5 @@
 import { Message } from 'discord.js';
+import { truncate } from 'utils';
 
 
 const triggerWords = ["i'm ", "im ", "i am "];
@@ -22,9 +23,10 @@ const listener = async (message: Message<boolean>): Promise<void> => {
 
     try {
         const { poggers, remaining } = startsWith(message.content);
+        const { str } = truncate(remaining, 1900); // the max is 2000 chars, so we make room for our other msgs
         if (poggers) {
             await message.channel.send({
-                content: `You're not ${remaining}, you're ${message.author.toString()}!`,
+                content: `You're not ${str}, you're ${message.author.toString()}!`,
                 files: ['https://c.tenor.com/9RBYPqpnSeUAAAAC/crying-emoji.gif']
             });
             console.log(`[INFO]: messageListener - Detected dad joke from ${message.author.username}: id - ${message.id}.`);
@@ -32,7 +34,7 @@ const listener = async (message: Message<boolean>): Promise<void> => {
     } catch (e) {
         // send message with jerome sus imposter
         await message.channel.send({
-            content: `Error in Passive Event Listener! Please contact bot owner lol.`,
+            content: `Error in Passive Message Listener! Please contact bot owner lol.`,
             files: ['https://i.ytimg.com/vi/_GDkeCpT7tA/maxresdefault.jpg']
         });
         console.log('[ERROR]: messageListener - Error in passiveMessageListener: ', e);
