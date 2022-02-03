@@ -27,7 +27,7 @@ const listener = async (message: Message<boolean>): Promise<void> => {
                 content: `You're not ${remaining}, you're ${message.author.toString()}!`,
                 files: ['https://c.tenor.com/9RBYPqpnSeUAAAAC/crying-emoji.gif']
             });
-            console.log(`[INFO]: messageListener - Detected dad joke from ${message.author.username} at ${message.createdTimestamp}.`);
+            console.log(`[INFO]: messageListener - Detected dad joke from ${message.author.username}: id - ${message.id}.`);
         }
     } catch (e) {
         // send message with jerome sus imposter
