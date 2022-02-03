@@ -34,7 +34,7 @@ const listener = async (message: Message<boolean>): Promise<void> => {
     } catch (e) {
         // send message with jerome sus imposter
         await message.channel.send({
-            content: `Error in Passive Event Listener! Please contact bot owner lol.`,
+            content: `Error in Passive Message Listener! Please contact bot owner lol.`,
             files: ['https://i.ytimg.com/vi/_GDkeCpT7tA/maxresdefault.jpg']
         });
         console.log('[ERROR]: messageListener - Error in passiveMessageListener: ', e);
