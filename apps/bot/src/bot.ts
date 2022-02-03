@@ -8,4 +8,4 @@ const client = new Client({
 
 client.init().catch(console.error);
 
-client.on('message', passiveMessageListener);
+client.on('messageCreate', passiveMessageListener);

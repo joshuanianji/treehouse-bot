@@ -16,12 +16,26 @@ const startsWith = (word: string): { poggers: boolean, remaining: string } => {
 }
 
 const listener = async (message: Message<boolean>): Promise<void> => {
-    const { poggers, remaining } = startsWith(message.content);
-    if (poggers) {
-        message.channel.send({
-            content: `You're not ${remaining}, you're ${message.author.toString()}!`,
-            files: ['https://c.tenor.com/9RBYPqpnSeUAAAAC/crying-emoji.gif']
+    if (message.author.bot) {
+        return;
+    }
+
+    try {
+        const { poggers, remaining } = startsWith(message.content);
+        if (poggers) {
+            await message.channel.send({
+                content: `You're not ${remaining}, you're ${message.author.toString()}!`,
+                files: ['https://c.tenor.com/9RBYPqpnSeUAAAAC/crying-emoji.gif']
+            });
+            console.log('poggers')
+        }
+    } catch (e) {
+        // send message with jerome sus imposter
+        await message.channel.send({
+            content: `Error in Passive Event Listener! Please contact bot owner lol.`,
+            files: ['https://i.ytimg.com/vi/_GDkeCpT7tA/maxresdefault.jpg']
         });
+        console.log('Error in passiveMessageListener: ', e);
     }
 }
 
