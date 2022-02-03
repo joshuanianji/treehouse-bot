@@ -27,7 +27,7 @@ const listener = async (message: Message<boolean>): Promise<void> => {
                 content: `You're not ${remaining}, you're ${message.author.toString()}!`,
                 files: ['https://c.tenor.com/9RBYPqpnSeUAAAAC/crying-emoji.gif']
             });
-            console.log('poggers')
+            console.log(`[INFO]: messageListener - Detected dad joke from ${message.author.username} at ${message.createdTimestamp}.`);
         }
     } catch (e) {
         // send message with jerome sus imposter
@@ -35,7 +35,7 @@ const listener = async (message: Message<boolean>): Promise<void> => {
             content: `Error in Passive Event Listener! Please contact bot owner lol.`,
             files: ['https://i.ytimg.com/vi/_GDkeCpT7tA/maxresdefault.jpg']
         });
-        console.log('Error in passiveMessageListener: ', e);
+        console.log('[ERROR]: messageListener - Error in passiveMessageListener: ', e);
     }
 }
 
