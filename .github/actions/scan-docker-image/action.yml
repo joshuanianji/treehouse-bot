@@ -19,6 +19,6 @@ runs:
       shell: bash
 
     - name: Scan Docker image
-      uses: azure/container-scan@595707a78db6069af4db7d81902d7a886ec73973
+      uses: azure/container-scan@v0.1
       with:
         image-name: treehouse-bot_${{ inputs.service }}
