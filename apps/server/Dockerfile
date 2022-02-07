@@ -7,7 +7,7 @@ FROM node:16-alpine3.12 AS base
 # Ensure we prune workspace so we don't unnecessarily build so much
 
 FROM base AS turboed
-RUN yarn global add turbo
+RUN yarn global add turbo@1.1.1
 
 # Prune the workspace for the `frontend` app
 # Use the turboed image to use the `turbo` command before we install dependencies.
