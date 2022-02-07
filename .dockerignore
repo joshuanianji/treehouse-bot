@@ -25,5 +25,4 @@ netlify.toml
 
 # Other stuff
 renovate.json 
-turbo.json
 .turbo
