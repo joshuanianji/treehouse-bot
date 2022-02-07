@@ -6,7 +6,6 @@ out/
 .github/
 # ignore all .gitignore files
 **/.gitignore
-**/.turbo
 
 # no need for .vscode
 .vscode
@@ -24,5 +23,5 @@ npm-debug.log
 netlify.toml
 
 # Other stuff
-renovate.json 
-.turbo
+renovate.json
+**/.turbo

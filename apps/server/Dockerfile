@@ -30,6 +30,7 @@ RUN yarn --pure-lockfile --no-cache
 FROM installer AS builder
 WORKDIR /app
 COPY --from=pruner /app/out/full/ .
+COPY --from=pruner /app/turbo.json ./turbo.json
 RUN yarn turbo run build --scope=server --include-dependencies --no-deps
 
 # Copy over `build/index.js` and assets folder
