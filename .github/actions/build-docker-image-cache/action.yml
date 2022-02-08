@@ -7,9 +7,9 @@ inputs:
   repo_token:
     required: true
     description: "The GitHub token to use for authentication"
-  output_prefix:
-    required: true 
-    description: just make this secrets.REPO_NAME
+  outputs:
+    required: false 
+    description: Same as docker-push-action outputs. Set this if you want to store the docker iamge as an artifact.
   tags:
     required: true
     description: "tags to add to the image"
@@ -50,7 +50,7 @@ runs:
         labels: ${{ steps.meta.outputs.labels }}
         tags: ${{ inputs.tags }}
         load: true
-        outputs: type=docker,dest=/tmp/${{ inputs.output_prefix }}_${{ inputs.service }}.tar # for us to store docker images as artifacts
+        outputs: ${{ inputs.outputs }} # for us to store docker images as artifacts. If not set, we will not store the image
 
     - name: 🚚 Move cache
       run: |

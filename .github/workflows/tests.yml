@@ -75,7 +75,6 @@ jobs:
         with:
           service: bot
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          output_prefix: treehouse-bot
           tags: treehouse-bot_bot
       
       - name: Upload artifact
@@ -96,7 +95,6 @@ jobs:
         with:
           service: server
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          output_prefix: treehouse-bot
           tags: treehouse-bot_server
 
       - name: Upload artifact

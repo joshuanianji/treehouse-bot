@@ -23,7 +23,6 @@ runs:
       with:
         service: ${{ inputs.service }}
         repo_token: ${{ inputs.repo_token }}
-        output_prefix: treehouse-bot
         tags: ${{ github.repository }}_${{ inputs.service }}
 
     - name: Run `docker images`
