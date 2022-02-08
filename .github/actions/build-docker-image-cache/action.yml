@@ -26,13 +26,6 @@ runs:
         restore-keys: |
           ${{ runner.os }}-multi-buildx
 
-    - name: 🔒 Login to GitHub Container Registry
-      uses: docker/login-action@v1
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ inputs.repo_token }}
-
     - name: 🏗️ Build Image
       uses: docker/build-push-action@v2
       with:
