@@ -22,9 +22,9 @@ runs:
       with:
         path: /tmp/.buildx-cache
         # Key is named differently to avoid collision
-        key: ${{ runner.os }}-multi-buildx-${{ github.sha }}
+        key: ${{ runner.os }}-${{ inputs.service }}-multi-buildx-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-multi-buildx
+          ${{ runner.os }}-${{ inputs.service }}-multi-buildx
 
     - name: Extract Docker metadata
       id: meta
