@@ -62,11 +62,38 @@ jobs:
 
       - name: ✅ Run Tests
         run: yarn --cwd apps/bot test
+  
+  build-bot:
+    name: 🤖 Build Bot Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏁 Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Build Bot
+        uses: ./.github/actions/build-docker-image-cache
+        with:
+          service: bot
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+  
+  build-server:
+    name: 🖥️ Build Server Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏁 Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Build Server
+        uses: ./.github/actions/build-docker-image-cache
+        with:
+          service: server
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
 
   run-docker-imgs:
     name: 🐳 Docker Images
     environment: dev
     runs-on: ubuntu-latest
+    needs: [build-bot, build-server]
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
@@ -76,18 +103,6 @@ jobs:
           echo "{{ secrets.BOT_CONFIG }}" > bot-config.yml
           echo "{{ secrets.SERVER_CONFIG }}" > server-config.yml
 
-      - name: Build Bot
-        uses: ./.github/actions/build-docker-image-cache
-        with:
-          service: bot
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Build Server
-        uses: ./.github/actions/build-docker-image-cache
-        with:
-          service: server
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Run `docker images`
         run: docker images
 
@@ -95,4 +110,7 @@ jobs:
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
           sleep 20
+      
+      - name: Finish!
+        run: echo "Yay!"
 
