@@ -76,6 +76,7 @@ jobs:
           service: bot
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tags: treehouse-bot_bot
+          ouutputs: type=docker,dest=/tmp/treehouse-bot_bot.tar
       
       - name: Upload artifact
         uses: actions/upload-artifact@v2
@@ -96,6 +97,7 @@ jobs:
           service: server
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tags: treehouse-bot_server
+          outputs: type=docker,dest=/tmp/treehouse-bot_server.tar
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
