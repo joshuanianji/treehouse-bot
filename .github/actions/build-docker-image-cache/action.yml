@@ -13,7 +13,7 @@ inputs:
   tags:
     required: false
     description: "tags to add to the image"
-    value: ${{ github.repository }}_${{ inputs.service }}
+    default: ${{ github.repository }}_${{ inputs.service }}
 
 
 runs:
