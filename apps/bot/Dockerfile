@@ -35,10 +35,8 @@ RUN npm prune --production
 
 # Start the app
 # Copy over `build/index.js` 
-FROM base AS runner
-RUN apk add --no-cache dumb-init
-WORKDIR /app
-USER node
-COPY --chown=node:node --from=builder /app/apps/bot/build/index.js ./index.js
+FROM ghcr.io/joshuanianji/scratch-node-dumb-init:16.12.0 as runner
+COPY --from=builder /app/apps/bot/build/index.js /index.js
 ENV NODE_ENV production
-CMD ["dumb-init", "node", "index.js"]
+
+CMD ["node", "index.js"]

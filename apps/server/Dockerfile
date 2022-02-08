@@ -34,14 +34,11 @@ COPY --from=pruner /app/turbo.json ./turbo.json
 RUN yarn turbo run build --scope=server --include-dependencies --no-deps
 
 # Copy over `build/index.js` and assets folder
-FROM base AS runner
-RUN apk add --no-cache dumb-init
-WORKDIR /app
-COPY --chown=node:node --from=builder /app/apps/server/build/index.js ./index.js
-COPY --chown=node:node --from=builder /app/apps/server/assets/ ./assets/
+FROM ghcr.io/joshuanianji/scratch-node-dumb-init:16.12.0 as runner
+COPY --from=builder /app/apps/server/build/index.js /index.js
+COPY --from=builder /app/apps/server/assets/ /assets/
 EXPOSE 3001
-USER node
 ENV NODE_ENV production
-CMD ["dumb-init", "node", "index.js"]
+CMD ["node", "index.js"]
 
-HEALTHCHECK CMD curl --fail http://localhost:3001 || exit 1   
+HEALTHCHECK CMD curl --fail http://localhost:3001 || exit 1

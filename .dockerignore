@@ -16,7 +16,9 @@ out/
 **/node_modules
 npm-debug.log
 
+# Docker Stuff
 .dockerignore
+**/Dockerfile
 
 # Netlify
 **/.netlify
