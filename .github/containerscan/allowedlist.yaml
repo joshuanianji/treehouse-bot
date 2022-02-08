@@ -1,4 +1,6 @@
 general:
+  vulnerabilities:
+    - CVE-2021-3807 # ansi-regex vulnerability.
   bestPracticeViolations:
     - DKL-DI-0006 # avoid latest tag
     - CIS-DI-0005 # avoid insecure registry
