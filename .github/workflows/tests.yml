@@ -76,6 +76,7 @@ jobs:
           service: bot
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           output_prefix: ${{ secrets.REPO_NAME }}
+          tags: ${{ secrets.REPO_NAME }}_bot
       
       - name: Upload artifact
         uses: actions/upload-artifact@v2
@@ -96,6 +97,7 @@ jobs:
           service: server
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           output_prefix: ${{ secrets.REPO_NAME }}
+          tags: ${{ secrets.REPO_NAME }}_server
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2

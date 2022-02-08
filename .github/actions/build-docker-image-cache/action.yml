@@ -10,6 +10,11 @@ inputs:
   output_prefix:
     required: true 
     description: just make this secrets.REPO_NAME
+  tags:
+    required: false
+    description: "tags to add to the image"
+    value: ${{ github.repository }}_${{ inputs.service }}
+
 
 runs:
   using: composite
@@ -44,7 +49,7 @@ runs:
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
         labels: ${{ steps.meta.outputs.labels }}
-        tags: ${{ github.repository }}_${{ inputs.service }}
+        tags: ${{ inputs.tags }}
         load: true
         outputs: type=docker,dest=/tmp/${{ inputs.output_prefix }}_${{ inputs.service }}.tar # for us to store docker images as artifacts
 
