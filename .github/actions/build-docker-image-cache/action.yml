@@ -1,0 +1,54 @@
+name: "Build Docker Image with Caching"
+description: "DOCKER BUILDX IS GREAT"
+inputs:
+  service:
+    required: true
+    description: "The name of the service to build and deploy (bot or server)"
+  repo_token:
+    required: true
+    description: "The GitHub token to use for authentication"
+
+runs:
+  using: composite
+  steps:
+    - name: 🐳 Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v1.6.0
+      with:
+        driver: docker
+
+    - name: 📦️ Cache Docker layers
+      uses: actions/cache@v2
+      with:
+        path: /tmp/.buildx-cache
+        # Key is named differently to avoid collision
+        key: ${{ runner.os }}-${{ inputs.service }}-multi-buildx-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-${{ inputs.service }}-multi-buildx
+
+    - name: Extract Docker metadata
+      id: meta
+      uses: docker/metadata-action@v3
+      with:
+        images: ghcr.io/${{ github.repository }}
+
+    - name: 🏗️ Build Image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        builder: ${{ steps.buildx.outputs.name }}
+        file: apps/${{ inputs.service }}/Dockerfile
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
+        labels: ${{ steps.meta.outputs.labels }}
+        tags: ${{ github.repository }}_${{ inputs.service }}
+
+    - name: 🚚 Move cache
+      run: |
+        rm -rf /tmp/.buildx-cache
+        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      shell: bash
+
+    - name: List Docker Images
+      run: docker images
+      shell: bash

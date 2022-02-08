@@ -12,6 +12,7 @@ on:
       - "!*.md" # ignore markdown files
       - ".github/actions/publish-docker-image/**" # Dependency
       - ".github/actions/update-docker-image-prod/**" # Dependency
+      - ".github/actions/build-docker-image-cache/**" # Dependency
 
 jobs:
   build-and-deploy:

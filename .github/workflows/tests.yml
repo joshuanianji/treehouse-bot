@@ -10,6 +10,7 @@ on:
       - "apps/server/**"
       - "apps/bot/**"
       - "!**/*.md"
+      - ".github/actions/build-docker-image-cache/**" # dependency
   pull_request:
     branches:
       - main
@@ -19,6 +20,7 @@ on:
       - "apps/server/**"
       - "apps/bot/**"
       - "!**/*.md"
+      - ".github/actions/build-docker-image-cache/**" # dependency
 
 jobs:
   test-server:
@@ -68,16 +70,38 @@ jobs:
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
+      
+      - name: 🐳 Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1.6.0
+        with:
+          install: true
+
+      - name: Build Server
+        uses: ./.github/actions/build-docker-image-cache
+        with:
+          service: server
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Build Bot
+        uses: ./.github/actions/build-docker-image-cache
+        with:
+          service: bot
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ✏️ Write config files
         run: |
           echo "{{ secrets.BOT_CONFIG }}" > bot-config.yml
           echo "{{ secrets.SERVER_CONFIG }}" > server-config.yml
 
-      - name: Build the Docker Image
-        run: |
-          docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d
-          sleep 20
+      - name: Run `docker images`
+        run: docker images
 
-      - name: Run `docker image ls`
-        run: docker image ls
+      - name: Run Docker-Compose up
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+          sleep 20
+      
+      - name: Finish!
+        run: echo "Yay!"
+
