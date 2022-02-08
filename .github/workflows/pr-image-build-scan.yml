@@ -26,11 +26,10 @@ jobs:
           service: bot
           repo_token: ${{ inputs.repo_token }}
 
-      - name: Scan Bot
-        # Directory name only
-        uses: ./.github/actions/scan-docker-image
+      - name: Scan Docker image
+        uses: azure/container-scan@v0.1
         with:
-          service: bot
+          image-name: ${{ github.repository }}_bot
 
   build-scan-server:
     name: Server - Scan
@@ -47,8 +46,8 @@ jobs:
           service: server
           repo_token: ${{ inputs.repo_token }}
 
-      - name: Scan Server
-        # Directory name only
-        uses: ./.github/actions/scan-docker-image
+      - name: Scan Docker image
+        uses: azure/container-scan@v0.1
         with:
-          service: server
+          image-name: ${{ github.repository }}_server
+
