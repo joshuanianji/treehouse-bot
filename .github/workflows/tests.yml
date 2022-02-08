@@ -107,6 +107,7 @@ jobs:
     name: 🐳 Docker Images
     environment: dev
     runs-on: ubuntu-latest
+    needs: [build-bot-img, build-server-img]
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
