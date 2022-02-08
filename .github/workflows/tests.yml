@@ -97,6 +97,21 @@ jobs:
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v2
+      
+      - name: 🐳 Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v1.6.0
+      with:
+        install: true
+
+    - name: 📦️ Cache Docker layers
+      uses: actions/cache@v2
+      with:
+        path: /tmp/.buildx-cache
+        # Key is named differently to avoid collision
+        key: ${{ runner.os }}-multi-buildx-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-multi-buildx
 
       - name: ✏️ Write config files
         run: |
