@@ -23,7 +23,9 @@ runs:
       with:
         service: ${{ inputs.service }}
         repo_token: ${{ inputs.repo_token }}
-        tags: ${{ github.repository }}_${{ inputs.service }}
+        tags: $TAG_PREFIX:${{ github.sha }},$TAG_PREFIX:latest
+      env:
+        TAG_PREFIX: "ghcr.io/${{ github.repository }}.${{ inputs.service }}"
 
     - name: Run `docker images`
       run: docker images
@@ -32,18 +34,10 @@ runs:
     # Note: global environment variables don't seem possible right now...
     # https://github.com/actions/starter-workflows/issues/68
 
-    - name: Push Docker Image with SHA Tag
+    - name: Push Docker Image with SHA and :latest tag
       run: |
-        docker tag treehouse-bot_${{ inputs.service }} $TAG_PREFIX:${{ github.sha }}
-        docker push $TAG_PREFIX:${{ github.sha }}
-      shell: bash
-      env:
-        TAG_PREFIX: "ghcr.io/${{ github.repository }}.${{ inputs.service }}"
-
-    - name: Push Docker Image with :latest tag
-      run: |
-        docker tag treehouse-bot_${{ inputs.service }} $TAG_PREFIX:latest
         docker push $TAG_PREFIX:latest
+        docker push $TAG_PREFIX:${{ github.sha }}
       shell: bash
       env:
         TAG_PREFIX: "ghcr.io/${{ github.repository }}.${{ inputs.service }}"

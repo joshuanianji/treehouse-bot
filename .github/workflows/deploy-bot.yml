@@ -28,7 +28,6 @@ jobs:
         with:
           service: "bot"
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tags: ${{ github.repository }}_bot
 
   update-bot-image:
     name: Update Docker Image in Prod
