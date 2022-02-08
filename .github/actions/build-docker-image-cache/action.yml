@@ -11,9 +11,8 @@ inputs:
     required: true 
     description: just make this secrets.REPO_NAME
   tags:
-    required: false
+    required: true
     description: "tags to add to the image"
-    default: ${{ github.repository }}_${{ inputs.service }}
 
 
 runs:
