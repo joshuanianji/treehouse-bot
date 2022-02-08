@@ -22,4 +22,4 @@ runs:
     - name: Scan Docker image
       uses: azure/container-scan@v0.1
       with:
-        image-name: treehouse-bot_${{ inputs.service }}
+        image-name: ${{ github.repository }}_${{ inputs.service }}

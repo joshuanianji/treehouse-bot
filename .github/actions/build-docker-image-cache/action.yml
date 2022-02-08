@@ -41,6 +41,7 @@ runs:
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
         labels: ${{ steps.meta.outputs.labels }}
+        tags: ${{ github.repository }}_${{ inputs.service }}
         load: true
 
     - name: 🚚 Move cache
