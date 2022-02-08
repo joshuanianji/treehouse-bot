@@ -88,10 +88,11 @@ jobs:
           service: server
           repo_token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Run `docker images`
+        run: docker images
+
       - name: Run Docker-Compose up
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
           sleep 20
 
-      - name: Run `docker image ls`
-        run: docker image ls
