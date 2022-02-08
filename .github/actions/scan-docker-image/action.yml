@@ -8,12 +8,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Build the Docker Image
-      uses: ./.github/actions/build-docker-image-cache
-      with:
-        service: ${{ inputs.service }}
-        repo_token: ${{ inputs.repo_token }}
-
     - name: Run `docker images`
       run: |
         docker images

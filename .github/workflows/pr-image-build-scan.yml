@@ -20,11 +20,17 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
+      - name: Build the Docker Image
+        uses: ./.github/actions/build-docker-image-cache
+        with:
+          service: bot
+          repo_token: ${{ inputs.repo_token }}
+
       - name: Scan Bot
         # Directory name only
         uses: ./.github/actions/scan-docker-image
         with:
-          service: "bot"
+          service: bot
 
   build-scan-server:
     name: Server - Scan
@@ -35,8 +41,14 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
+      - name: Build the Docker Image
+        uses: ./.github/actions/build-docker-image-cache
+        with:
+          service: server
+          repo_token: ${{ inputs.repo_token }}
+
       - name: Scan Server
         # Directory name only
         uses: ./.github/actions/scan-docker-image
         with:
-          service: "server"
+          service: server
