@@ -43,6 +43,7 @@ runs:
         labels: ${{ steps.meta.outputs.labels }}
         tags: ${{ github.repository }}_${{ inputs.service }}
         load: true
+        outputs: type=docker,dest=/tmp/${{ github.repository }}_${{ inputs.service }}.tar # for us to store docker images as artifacts
 
     - name: 🚚 Move cache
       run: |
