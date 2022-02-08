@@ -75,14 +75,14 @@ jobs:
         with:
           service: bot
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          output_prefix: ${{ secrets.REPO_NAME }}
-          tags: ${{ secrets.REPO_NAME }}_bot
+          output_prefix: treehouse-bot
+          tags: treehouse-bot_bot
       
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ secrets.REPO_NAME }}_bot
-          path: /tmp/${{ secrets.REPO_NAME }}_bot.tar
+          name: treehouse-bot_bot
+          path: /tmp/treehouse-bot_bot.tar
   
   build-server-img:
     name: 📦 Build Server Image
@@ -96,14 +96,14 @@ jobs:
         with:
           service: server
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          output_prefix: ${{ secrets.REPO_NAME }}
-          tags: ${{ secrets.REPO_NAME }}_server
+          output_prefix: treehouse-bot
+          tags: treehouse-bot_server
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ secrets.REPO_NAME }}_server
-          path: /tmp/${{ secrets.REPO_NAME }}_server.tar
+          name: treehouse-bot_server
+          path: /tmp/treehouse-bot_server.tar
 
   run-docker-imgs:
     name: 🐳 Docker Images
@@ -127,8 +127,8 @@ jobs:
       
       - name: Load Docker Images
         run: |
-          docker load --input /tmp/artifacts/${{ secrets.REPO_NAME }}_server/${{ secrets.REPO_NAME }}_server.tar
-          docker load --input /tmp/artifacts/${{ secrets.REPO_NAME }}_bot/${{ secrets.REPO_NAME }}_bot.tar
+          docker load --input /tmp/artifacts/treehouse-bot_server/treehouse-bot_server.tar
+          docker load --input /tmp/artifacts/treehouse-bot_bot/treehouse-bot_bot.tar
           docker image ls -a
 
       - name: Run Docker-Compose up

@@ -24,7 +24,7 @@ jobs:
         with:
           service: bot
           repo_token: ${{ inputs.repo_token }}
-          output_prefix: ${{ secrets.REPO_NAME }}
+          output_prefix: treehouse-bot
           tags: ${{ github.repository }}_bot
 
       - name: Scan Docker image
@@ -46,7 +46,7 @@ jobs:
         with:
           service: server
           repo_token: ${{ inputs.repo_token }}
-          output_prefix: ${{ secrets.REPO_NAME }}
+          output_prefix: treehouse-bot
           tags: ${{ github.repository }}_server
 
       - name: Scan Docker image
