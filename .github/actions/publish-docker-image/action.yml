@@ -23,6 +23,7 @@ runs:
       with:
         service: ${{ inputs.service }}
         repo_token: ${{ inputs.repo_token }}
+        tags: ${{ github.repository }}_${{ inputs.service }}
 
     - name: Run `docker images`
       run: docker images

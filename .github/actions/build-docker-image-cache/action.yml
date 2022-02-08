@@ -7,6 +7,12 @@ inputs:
   repo_token:
     required: true
     description: "The GitHub token to use for authentication"
+  outputs:
+    required: false 
+    description: Same as docker-push-action outputs. Set this if you want to store the docker iamge as an artifact.
+  tags:
+    required: true
+    description: "tags to add to the image"
 
 runs:
   using: composite
@@ -15,7 +21,7 @@ runs:
       id: buildx
       uses: docker/setup-buildx-action@v1.6.0
       with:
-        driver: docker
+        install: true
 
     - name: 📦️ Cache Docker layers
       uses: actions/cache@v2
@@ -41,7 +47,9 @@ runs:
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
         labels: ${{ steps.meta.outputs.labels }}
-        tags: ${{ github.repository }}_${{ inputs.service }}
+        tags: ${{ inputs.tags }}
+        load: true
+        outputs: ${{ inputs.outputs }} # for us to store docker images as artifacts. If not set, we will not store the image
 
     - name: 🚚 Move cache
       run: |
