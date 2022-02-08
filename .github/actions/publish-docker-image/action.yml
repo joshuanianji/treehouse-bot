@@ -19,13 +19,14 @@ runs:
         password: ${{ inputs.repo_token }}
 
     - name: Build the Docker Image
-      run: |
-        docker-compose -f docker-compose.yml -f docker-compose.dev.yml build ${{ inputs.service }}
-      shell: bash
+      uses: ./.github/actions/build-docker-image-cache
+      with:
+        service: ${{ inputs.service }}
+        repo_token: ${{ inputs.repo_token }}
+        tags: ${{ github.repository }}_${{ inputs.service }}
 
-    - name: Run `docker image ls`
-      run: |
-        docker image ls
+    - name: Run `docker images`
+      run: docker images
       shell: bash
 
     # Note: global environment variables don't seem possible right now...

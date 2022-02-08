@@ -17,7 +17,7 @@ runs:
   using: "composite"
   steps:
     - name: Download and extract the latest Docker Image on Server
-      uses: appleboy/ssh-action@ba1d4fb0eb89e3b83ad843bd875398d0d73fe721
+      uses: appleboy/ssh-action@1a8b3784eaa665f677fa114edd5683bb6a6bfaa8
       with:
         host: ${{ inputs.ssh_host }}
         username: joshua
@@ -27,7 +27,7 @@ runs:
         script: |
           cd ~/projects/treehouse-bot
           docker container ls | grep treehouse
-          docker image ls | grep treehouse
+          docker images | grep treehouse
           docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull
           docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
           docker image prune -f

@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - ".github/workflows/pr-image-build-scan.yml" # This file
-      - ".github/actions/scan-docker-image/**" # Dependencies
+      - ".github/actions/build-docker-image-cache/**" # Dependency
       - "apps/bot/**"
       - "apps/server/**"
       - yarn.lock # so this can run on Dependabot PRs
@@ -19,11 +19,17 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Scan Bot
-        # Directory name only
-        uses: ./.github/actions/scan-docker-image
+      - name: Build the Docker Image
+        uses: ./.github/actions/build-docker-image-cache
         with:
-          service: "bot"
+          service: bot
+          repo_token: ${{ inputs.repo_token }}
+          tags: ${{ github.repository }}_bot
+
+      - name: Scan Docker image
+        uses: azure/container-scan@v0.1
+        with:
+          image-name: ${{ github.repository }}_bot
 
   build-scan-server:
     name: Server - Scan
@@ -34,8 +40,15 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Scan Server
-        # Directory name only
-        uses: ./.github/actions/scan-docker-image
+      - name: Build the Docker Image
+        uses: ./.github/actions/build-docker-image-cache
         with:
-          service: "server"
+          service: server
+          repo_token: ${{ inputs.repo_token }}
+          tags: ${{ github.repository }}_server
+
+      - name: Scan Docker image
+        uses: azure/container-scan@v0.1
+        with:
+          image-name: ${{ github.repository }}_server
+
