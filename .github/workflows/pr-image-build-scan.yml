@@ -4,7 +4,8 @@ on:
   pull_request:
     paths:
       - ".github/workflows/pr-image-build-scan.yml" # This file
-      - ".github/actions/scan-docker-image/**" # Dependencies
+      - ".github/actions/scan-docker-image/**" # Dependency
+      - ".github/actions/build-docker-image-cache/**" # Dependency
       - "apps/bot/**"
       - "apps/server/**"
       - yarn.lock # so this can run on Dependabot PRs

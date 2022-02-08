@@ -10,6 +10,7 @@ on:
       - "apps/server/**"
       - "apps/bot/**"
       - "!**/*.md"
+      - ".github/actions/build-docker-image-cache/**" # dependency
   pull_request:
     branches:
       - main
@@ -19,6 +20,7 @@ on:
       - "apps/server/**"
       - "apps/bot/**"
       - "!**/*.md"
+      - ".github/actions/build-docker-image-cache/**" # dependency
 
 jobs:
   test-server:
@@ -74,9 +76,21 @@ jobs:
           echo "{{ secrets.BOT_CONFIG }}" > bot-config.yml
           echo "{{ secrets.SERVER_CONFIG }}" > server-config.yml
 
-      - name: Build the Docker Image
+      - name: Build Bot
+        uses: ./.github/actions/build-docker-image-cache
+        with:
+          service: bot
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Build Server
+        uses: ./.github/actions/build-docker-image-cache
+        with:
+          service: server
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Docker-Compose up
         run: |
-          docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
           sleep 20
 
       - name: Run `docker image ls`

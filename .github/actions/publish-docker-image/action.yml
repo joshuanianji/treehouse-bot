@@ -19,9 +19,10 @@ runs:
         password: ${{ inputs.repo_token }}
 
     - name: Build the Docker Image
-      run: |
-        docker-compose -f docker-compose.yml -f docker-compose.dev.yml build ${{ inputs.service }}
-      shell: bash
+      uses: ./.github/actions/build-docker-image-cache
+      with:
+        service: ${{ inputs.service }}
+        repo_token: ${{ inputs.repo_token }}
 
     - name: Run `docker image ls`
       run: |
