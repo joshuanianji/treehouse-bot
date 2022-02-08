@@ -25,7 +25,7 @@ const listener = async (message: Message<boolean>): Promise<void> => {
         const { poggers, remaining } = startsWith(message.content);
         const { str } = truncate(remaining, 1900); // the max is 2000 chars, so we make room for our other msgs
         if (poggers) {
-            // only run if Ahmad or Trevor sent it (id 239876252331278347 or 278587415378264064)
+            // only run if Ahmad or Trevor sent it (id 239876252331278347 or 278587415378264064) >:)))
             if (message.author.id === '239876252331278347' || message.author.id === '278587415378264064') {
                 await message.channel.send({
                     content: `You're not ${str}, you're ${message.author.toString()}!`,
