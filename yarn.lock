@@ -933,6 +933,11 @@
   resolved "https://registry.yarnpkg.com/@sapphire/snowflake/-/snowflake-3.0.1.tgz#400602940d1c5dc12f71e104972a1ace7c6c6b74"
   integrity sha512-v+wCC2q9DK3OhG7Vcdt/8A/INAYiyhlMD5snakmXGBN1usLBwSGJVJBjDHv4VGI5C9YYl4UdW5Ovr3arvYsJXQ==
 
+"@scarf/scarf@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@scarf/scarf/-/scarf-1.1.1.tgz#d8b9f20037b3a37dbf8dcdc4b3b72f9285bfce35"
+  integrity sha512-VGbKDbk1RFIaSmdVb0cNjjWJoRWRI/Weo23AjRCC2nryO0iAS8pzsToJfPVPtVs74WHw4L1UTADNdIYRLkirZQ==
+
 "@sindresorhus/is@^4.2.0":
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.2.1.tgz#b88b5724283db80b507cd612caee9a1947412a20"
@@ -2884,7 +2889,14 @@ io-ts-extra@^0.11.6:
     fp-ts "^2.1.0"
     io-ts "^2.2.4"
 
-io-ts-reporters@2.0.0, io-ts-reporters@^2.0.0:
+io-ts-reporters@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/io-ts-reporters/-/io-ts-reporters-2.0.1.tgz#0154545aefd115f0f175a41743ed7327d19b1c34"
+  integrity sha512-RVpLstYBsmTGgCW9wJ5KVyN/eRnRUDp87Flt4D1O3aJ7oAnd8csq8aXuu7ZeNK8qEDKmjUl9oUuzfwikaNAMKQ==
+  dependencies:
+    "@scarf/scarf" "^1.1.1"
+
+io-ts-reporters@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/io-ts-reporters/-/io-ts-reporters-2.0.0.tgz#a7ae071b69a170c4d475d15bb93bfc964da6b04b"
   integrity sha512-lcCD/Q77jcWjq7jBQb8nLfCU4DM/9hiQakYHNT1FLCA6kwMuHe0QEcugh27vrT3S5FoQDiWXq3ofaYR7GWAcOg==
