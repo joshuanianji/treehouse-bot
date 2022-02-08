@@ -1,13 +1,11 @@
 version: "3.9"
 services:
   bot:
-    image: treehousebot_bot
     build:
       context: .
       dockerfile: apps/bot/Dockerfile
 
   server:
-    image: treehousebot_server
     build:
       context: .
       dockerfile: apps/server/Dockerfile
