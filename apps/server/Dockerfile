@@ -7,7 +7,7 @@ FROM node:16-alpine3.12 AS base
 # Ensure we prune workspace so we don't unnecessarily build so much
 
 FROM base AS turboed
-RUN yarn global add turbo
+RUN yarn global add turbo@1.1.1
 
 # Prune the workspace for the `frontend` app
 # Use the turboed image to use the `turbo` command before we install dependencies.
@@ -30,17 +30,15 @@ RUN yarn --pure-lockfile --no-cache
 FROM installer AS builder
 WORKDIR /app
 COPY --from=pruner /app/out/full/ .
+COPY --from=pruner /app/turbo.json ./turbo.json
 RUN yarn turbo run build --scope=server --include-dependencies --no-deps
 
 # Copy over `build/index.js` and assets folder
-FROM base AS runner
-RUN apk add --no-cache dumb-init
-WORKDIR /app
-COPY --chown=node:node --from=builder /app/apps/server/build/index.js ./index.js
-COPY --chown=node:node --from=builder /app/apps/server/assets/ ./assets/
+FROM ghcr.io/joshuanianji/scratch-node-dumb-init:16.12.0 as runner
+COPY --from=builder /app/apps/server/build/index.js /index.js
+COPY --from=builder /app/apps/server/assets/ /assets/
 EXPOSE 3001
-USER node
 ENV NODE_ENV production
-CMD ["dumb-init", "node", "index.js"]
+CMD ["node", "index.js"]
 
-HEALTHCHECK CMD curl --fail http://localhost:3001 || exit 1   
+HEALTHCHECK CMD curl --fail http://localhost:3001 || exit 1

@@ -14,7 +14,6 @@ inputs:
     required: true
     description: "tags to add to the image"
 
-
 runs:
   using: composite
   steps:

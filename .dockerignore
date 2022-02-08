@@ -6,20 +6,24 @@ out/
 .github/
 # ignore all .gitignore files
 **/.gitignore
-**/.turbo
 
 # no need for .vscode
 .vscode
 
 *.md
-!README*.md
 
 # https://nodejs.org/en/docs/guides/nodejs-docker-webapp/#dockerignore-file
 **/node_modules
 npm-debug.log
 
+# Docker Stuff
 .dockerignore
+**/Dockerfile
 
-# Svelte-kit specific stuff
+# Netlify
 **/.netlify
-**/svelte-kit
+netlify.toml
+
+# Other stuff
+renovate.json
+**/.turbo
