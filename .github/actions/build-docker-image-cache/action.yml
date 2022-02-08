@@ -7,6 +7,9 @@ inputs:
   repo_token:
     required: true
     description: "The GitHub token to use for authentication"
+  output_prefix:
+    required: true 
+    description: just make this secrets.REPO_NAME
 
 runs:
   using: composite
@@ -43,7 +46,7 @@ runs:
         labels: ${{ steps.meta.outputs.labels }}
         tags: ${{ github.repository }}_${{ inputs.service }}
         load: true
-        outputs: type=docker,dest=/tmp/${{ github.repository }}_${{ inputs.service }}.tar # for us to store docker images as artifacts
+        outputs: type=docker,dest=/tmp/${{ inputs.output_prefix }}_${{ inputs.service }}.tar # for us to store docker images as artifacts
 
     - name: 🚚 Move cache
       run: |

@@ -23,6 +23,7 @@ runs:
       with:
         service: ${{ inputs.service }}
         repo_token: ${{ inputs.repo_token }}
+          output_prefix: ${{ secrets.REPO_NAME }}
 
     - name: Run `docker images`
       run: docker images

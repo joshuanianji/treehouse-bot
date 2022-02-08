@@ -75,12 +75,13 @@ jobs:
         with:
           service: bot
           repo_token: ${{ secrets.GITHUB_TOKEN }}
+          output_prefix: ${{ secrets.REPO_NAME }}
       
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ github.repository }}_bot
-          path: /tmp/${{ github.repository }}_bot.tar
+          name: ${{ secrets.REPO_NAME }}_bot
+          path: /tmp/${{ secrets.REPO_NAME }}_bot.tar
   
   build-server-img:
     name: 📦 Build Server Image
@@ -94,12 +95,13 @@ jobs:
         with:
           service: server
           repo_token: ${{ secrets.GITHUB_TOKEN }}
+          output_prefix: ${{ secrets.REPO_NAME }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ github.repository }}_server
-          path: /tmp/${{ github.repository }}_server.tar
+          name: ${{ secrets.REPO_NAME }}_server
+          path: /tmp/${{ secrets.REPO_NAME }}_server.tar
 
   run-docker-imgs:
     name: 🐳 Docker Images
@@ -122,8 +124,8 @@ jobs:
       
       - name: Load Docker Images
         run: |
-          docker load --input /tmp/artifacts/${{ github.repository }}_server/${{ github.repository }}_server.tar
-          docker load --input /tmp/artifacts/${{ github.repository }}_bot/${{ github.repository }}_bot.tar
+          docker load --input /tmp/artifacts/${{ secrets.REPO_NAME }}_server/${{ secrets.REPO_NAME }}_server.tar
+          docker load --input /tmp/artifacts/${{ secrets.REPO_NAME }}_bot/${{ secrets.REPO_NAME }}_bot.tar
           docker image ls -a
 
       - name: Run Docker-Compose up

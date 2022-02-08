@@ -24,6 +24,7 @@ jobs:
         with:
           service: bot
           repo_token: ${{ inputs.repo_token }}
+          output_prefix: ${{ secrets.REPO_NAME }}
 
       - name: Scan Docker image
         uses: azure/container-scan@v0.1
@@ -44,6 +45,7 @@ jobs:
         with:
           service: server
           repo_token: ${{ inputs.repo_token }}
+          output_prefix: ${{ secrets.REPO_NAME }}
 
       - name: Scan Docker image
         uses: azure/container-scan@v0.1
