@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "description": "A collection of types I use across my project",
   "dependencies": {
-    "axios": "^0.25.0",
+    "axios": "^0.26.0",
     "discord.js": "^13.5.0",
     "fp-ts": "^2.11.6",
     "io-ts": "^2.2.16",
