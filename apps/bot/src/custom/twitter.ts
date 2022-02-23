@@ -1,6 +1,6 @@
 import { Message } from 'discord.js'
 
-const twitterWords = ["don't care", "didn't ask", "l + ratio", "soyjak", "beta", "cringe", "cope", "seethe", "ok boomer", "incel", "virgin", "karen", "🤡🤡🤡", "you are not just a clown, you are the entire circus", "💅💅💅", "nah this ain't it", "do better", "check your privilege", "pronouns in bio", "anime pfp", "🤢🤢🤮🤮", "the cognitive dissonance is real with this one", "😂🤣🤣", "lol copium", "snowflake", "🚩🚩🚩", "those tears taste delicious", "lisa simpson meme template saying that your opinion is wrong", "😒🙄🧐🤨", "wojak meme in which I'm the chad", "average your opinion fan vs average my opinion enjoyer", "random k-pop fancam", "cry more", "how's your wife's boyfriend doing", "cheetos breath", "intelligence 0", "r/whooooosh", "r/downvotedtooblivion", "blocked and reported", "yo Momma so fat", "go touch some grass", "cry about it", "get triggered", "comp sci", "eng sci", "eng", "premed", "mad?", "skill issue"]
+const twitterWords = ["don't care", "didn't ask", "l + ratio", "soyjak", "beta", "cringe", "cope", "seethe", "ok boomer", "incel", "virgin", "karen", "🤡🤡🤡", "you are not just a clown, you are the entire circus", "💅💅💅", "nah this ain't it", "do better", "check your privilege", "pronouns in bio", "anime pfp", "🤢🤢🤮🤮", "the cognitive dissonance is real with this one", "😂🤣🤣", "lol copium", "snowflake", "🚩🚩🚩", "those tears taste delicious", "lisa simpson meme template saying that your opinion is wrong", "😒🙄🧐🤨", "wojak meme in which I'm the chad", "average your opinion fan vs average my opinion enjoyer", "random k-pop fancam", "cry more", "how's your wife's boyfriend doing", "cheetos breath", "intelligence 0", "r/whooooosh", "r/downvotedtooblivion", "blocked and reported", "yo Momma so fat", "go touch some grass", "cry about it", "get triggered", "comp sci", "eng sci", "eng", "premed", "mad?", "skill issue", "compsci", "trevor"]
 
 interface Context {
     run: boolean; // if we should run
@@ -33,10 +33,16 @@ export const runConditional = async (message: Message<boolean>, context: Context
     if (context.run) {
         let returnWords: string[] = [];
         for (let i = 0; i < twitterWords.length; i++) {
+            // each "twitter word" has a 50% chance of being chosen in the return message
             if (Math.random() > 0.5 && context.triggeredWord != twitterWords[i]) {
-                returnWords.push(twitterWords[i])
+                if (twitterWords[i] == "l + ratio") {
+                    returnWords.push("L+ratio")
+                } else {
+                    returnWords.push(twitterWords[i])
+                }
             }
         }
+        shuffle(returnWords);
 
         await message.channel.send({
             content: returnWords.join(' + '),
@@ -45,7 +51,8 @@ export const runConditional = async (message: Message<boolean>, context: Context
     }
 }
 
-function shuffleArray(array) {
+// shuffles an array IN PLACE poggets
+const shuffle = <T>(array: T[]): void => {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
