@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🏁 Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Build and Upload Bot Image to GHCR
         # Directory name only
@@ -35,7 +35,7 @@ jobs:
     needs: build-and-deploy
     steps:
       - name: 🏁 Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Skopeo (https://github.com/containers/skopeo)
       # Allows us to work with remote image registries

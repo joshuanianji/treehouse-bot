@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🏁 Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: 🔧 Install Node
         uses: actions/setup-node@v2
@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🏁 Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: 🔧 Install Node
         uses: actions/setup-node@v2
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🏁 Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Build Bot Image
         uses: ./.github/actions/build-docker-image-cache
@@ -89,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🏁 Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Build Server Image
         uses: ./.github/actions/build-docker-image-cache
@@ -112,7 +112,7 @@ jobs:
     needs: [build-bot-img, build-server-img]
     steps:
       - name: 🏁 Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       
       # https://github.com/docker/build-push-action/issues/225#issuecomment-727639184
       - name: 📦️ Download Artifacts 
