@@ -2,7 +2,7 @@
   "extends": ["config:base"],
   "ignorePaths": ["**/Dockerfile"],
   "labels": ["dependencies"],
-  "schedule": ["after 10pm and before 5am every weekday", "every weekend"],
+  "schedule": ["before 3am on the first day of the month"],
   "semanticCommitType": ":arrow_up: update",
   "semanticCommitScope": "deps",
   "packageRules": [
@@ -48,6 +48,11 @@
         "bump"
       ],
       "groupName": "dependencies (non-major)"
+    },
+    {
+      "matchDepTypes": ["dependencies"],
+      "matchManagers": ["github-actions"],
+      "groupName": "dependencies (CI/CD)"
     }
   ]
 }
