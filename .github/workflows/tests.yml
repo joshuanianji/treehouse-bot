@@ -79,7 +79,7 @@ jobs:
           outputs: type=docker,dest=/tmp/treehouse-bot_bot.tar
       
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: treehouse-bot_bot
           path: /tmp/treehouse-bot_bot.tar
@@ -100,7 +100,7 @@ jobs:
           outputs: type=docker,dest=/tmp/treehouse-bot_server.tar
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: treehouse-bot_server
           path: /tmp/treehouse-bot_server.tar
