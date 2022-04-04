@@ -8,7 +8,7 @@ const Navbar: React.FC = () => {
 
     const navItems = [
         { title: "Home", link: "/" },
-        { title: "NFTs", link: "/nfts" },
+        { title: "NFTs", link: "/nft" },
     ];
 
     return (
