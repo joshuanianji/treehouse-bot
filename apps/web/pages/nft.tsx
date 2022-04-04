@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
+import Spinner from '@/components/Spinner';
 
 
 const NFTs: React.FC = () => {
     const [nftID, setNftId] = useState('');
     const [linkValid, setLinkValid] = useState(false);
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -18,7 +20,8 @@ const NFTs: React.FC = () => {
             event.stopPropagation();
             if (linkValid) {
                 setLinkValid(false);
-                router.push(`/nft/${nftID}`)
+                setLoading(true);
+                router.push(`/nft/${nftID}`);
             }
         }
     }
@@ -44,11 +47,12 @@ const NFTs: React.FC = () => {
                         onChange={(e) => setNftId(e.target.value)}
                     />
                     <a
-                        className={'bg-indigo-500 hover:bg-indigo-700 text-white font-bold px-6 py-4 rounded-md inline flex-none'
+                        className={'bg-indigo-500 hover:bg-indigo-700 text-white font-bold px-6 py-4 rounded-md flex align-middle gap-2'
                             + (linkValid ? '' : ' cursor-not-allowed opacity-50')}
                         href={linkValid ? `/nft/${nftID}` : ''}
+                        onClick={() => setLoading(true)}
                     >
-                        Go to NFT
+                        <span className='flex items-center	'>Go to NFT</span>{loading && <Spinner />}
                     </a>
                 </div>
             </div>
