@@ -1,12 +1,12 @@
 version: "3.9"
 services:
   redis:
+    container_name: treehouse_redis
     image: redis:6.2-alpine
     restart: always
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
     volumes:
       - redisdb:/data
-
 
 volumes:
   # caches rust run output

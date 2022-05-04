@@ -20,6 +20,8 @@ npm-debug.log
 .dockerignore
 **/Dockerfile
 docker-compose.*
+# supabase volumes
+volumes 
 
 # Netlify
 **/.netlify

@@ -32,9 +32,15 @@ When I add redis stuff, use docker.
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
 
+Links are as follows:
+
+- Supabase Desktop [http://localhost:3000](http://localhost:3000)
+- Web [http://localhost:8080](http://localhost:8080)
+- Server [http://localhost:8081](http://localhost:8081)
+
 ## Staging in Docker
 
-To emulate production more, use the staging `.yml` file.
+To emulate production more, use the staging `.yml` file. This starts up the server and bot in separate docker containers, without dev stuff.
 
 ```bash
 docker-compose -f docker-compose.yml -f docker-compose.staging.yml up
