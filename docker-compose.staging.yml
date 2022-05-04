@@ -6,27 +6,23 @@ services:
       - TERM=xterm-256color
       - CONFIG_PATH=/run/secrets/bot_config
       - SERVER_HOST=http://server:3001 
+    build:
+      context: .
+      dockerfile: apps/bot/Dockerfile
     secrets:
       - bot_config
     links: 
       - "server"
-    image: ghcr.io/joshuanianji/treehouse-bot.bot:latest
 
   server:
     tty: true
     environment:
       - TERM=xterm-256color
       - CONFIG_PATH=/run/secrets/server_config
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
     ports:
       - "3001:3001"
     secrets:
       - server_config
-    image: ghcr.io/joshuanianji/treehouse-bot.server:latest
-
-
-# https://serverfault.com/a/936262
-secrets:
-  bot_config:
-    file: ./bot-config.yml  
-  server_config:
-    file: ./server-config.yml

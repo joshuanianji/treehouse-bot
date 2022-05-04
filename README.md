@@ -24,12 +24,20 @@ yarn
 yarn dev
 ```
 
-## Run with Docker
+## Docker
 
-To emulate production, run the Server and Bot in Dockerfiles.
+When I add redis stuff, use docker.
 
 ```bash
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+```
+
+## Staging in Docker
+
+To emulate production more, use the staging `.yml` file.
+
+```bash
+docker-compose -f docker-compose.yml -f docker-compose.staging.yml up
 ```
 
 ## Run Production with Docker

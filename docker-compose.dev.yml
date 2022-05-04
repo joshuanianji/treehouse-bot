@@ -1,11 +1,19 @@
 version: "3.9"
 services:
-  bot:
-    build:
-      context: .
-      dockerfile: apps/bot/Dockerfile
+  turbo:
+    tty: true
+    environment:
+      TERM: xterm-256color
+    ports: 
+      - "3000:3000"
+      - "3001:3001"
+    build: . 
+    depends_on:
+      - redis
+    volumes:
+      - nextjs_cache:/app/apps/web/.next
 
-  server:
-    build:
-      context: .
-      dockerfile: apps/server/Dockerfile
+volumes:
+  # caches next.js builds
+  nextjs_cache:
+    driver: local
