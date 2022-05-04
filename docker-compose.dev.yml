@@ -12,6 +12,10 @@ services:
       - redis
     volumes:
       - nextjs_cache:/app/apps/web/.next
+      # making volumes for all source folders, so live reload works
+      - ./apps:/app/apps/
+      - ./packages:/app/packages/
+
 
 volumes:
   # caches next.js builds
