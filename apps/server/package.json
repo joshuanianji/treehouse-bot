@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^1.29.1",
-    "axios": "^0.26.0",
+    "axios": "^0.27.0",
     "chalk": "4.1.2",
     "cors": "^2.8.5",
     "custom-types": "*",
@@ -39,7 +39,7 @@
     "io-ts": "^2.2.16",
     "io-ts-extra": "^0.11.6",
     "io-ts-reporters": "^2.0.0",
-    "jimp": "^0.16.1",
+    "jimp": "^0.22.0",
     "js-yaml": "^4.1.0",
     "response-time": "^2.3.2"
   }
