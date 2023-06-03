@@ -20,6 +20,7 @@ Make sure you have the following installed on your system:
 This runs the server, bot and web all in one go on your computer.
 
 ```bash
+nvm use
 yarn
 yarn dev
 ```
