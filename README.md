@@ -13,7 +13,7 @@ Make sure you have the following installed on your system:
 
 - [Docker](https://www.docker.com/community-edition)
 - [Docker Compose](https://docs.docker.com/compose/install/)
-- [Node v16.6 or higher](https://nodejs.org/en/download/), or [nvm](https://github.com/nvm-sh/nvm) (Discord.js 13 requires Node v16.6+)
+- [Node v18 or higher](https://nodejs.org/en/download/), or [nvm](https://github.com/nvm-sh/nvm) (Discord.js 13 requires Node v16.6+)
 
 ## Starter
 
