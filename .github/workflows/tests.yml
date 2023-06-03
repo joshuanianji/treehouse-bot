@@ -33,7 +33,7 @@ jobs:
       - name: 🔧 Install Node
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "18"
 
       - name: ✏️ Write Server Config File
         run: |
@@ -55,7 +55,7 @@ jobs:
       - name: 🔧 Install Node
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "18"
 
       - name: 📌 Install Dependencies
         run: yarn install --pure-lockfile

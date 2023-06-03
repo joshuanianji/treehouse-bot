@@ -1,12 +1,12 @@
 # NOTE: the context is the directory that `docker-compose.yml` is in
 
-FROM node:16-alpine3.12 AS base
+FROM node:18-alpine3.18 AS base
 # https://turborepo.com/posts/turbo-0-4-0
 # https://github.com/vercel/turborepo/issues/215
 # Ensure we prune workspace so we don't unnecessarily build so much
 
 FROM base AS turboed
-RUN yarn global add turbo@1.1.1
+RUN yarn global add turbo@1.2.6
 
 # Prune the workspace for the `frontend` app
 FROM turboed AS pruner
@@ -35,7 +35,7 @@ RUN npm prune --production
 
 # Start the app
 # Copy over `build/index.js` 
-FROM ghcr.io/joshuanianji/scratch-node-dumb-init:16.12.0 as runner
+FROM ghcr.io/joshuanianji/scratch-node-dumb-init:18.16.0 as runner
 COPY --from=builder /app/apps/bot/build/index.js /index.js
 ENV NODE_ENV production
 
