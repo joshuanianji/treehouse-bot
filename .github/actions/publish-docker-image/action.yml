@@ -12,7 +12,7 @@ runs:
   using: "composite"
   steps:
     - name: Login to Github Container Registry
-      uses: docker/login-action@219c305e1ce92a755f3aa4ba17387c95df31e987
+      uses: docker/login-action@40891eba8c2bcd1309b07ba8b11232f313e86779
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
