@@ -33,6 +33,7 @@ jobs:
     name: Update Docker Image in Prod
     runs-on: ubuntu-latest
     needs: build-and-deploy
+    concurrency: prod-deploy
     steps:
       - name: 🏁 Checkout repo
         uses: actions/checkout@v3
