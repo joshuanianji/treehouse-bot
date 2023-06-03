@@ -1,5 +1,14 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "rangeStrategy": "pin",
-    "extends": ["config:base", "schedule:weekly", "group:allNonMajor"]
+    "extends": ["config:base", "schedule:weekly", "group:allNonMajor"],
+    "packageRules": [
+        {
+            "description": "Ignore nodejs engine",
+            "matchPackageNames": ["node"],
+            "matchManagers": ["npm"],
+            "matchDepTypes": ["engines"],
+            "dependencyDashboardApproval": true
+        }
+    ]
 }
