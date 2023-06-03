@@ -7,7 +7,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@fontsource/fira-mono": "4.5.7",
+    "@fontsource/fira-mono": "5.0.2",
     "custom-types": "*",
     "date-fns": "2.28.0",
     "fp-ts": "2.11.9",
