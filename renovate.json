@@ -1,5 +1,10 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "rangeStrategy": "pin",
-    "extends": ["config:base", "schedule:weekly", "group:allNonMajor"]
+    "extends": [
+        "config:base",
+        "schedule:weekly",
+        "group:allNonMajor",
+        ":doNotPinPackage(node)"
+    ]
 }
