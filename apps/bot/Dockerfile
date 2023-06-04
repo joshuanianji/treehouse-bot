@@ -1,6 +1,6 @@
 # NOTE: the context is the directory that `docker-compose.yml` is in
 
-FROM node:18-alpine3.18 AS base
+FROM node:18-alpine3.16 AS base
 # https://turborepo.com/posts/turbo-0-4-0
 # https://github.com/vercel/turborepo/issues/215
 # Ensure we prune workspace so we don't unnecessarily build so much
