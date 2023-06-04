@@ -5,11 +5,9 @@ FROM node:18-alpine3.16 AS base
 # https://github.com/vercel/turborepo/issues/215
 # Ensure we prune workspace so we don't unnecessarily build so much
 
-FROM base AS turboed
-RUN yarn global add turbo@1.2.6
-
 # Prune the workspace for the `frontend` app
-FROM turboed AS pruner
+FROM base AS pruner
+RUN yarn global add turbo@1.2.6
 WORKDIR /app
 # Copy everything, but in the directory of docker-compose.yml
 COPY . .
