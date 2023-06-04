@@ -74,7 +74,6 @@ jobs:
         uses: ./.github/actions/build-docker-image-cache
         with:
           service: bot
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
           tags: treehouse-bot_bot
           outputs: type=docker,dest=/tmp/treehouse-bot_bot.tar
       
@@ -95,7 +94,6 @@ jobs:
         uses: ./.github/actions/build-docker-image-cache
         with:
           service: server
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
           tags: treehouse-bot_server
           outputs: type=docker,dest=/tmp/treehouse-bot_server.tar
 

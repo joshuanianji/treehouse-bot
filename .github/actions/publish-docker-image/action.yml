@@ -22,7 +22,6 @@ runs:
       uses: ./.github/actions/build-docker-image-cache
       with:
         service: ${{ inputs.service }}
-        repo_token: ${{ inputs.repo_token }}
         tags: ${{ env.TAG_PREFIX }}:${{ github.sha }},${{ env.TAG_PREFIX }}:latest
       env:
         TAG_PREFIX: "ghcr.io/${{ github.repository }}.${{ inputs.service }}"

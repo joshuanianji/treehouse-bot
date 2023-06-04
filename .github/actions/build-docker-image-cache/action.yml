@@ -4,9 +4,6 @@ inputs:
   service:
     required: true
     description: "The name of the service to build and deploy (bot or server)"
-  repo_token:
-    required: true
-    description: "The GitHub token to use for authentication"
   outputs:
     required: false 
     description: Same as docker-push-action outputs. Set this if you want to store the docker iamge as an artifact.
