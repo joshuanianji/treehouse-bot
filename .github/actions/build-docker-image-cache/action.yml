@@ -22,12 +22,12 @@ runs:
 
     - name: Extract Docker metadata
       id: meta
-      uses: docker/metadata-action@v3
+      uses: docker/metadata-action@4
       with:
         images: ghcr.io/${{ github.repository }}
 
     - name: 🏗️ Build Image
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v4
       with:
         context: .
         builder: ${{ steps.buildx.outputs.name }}
