@@ -32,7 +32,7 @@ COPY --from=pruner /app/turbo.json ./turbo.json
 RUN yarn turbo run build --scope=server --include-dependencies --no-deps
 
 # Copy over `build/index.js` and assets folder
-FROM ghcr.io/joshuanianji/scratch-node-dumb-init:18.16.0 as runner
+FROM ghcr.io/joshuanianji/scratch-node-dumb-init:18 as runner
 COPY --from=builder /app/apps/server/build/index.js /index.js
 COPY --from=builder /app/apps/server/assets/ /assets/
 EXPOSE 3001
