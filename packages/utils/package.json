@@ -11,11 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "0.26.0",
+    "axios": "0.27.2",
     "custom-types": "*",
-    "fp-ts": "2.11.7",
-    "io-ts": "2.2.16",
+    "fp-ts": "2.16.0",
+    "io-ts": "2.2.20",
     "io-ts-extra": "0.11.6",
-    "io-ts-reporters": "2.0.0"
+    "io-ts-reporters": "2.0.1"
   }
 }
