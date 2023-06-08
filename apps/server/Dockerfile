@@ -1,17 +1,15 @@
 # NOTE: the context is the directory that `docker-compose.yml` is in 
 
-FROM node:16-alpine3.12 AS base
+FROM node:18-alpine3.16 AS base
 # https://snyk.io/blog/10-best-practices-to-containerize-nodejs-web-applications-with-docker/
 # https://turborepo.com/posts/turbo-0-4-0
 # https://github.com/vercel/turborepo/issues/215
 # Ensure we prune workspace so we don't unnecessarily build so much
 
-FROM base AS turboed
-RUN yarn global add turbo@1.1.1
-
 # Prune the workspace for the `frontend` app
 # Use the turboed image to use the `turbo` command before we install dependencies.
-FROM turboed AS pruner
+FROM base AS pruner
+RUN yarn global add turbo@1.2.6
 WORKDIR /app
 # Copy everything, but in the directory of docker-compose.yml
 COPY . . 
@@ -34,7 +32,7 @@ COPY --from=pruner /app/turbo.json ./turbo.json
 RUN yarn turbo run build --scope=server --include-dependencies --no-deps
 
 # Copy over `build/index.js` and assets folder
-FROM ghcr.io/joshuanianji/scratch-node-dumb-init:16.12.0 as runner
+FROM ghcr.io/joshuanianji/scratch-node-dumb-init:18 as runner
 COPY --from=builder /app/apps/server/build/index.js /index.js
 COPY --from=builder /app/apps/server/assets/ /assets/
 EXPOSE 3001

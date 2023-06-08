@@ -23,7 +23,6 @@ jobs:
         uses: ./.github/actions/build-docker-image-cache
         with:
           service: bot
-          repo_token: ${{ inputs.repo_token }}
           tags: ${{ github.repository }}_bot
 
       - name: Scan Docker image
@@ -44,7 +43,6 @@ jobs:
         uses: ./.github/actions/build-docker-image-cache
         with:
           service: server
-          repo_token: ${{ inputs.repo_token }}
           tags: ${{ github.repository }}_server
 
       - name: Scan Docker image
