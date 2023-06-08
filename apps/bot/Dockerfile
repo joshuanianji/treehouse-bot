@@ -33,7 +33,7 @@ RUN npm prune --production
 
 # Start the app
 # Copy over `build/index.js` 
-FROM ghcr.io/joshuanianji/scratch-node-dumb-init:18.16.0 as runner
+FROM ghcr.io/joshuanianji/scratch-node-dumb-init:18 as runner
 COPY --from=builder /app/apps/bot/build/index.js /index.js
 ENV NODE_ENV production
 
