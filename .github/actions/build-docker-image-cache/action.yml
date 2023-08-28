@@ -16,7 +16,7 @@ runs:
   steps:
     - name: 🐳 Set up Docker Buildx
       id: buildx
-      uses: docker/setup-buildx-action@v1.6.0
+      uses: docker/setup-buildx-action@v2.10.0
       with:
         install: true
 
