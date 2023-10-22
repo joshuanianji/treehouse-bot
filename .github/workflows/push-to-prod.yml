@@ -16,7 +16,7 @@ jobs:
     environment: prod
     steps:
       - name: 🏁 Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🚚 Move files to RSync with Server to /out
         run: |
