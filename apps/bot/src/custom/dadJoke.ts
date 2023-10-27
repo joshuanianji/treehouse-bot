@@ -30,7 +30,7 @@ export const startsWith = (word: string): DadJokeReturn => {
 export const runConditional = async (message: Message<boolean>, context: DadJokeReturn): Promise<void> => {
     if (context.run) {
         // only run if Ahmad or Trevor sent it (id 239876252331278347 or 278587415378264064) >:)))
-        if (message.author.id === '239876252331278347' || message.author.id === '278587415378264064' || message.author.id === '256212924723363844') {
+        if (message.author.id === '239876252331278347' || message.author.id === '278587415378264064') {
             await message.channel.sendTyping();
             const { str } = truncate(context.remaining, 1900); // the max is 2000 chars, so we make room for our other msgs
 
