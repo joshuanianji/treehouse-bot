@@ -12,10 +12,10 @@ const triggerWords = ["i'm ", "im ", "i am "];
  */
 export const startsWith = (word: string): DadJokeReturn => {
     for (const triggerWord of triggerWords) {
-        if (word.toLowerCase().startsWith(triggerWord)) {
+        if (word.toLowerCase().includes(triggerWord)) {
             return {
                 run: true,
-                remaining: word.substring(triggerWord.length)
+                remaining: word.substring(word.indexOf(triggerWord) + triggerWord.length)
             }
         }
     }
