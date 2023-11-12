@@ -9,7 +9,7 @@
     "chalk": "4.1.2",
     "custom-types": "*",
     "discord-api-types": "0.30.0",
-    "discord.js": "13.5.1",
+    "discord.js": "14.14.1",
     "fp-ts": "2.11.7",
     "io-ts": "2.2.16",
     "io-ts-reporters": "2.0.0",
